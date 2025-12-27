@@ -1,0 +1,129 @@
+import { useEffect, useState } from 'react';
+
+import { Button, Group, Modal, Select, Stack } from '@mantine/core';
+import { DatePickerInput } from '@mantine/dates';
+import { useForm } from '@mantine/form';
+
+import type { JobApplication } from '../contexts/ApplicationContext';
+
+import { useApplicationContext } from '../hooks/useApplicationContext';
+import { useAuthContext } from '../hooks/useAuthContext';
+
+import { APPLICATION_STATUS } from '../utils/constants';
+import { formatDate, getNormalizedDate, showNotification } from '../utils/functions';
+
+const CreateApplicationStatus = ({
+  opened,
+  onClose,
+  application
+}: {
+  opened: boolean;
+  onClose: () => void;
+  application: JobApplication | null;
+}) => {
+  const { dispatch: applicationDispatch } = useApplicationContext();
+  const { user } = useAuthContext();
+
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (opened) {
+      form.reset();
+    }
+  }, [opened]);
+
+  const form = useForm({
+    initialValues: {
+      status: Object.values(APPLICATION_STATUS).find(status => status.default)?.label || '',
+      date: new Date()
+    },
+    validate: {
+      status: value => {
+        if (value.trim().length === 0) {
+          return 'Status is required.';
+        }
+
+        return null;
+      },
+      date: value => {
+        if (!value) {
+          return 'Date is required.';
+        }
+
+        return null;
+      }
+    }
+  });
+
+  const handleSubmit = async (values: typeof form.values) => {
+    setLoading(true);
+
+    const date = getNormalizedDate(values.date);
+
+    const response = await fetch(`/api/applications/${application?._id}/status`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${user?.token}`
+      },
+      body: JSON.stringify({ ...values, date })
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      applicationDispatch({
+        type: 'UPDATE_APPLICATION',
+        payload: data
+      });
+
+      showNotification('Progress made!', 'The application status has been updated successfully.', false);
+
+      onClose();
+    } else {
+      showNotification('Something went wrong', data.error, true);
+    }
+
+    setLoading(false);
+  };
+
+  return (
+    <Modal opened={opened} onClose={onClose} title="Update Status" overlayProps={{ blur: 2 }} centered>
+      <form onSubmit={form.onSubmit(values => handleSubmit(values))}>
+        <Stack gap="sm">
+          <Select
+            data-autofocus
+            label="Status"
+            withAsterisk
+            key={form.key('status')}
+            {...form.getInputProps('status')}
+            data={Object.values(APPLICATION_STATUS).map(status => status.label)}
+            withAlignedLabels
+            allowDeselect={false}
+          />
+
+          <DatePickerInput
+            label="Date"
+            withAsterisk
+            placeholder={formatDate(form.values.date)}
+            key={form.key('date')}
+            {...form.getInputProps('date')}
+            valueFormat="DD MMM YYYY"
+          />
+
+          <Group mt="sm">
+            <Button type="submit" loading={loading}>
+              Save
+            </Button>
+
+            <Button variant="outline" onClick={onClose}>
+              Cancel
+            </Button>
+          </Group>
+        </Stack>
+      </form>
+    </Modal>
+  );
+};
+
+export default CreateApplicationStatus;
