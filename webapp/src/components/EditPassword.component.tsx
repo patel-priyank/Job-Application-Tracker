@@ -8,6 +8,7 @@ import { IconCheck, IconX } from '@tabler/icons-react';
 
 import { useAuthContext } from '../hooks/useAuthContext';
 
+import { PW_REGEX, PW_SPECIAL_CHARS_REGEX } from '../utils/constants';
 import { showNotification } from '../utils/functions';
 
 const PasswordRequirement = ({ meets, label }: { meets: boolean; label: string }) => {
@@ -24,7 +25,7 @@ const pwRequirements = [
   { re: /[A-Z]/, label: 'Uppercase letter' },
   { re: /[a-z]/, label: 'Lowercase letter' },
   { re: /[0-9]/, label: 'Number' },
-  { re: /[$&+,:;=?@#|'<>.^*()%!-]/, label: 'Special character' }
+  { re: PW_SPECIAL_CHARS_REGEX, label: 'Special character' }
 ];
 
 const EditPassword = ({ opened, onClose }: { opened: boolean; onClose: () => void }) => {
@@ -69,7 +70,7 @@ const EditPassword = ({ opened, onClose }: { opened: boolean; onClose: () => voi
           return 'New password must have at most 128 characters.';
         }
 
-        if (!value.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$&+,:;=?@#|'<>.^*()%!-]).+$/)) {
+        if (!value.match(PW_REGEX)) {
           return 'New password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.';
         }
 

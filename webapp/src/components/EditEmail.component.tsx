@@ -5,6 +5,7 @@ import { useForm } from '@mantine/form';
 
 import { useAuthContext } from '../hooks/useAuthContext';
 
+import { EMAIL_REGEX } from '../utils/constants';
 import { showNotification } from '../utils/functions';
 
 const EditEmail = ({ opened, onClose }: { opened: boolean; onClose: () => void }) => {
@@ -35,7 +36,7 @@ const EditEmail = ({ opened, onClose }: { opened: boolean; onClose: () => void }
           return 'Email must have at most 256 characters.';
         }
 
-        if (!value.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+        if (!value.match(EMAIL_REGEX)) {
           return 'Email must be valid.';
         }
 

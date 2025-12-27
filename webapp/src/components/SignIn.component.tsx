@@ -6,6 +6,7 @@ import { useForm } from '@mantine/form';
 import { useApplicationContext } from '../hooks/useApplicationContext';
 import { useAuthContext } from '../hooks/useAuthContext';
 
+import { EMAIL_REGEX } from '../utils/constants';
 import { fetchApplications, showNotification } from '../utils/functions';
 
 const SignIn = ({ opened, onClose }: { opened: boolean; onClose: () => void }) => {
@@ -31,7 +32,7 @@ const SignIn = ({ opened, onClose }: { opened: boolean; onClose: () => void }) =
           return 'Email is required.';
         }
 
-        if (!value.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+        if (!value.match(EMAIL_REGEX)) {
           return 'Email must be valid.';
         }
 
