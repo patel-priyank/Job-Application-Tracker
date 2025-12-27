@@ -12,7 +12,7 @@ dotenv.config();
 const app = express();
 
 if (!process.env.JWT_SECRET || !process.env.MONGO_URI) {
-  throw new Error('Environment variables are not defined');
+  throw new Error('Environment variables are not defined.');
 }
 
 app.use(express.json());
@@ -23,7 +23,7 @@ app.use(async (req, res, next) => {
     next();
   } catch (err) {
     console.error('Database connection failed: ', err);
-    res.status(500).json({ error: 'Database connection failed' });
+    res.status(500).json({ error: 'Database connection failed.' });
   }
 });
 
