@@ -9,6 +9,7 @@ import { useAuthContext } from '../hooks/useAuthContext';
 import DeleteAccount from '../components/DeleteAccount.component';
 import DeleteApplications from '../components/DeleteApplications.component';
 import EditEmail from '../components/EditEmail.component';
+import EditEmailsUsed from '../components/EditEmailsUsed.component';
 import EditName from '../components/EditName.component';
 import EditPassword from '../components/EditPassword.component';
 import SignIn from '../components/SignIn.component';
@@ -39,6 +40,7 @@ const Account = () => {
       <DeleteAccount opened={deleteAccOpened} onClose={closeDeleteAcc} />
       <DeleteApplications opened={deleteAppsOpened} onClose={closeDeleteApps} />
       <EditEmail opened={editEmailOpened} onClose={closeEditEmail} />
+      <EditEmailsUsed opened={editEmailsUsedOpened} onClose={closeEditEmailsUsed} />
       <EditName opened={editNameOpened} onClose={closeEditName} />
       <EditPassword opened={editPasswordOpened} onClose={closeEditPassword} />
       <SignIn opened={signInOpened} onClose={closeSignIn} />
