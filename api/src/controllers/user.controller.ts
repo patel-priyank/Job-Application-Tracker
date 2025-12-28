@@ -28,6 +28,7 @@ const signin = async (req: Request, res: Response) => {
     res.status(200).json({
       name: user.name,
       email,
+      emailsUsed: user.emailsUsed,
       createdAt: user.createdAt,
       passwordUpdatedAt: user.passwordUpdatedAt,
       token
@@ -64,6 +65,7 @@ const signup = async (req: Request, res: Response) => {
     res.status(201).json({
       name,
       email,
+      emailsUsed: user.emailsUsed,
       createdAt: user.createdAt,
       passwordUpdatedAt: user.passwordUpdatedAt,
       token
@@ -87,6 +89,25 @@ const signup = async (req: Request, res: Response) => {
   }
 };
 
+const renewToken = async (req: Request, res: Response) => {
+  try {
+    const user = await User.findById(req.user?._id);
+
+    const token = createToken(user._id);
+
+    res.status(200).json({
+      name: user.name,
+      email: user.email,
+      emailsUsed: user.emailsUsed,
+      createdAt: user.createdAt,
+      passwordUpdatedAt: user.passwordUpdatedAt,
+      token
+    });
+  } catch (err: unknown) {
+    return res.status(500).json({ error: 'Unknown error.' });
+  }
+};
+
 const updateName = async (req: Request, res: Response) => {
   const { name } = req.body;
 
@@ -102,6 +123,7 @@ const updateName = async (req: Request, res: Response) => {
     res.status(200).json({
       name: user.name,
       email: user.email,
+      emailsUsed: user.emailsUsed,
       createdAt: user.createdAt,
       passwordUpdatedAt: user.passwordUpdatedAt,
       token
@@ -138,6 +160,7 @@ const updateEmail = async (req: Request, res: Response) => {
     res.status(200).json({
       name: updatedUser.name,
       email: updatedUser.email,
+      emailsUsed: updatedUser.emailsUsed,
       createdAt: updatedUser.createdAt,
       passwordUpdatedAt: updatedUser.passwordUpdatedAt,
       token
@@ -189,6 +212,7 @@ const updatePassword = async (req: Request, res: Response) => {
     res.status(200).json({
       name: updatedUser.name,
       email: updatedUser.email,
+      emailsUsed: updatedUser.emailsUsed,
       createdAt: updatedUser.createdAt,
       passwordUpdatedAt: updatedUser.passwordUpdatedAt,
       token
@@ -226,4 +250,12 @@ const deleteAccount = async (req: Request, res: Response) => {
   }
 };
 
-export default { signin, signup, updateName, updateEmail, updatePassword, deleteAccount };
+export default {
+  signin,
+  signup,
+  renewToken,
+  updateName,
+  updateEmail,
+  updatePassword,
+  deleteAccount
+};

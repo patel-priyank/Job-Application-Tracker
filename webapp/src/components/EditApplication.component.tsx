@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { Button, Group, Modal, Stack, TextInput } from '@mantine/core';
+import { Autocomplete, Button, Group, Modal, Stack, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 
 import type { JobApplication } from '../contexts/ApplicationContext';
@@ -8,6 +8,7 @@ import type { JobApplication } from '../contexts/ApplicationContext';
 import { useApplicationContext } from '../hooks/useApplicationContext';
 import { useAuthContext } from '../hooks/useAuthContext';
 
+import { EMAIL_REGEX } from '../utils/constants';
 import { showNotification } from '../utils/functions';
 
 const EditApplication = ({
@@ -30,6 +31,7 @@ const EditApplication = ({
       form.setValues({
         companyName: application?.companyName || '',
         jobTitle: application?.jobTitle || '',
+        emailUsed: application?.emailUsed || '',
         link: application?.link || ''
       });
     }
@@ -39,6 +41,7 @@ const EditApplication = ({
     initialValues: {
       companyName: '',
       jobTitle: '',
+      emailUsed: '',
       link: ''
     },
     validate: {
@@ -60,6 +63,21 @@ const EditApplication = ({
 
         if (value.trim().length > 256) {
           return 'Job title must have at most 256 characters.';
+        }
+
+        return null;
+      },
+      emailUsed: value => {
+        if (value.trim().length === 0) {
+          return 'Email used is required.';
+        }
+
+        if (value.trim().length > 256) {
+          return 'Email used must have at most 256 characters.';
+        }
+
+        if (!value.match(EMAIL_REGEX)) {
+          return 'Email used must be valid.';
         }
 
         return null;
@@ -89,6 +107,10 @@ const EditApplication = ({
     const data = await response.json();
 
     if (response.ok) {
+      if (!user?.emailsUsed.includes(values.emailUsed)) {
+        user?.emailsUsed.push(values.emailUsed);
+      }
+
       applicationDispatch({
         type: 'UPDATE_APPLICATION',
         payload: data
@@ -123,6 +145,15 @@ const EditApplication = ({
             placeholder={application?.jobTitle}
             key={form.key('jobTitle')}
             {...form.getInputProps('jobTitle')}
+          />
+
+          <Autocomplete
+            label="Email used"
+            withAsterisk
+            placeholder={user?.email}
+            key={form.key('emailUsed')}
+            {...form.getInputProps('emailUsed')}
+            data={user?.emailsUsed}
           />
 
           <TextInput

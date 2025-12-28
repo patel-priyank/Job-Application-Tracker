@@ -16,6 +16,11 @@ const applicationSchema = new mongoose.Schema({
     required: true,
     trim: true
   },
+  emailUsed: {
+    type: String,
+    required: true,
+    trim: true
+  },
   link: {
     type: String,
     trim: true

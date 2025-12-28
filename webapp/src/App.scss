@@ -1,3 +1,9 @@
 .affix-shadow {
   box-shadow: var(--mantine-shadow-md);
 }
+
+.align-center {
+  display: flex;
+  align-items: center;
+  gap: 0.75ch;
+}

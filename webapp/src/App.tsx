@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import { BrowserRouter, Link, Navigate, Route, Routes, useLocation } from 'react-router-dom';
 
+import { jwtDecode } from 'jwt-decode';
+
 import {
   ActionIcon,
   AppShell,
@@ -60,12 +62,44 @@ const AppContent = () => {
       const user = localStorage.getItem('user');
 
       if (user) {
-        await fetchApplications(user, applicationDispatch);
+        const decodedToken = jwtDecode(JSON.parse(user).token);
+
+        if (decodedToken.exp && decodedToken.exp < Date.now() / 1000) {
+          localStorage.removeItem('user');
+
+          authDispatch({
+            type: 'SET_USER',
+            payload: null
+          });
+
+          return;
+        }
+
+        const response = await fetch('/api/users/renew-token', {
+          headers: {
+            Authorization: `Bearer ${JSON.parse(user).token}`
+          }
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          await fetchApplications(user, applicationDispatch);
+
+          localStorage.setItem('user', JSON.stringify(data));
+
+          authDispatch({
+            type: 'SET_USER',
+            payload: data
+          });
+        }
+
+        return;
       }
 
       authDispatch({
         type: 'SET_USER',
-        payload: user ? JSON.parse(user) : null
+        payload: null
       });
     }, 1500);
   }, [authDispatch]);

@@ -20,7 +20,7 @@ const requireAuth = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { _id } = jwtPayload as JwtPayload & { _id: string };
 
-    const user = await User.findById(_id).select('_id');
+    const user = await User.findById(_id).select('_id emailsUsed');
 
     if (!user) {
       return res.status(401).json({ error: 'User associated with token not found' });

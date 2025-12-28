@@ -5,6 +5,7 @@ export interface JobApplication {
   _id: string;
   companyName: string;
   jobTitle: string;
+  emailUsed: string;
   link: string;
   status: string;
   date: string;

@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 
-import { Button, Group, Modal, Select, Stack, TextInput } from '@mantine/core';
+import { Autocomplete, Button, Group, Modal, Select, Stack, TextInput } from '@mantine/core';
 import { DatePickerInput } from '@mantine/dates';
 import { useForm } from '@mantine/form';
 
 import { useApplicationContext } from '../hooks/useApplicationContext';
 import { useAuthContext } from '../hooks/useAuthContext';
 
-import { APPLICATION_STATUS } from '../utils/constants';
+import { APPLICATION_STATUS, EMAIL_REGEX } from '../utils/constants';
 import { formatDate, getNormalizedDate, showNotification } from '../utils/functions';
 
 const CreateApplication = ({ opened, onClose }: { opened: boolean; onClose: () => void }) => {
@@ -26,6 +26,7 @@ const CreateApplication = ({ opened, onClose }: { opened: boolean; onClose: () =
     initialValues: {
       companyName: '',
       jobTitle: '',
+      emailUsed: '',
       link: '',
       status: Object.values(APPLICATION_STATUS).find(status => status.default)?.label || '',
       date: new Date()
@@ -49,6 +50,21 @@ const CreateApplication = ({ opened, onClose }: { opened: boolean; onClose: () =
 
         if (value.trim().length > 256) {
           return 'Job title must have at most 256 characters.';
+        }
+
+        return null;
+      },
+      emailUsed: value => {
+        if (value.trim().length === 0) {
+          return 'Email used is required.';
+        }
+
+        if (value.trim().length > 256) {
+          return 'Email used must have at most 256 characters.';
+        }
+
+        if (!value.match(EMAIL_REGEX)) {
+          return 'Email used must be valid.';
         }
 
         return null;
@@ -94,6 +110,10 @@ const CreateApplication = ({ opened, onClose }: { opened: boolean; onClose: () =
     const data = await response.json();
 
     if (response.ok) {
+      if (!user?.emailsUsed.includes(values.emailUsed)) {
+        user?.emailsUsed.push(values.emailUsed);
+      }
+
       applicationDispatch({
         type: 'CREATE_APPLICATION',
         payload: data
@@ -128,6 +148,15 @@ const CreateApplication = ({ opened, onClose }: { opened: boolean; onClose: () =
             placeholder="Software Engineer"
             key={form.key('jobTitle')}
             {...form.getInputProps('jobTitle')}
+          />
+
+          <Autocomplete
+            label="Email used"
+            withAsterisk
+            placeholder={user?.email}
+            key={form.key('emailUsed')}
+            {...form.getInputProps('emailUsed')}
+            data={user?.emailsUsed}
           />
 
           <TextInput

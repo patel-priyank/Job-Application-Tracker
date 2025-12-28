@@ -17,17 +17,22 @@ const getApplications = async (req: Request, res: Response) => {
 };
 
 const createApplication = async (req: Request, res: Response) => {
-  const { companyName, jobTitle, link, status, date } = req.body;
+  const { companyName, jobTitle, emailUsed, link, status, date } = req.body;
 
   try {
-    if (!companyName || !jobTitle || !status || !date) {
-      return res.status(400).json({ error: 'Company name, job title, status, and date are required.' });
+    if (!companyName || !jobTitle || !emailUsed || !status || !date) {
+      return res.status(400).json({ error: 'Company name, job title, email used, status, and date are required.' });
+    }
+
+    if (!req.user?.emailsUsed.includes(emailUsed)) {
+      await User.findByIdAndUpdate(req.user?._id, { $push: { emailsUsed: emailUsed } });
     }
 
     const application = await Application.create({
       user: req.user?._id,
       companyName,
       jobTitle,
+      emailUsed,
       link,
       status,
       date,
@@ -42,15 +47,15 @@ const createApplication = async (req: Request, res: Response) => {
 
 const updateApplication = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { companyName, jobTitle, link } = req.body;
+  const { companyName, jobTitle, emailUsed, link } = req.body;
 
   try {
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({ error: 'Invalid application ID.' });
     }
 
-    if (!companyName || !jobTitle) {
-      return res.status(400).json({ error: 'Company name and job title are required.' });
+    if (!companyName || !jobTitle || !emailUsed) {
+      return res.status(400).json({ error: 'Company name, job title, and email used are required.' });
     }
 
     const application = await Application.findById(id);
@@ -63,7 +68,15 @@ const updateApplication = async (req: Request, res: Response) => {
       return res.status(401).json({ error: 'Unauthorized.' });
     }
 
-    const updatedApplication = await Application.findByIdAndUpdate(id, { companyName, jobTitle, link }, { new: true });
+    if (!req.user?.emailsUsed.includes(emailUsed)) {
+      await User.findByIdAndUpdate(req.user?._id, { $push: { emailsUsed: emailUsed } });
+    }
+
+    const updatedApplication = await Application.findByIdAndUpdate(
+      id,
+      { companyName, jobTitle, emailUsed, link },
+      { new: true }
+    );
 
     res.status(200).json(updatedApplication);
   } catch (err: unknown) {

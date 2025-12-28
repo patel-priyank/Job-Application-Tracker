@@ -5,6 +5,7 @@ declare global {
     interface Request {
       user?: {
         _id: Types.ObjectId;
+        emailsUsed: string[];
       };
     }
   }

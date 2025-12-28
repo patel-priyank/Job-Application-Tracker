@@ -29,6 +29,7 @@ const Account = () => {
   const [editEmailOpened, { open: openEditEmail, close: closeEditEmail }] = useDisclosure(false);
   const [editNameOpened, { open: openEditName, close: closeEditName }] = useDisclosure(false);
   const [editPasswordOpened, { open: openEditPassword, close: closeEditPassword }] = useDisclosure(false);
+  const [editEmailsUsedOpened, { open: openEditEmailsUsed, close: closeEditEmailsUsed }] = useDisclosure(false);
   const [signInOpened, { open: openSignIn, close: closeSignIn }] = useDisclosure(false);
   const [signOutOpened, { open: openSignOut, close: closeSignOut }] = useDisclosure(false);
   const [signUpOpened, { open: openSignUp, close: closeSignUp }] = useDisclosure(false);
@@ -169,6 +170,24 @@ const Account = () => {
                   </Group>
 
                   <Text c="dimmed">Updated on {formatDate(user.passwordUpdatedAt)}</Text>
+                </Stack>
+              </Card>
+            </Grid.Col>
+
+            <Grid.Col span={{ base: 12, md: 6, lg: 4, xl: 3 }}>
+              <Card padding="md" shadow="md" radius="md" withBorder h="100%">
+                <Stack gap="md">
+                  <Group justify="space-between">
+                    <Text>Emails Used</Text>
+
+                    <ActionIcon variant="subtle" onClick={openEditEmailsUsed}>
+                      <IconPencil size={20} stroke={1.5} />
+                    </ActionIcon>
+                  </Group>
+
+                  <Text c="dimmed">
+                    {user.emailsUsed.length} email{user.emailsUsed.length !== 1 && 's'} used
+                  </Text>
                 </Stack>
               </Card>
             </Grid.Col>

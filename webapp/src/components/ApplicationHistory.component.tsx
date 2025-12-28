@@ -1,6 +1,6 @@
 import { ActionIcon, Anchor, Button, Group, Menu, Modal, Stack, Text, Timeline } from '@mantine/core';
 
-import { IconDots, IconExternalLink, IconPencil, IconTrash } from '@tabler/icons-react';
+import { IconAt, IconBriefcase2, IconDots, IconExternalLink, IconPencil, IconTrash } from '@tabler/icons-react';
 
 import type { JobApplication } from '../contexts/ApplicationContext';
 
@@ -19,7 +19,13 @@ const ApplicationHistory = ({
   return (
     <Modal opened={opened} onClose={onClose} title={application?.companyName} overlayProps={{ blur: 2 }} centered>
       <Stack gap="md" align="flex-start">
-        <Text c="dimmed">{application?.jobTitle}</Text>
+        <Text c="dimmed" truncate="end" title={application?.jobTitle} className="align-center">
+          <IconBriefcase2 size={16} stroke={1.5} /> {application?.jobTitle}
+        </Text>
+
+        <Text c="dimmed" truncate="end" title={application?.emailUsed} className="align-center">
+          <IconAt size={16} stroke={1.5} /> {application?.emailUsed}
+        </Text>
 
         <Anchor
           href={application?.link || undefined}
@@ -31,18 +37,16 @@ const ApplicationHistory = ({
               e.preventDefault();
             }
           }}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.5ch',
-            ...(application?.link
+          className="align-center"
+          style={
+            application?.link
               ? {}
               : {
                   color: 'var(--mantine-color-disabled-color)',
                   opacity: 0.6,
                   cursor: 'not-allowed'
-                })
-          }}
+                }
+          }
         >
           Track application <IconExternalLink size={16} stroke={1.5} />
         </Anchor>
