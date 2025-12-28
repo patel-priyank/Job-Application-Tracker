@@ -5,12 +5,12 @@ export const APPLICATION_STATUS: Record<string, { label: string; color: string; 
   },
   APPLIED: {
     label: 'Applied',
-    color: 'blue',
+    color: 'grape',
     default: true
   },
   INTERVIEW_PHONE: {
     label: 'Phone Interview',
-    color: 'cyan'
+    color: 'violet'
   },
   OFFER_RECEIVED: {
     label: 'Offer Received',
@@ -18,11 +18,11 @@ export const APPLICATION_STATUS: Record<string, { label: string; color: string; 
   },
   OFFER_ACCEPTED: {
     label: 'Offer Accepted',
-    color: 'green'
+    color: 'lime'
   },
   OFFER_DECLINED: {
     label: 'Offer Declined',
-    color: 'orange'
+    color: 'yellow'
   },
   REJECTED: {
     label: 'Rejected',
