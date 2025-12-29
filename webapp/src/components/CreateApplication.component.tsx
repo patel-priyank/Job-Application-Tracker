@@ -4,6 +4,8 @@ import { Autocomplete, Button, Group, Modal, Select, Stack, TextInput } from '@m
 import { DatePickerInput } from '@mantine/dates';
 import { useForm } from '@mantine/form';
 
+import dayjs from 'dayjs';
+
 import { useApplicationContext } from '../hooks/useApplicationContext';
 import { useAuthContext } from '../hooks/useAuthContext';
 
@@ -174,6 +176,8 @@ const CreateApplication = ({ opened, onClose }: { opened: boolean; onClose: () =
             data={Object.values(APPLICATION_STATUS).map(status => status.label)}
             withAlignedLabels
             allowDeselect={false}
+            comboboxProps={{ withinPortal: false }}
+            maxDropdownHeight={120}
           />
 
           <DatePickerInput
@@ -183,6 +187,8 @@ const CreateApplication = ({ opened, onClose }: { opened: boolean; onClose: () =
             key={form.key('date')}
             {...form.getInputProps('date')}
             valueFormat="DD MMM YYYY"
+            minDate={dayjs('2000-01-01').format('YYYY-MM-DD')}
+            maxDate={dayjs('2050-12-31').format('YYYY-MM-DD')}
           />
 
           <Group mt="sm">
