@@ -150,10 +150,12 @@ const EditApplication = ({
           <Autocomplete
             label="Email used"
             withAsterisk
+            description="The email used to apply for the job. Type a new email or select from the list of previously used emails."
             placeholder={user?.email}
             key={form.key('emailUsed')}
             {...form.getInputProps('emailUsed')}
             data={user?.emailsUsed}
+            maxDropdownHeight={120}
           />
 
           <TextInput
