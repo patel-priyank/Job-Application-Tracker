@@ -8,7 +8,7 @@ import {
   IconBriefcase2,
   IconDots,
   IconExternalLink,
-  IconHistory,
+  IconFileText,
   IconPencil,
   IconStatusChange,
   IconTrash
@@ -16,7 +16,7 @@ import {
 
 import type { JobApplication } from '../contexts/ApplicationContext';
 
-import ApplicationHistory from './ApplicationHistory.component';
+import ApplicationDetails from './ApplicationDetails.component';
 import CreateApplicationStatus from './CreateApplicationStatus.component';
 import DeleteApplication from './DeleteApplication.component';
 import EditApplication from './EditApplication.component';
@@ -25,14 +25,14 @@ import { APPLICATION_STATUS } from '../utils/constants';
 import { formatDate } from '../utils/functions';
 
 const Application = ({ application }: { application: JobApplication }) => {
-  const [appHistoryOpened, { open: openAppHistory, close: closeAppHistory }] = useDisclosure(false);
+  const [appDetailsOpened, { open: openAppDetails, close: closeAppDetails }] = useDisclosure(false);
   const [createAppStatusOpened, { open: openCreateAppStatus, close: closeCreateAppStatus }] = useDisclosure(false);
   const [deleteAppOpened, { open: openDeleteApp, close: closeDeleteApp }] = useDisclosure(false);
   const [editAppOpened, { open: openEditApp, close: closeEditApp }] = useDisclosure(false);
 
   return (
     <>
-      <ApplicationHistory opened={appHistoryOpened} onClose={closeAppHistory} application={application} />
+      <ApplicationDetails opened={appDetailsOpened} onClose={closeAppDetails} application={application} />
 
       <CreateApplicationStatus
         opened={createAppStatusOpened}
@@ -62,10 +62,10 @@ const Application = ({ application }: { application: JobApplication }) => {
 
               <Menu.Dropdown>
                 <Menu.Item
-                  leftSection={<IconHistory size={16} stroke={1.5} />}
-                  onClick={() => setTimeout(openAppHistory, 0)}
+                  leftSection={<IconFileText size={16} stroke={1.5} />}
+                  onClick={() => setTimeout(openAppDetails, 0)}
                 >
-                  View history
+                  View details
                 </Menu.Item>
 
                 <Menu.Divider />

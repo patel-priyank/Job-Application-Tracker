@@ -7,7 +7,7 @@ import type { JobApplication } from '../contexts/ApplicationContext';
 import { APPLICATION_STATUS } from '../utils/constants';
 import { formatDate } from '../utils/functions';
 
-const ApplicationHistory = ({
+const ApplicationDetails = ({
   opened,
   onClose,
   application
@@ -100,4 +100,4 @@ const ApplicationHistory = ({
   );
 };
 
-export default ApplicationHistory;
+export default ApplicationDetails;
