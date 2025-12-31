@@ -1,18 +1,9 @@
-import { ActionIcon, Box, Card, Group, Menu, Stack, Text } from '@mantine/core';
+import { ActionIcon, Card, Group, Menu, Stack, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
 import GeoPattern from 'geopattern';
 
-import {
-  IconAt,
-  IconBriefcase2,
-  IconDots,
-  IconExternalLink,
-  IconFileText,
-  IconPencil,
-  IconStatusChange,
-  IconTrash
-} from '@tabler/icons-react';
+import { IconDots, IconExternalLink, IconFileText, IconPencil, IconStatusChange, IconTrash } from '@tabler/icons-react';
 
 import type { JobApplication } from '../contexts/ApplicationContext';
 
@@ -45,7 +36,7 @@ const Application = ({ application }: { application: JobApplication }) => {
       <EditApplication opened={editAppOpened} onClose={closeEditApp} application={application} />
 
       <Card padding="md" shadow="md" radius="md" withBorder h="100%">
-        <Card.Section h={160} bg={GeoPattern.generate(application.companyName).toDataUrl()} />
+        <Card.Section h={140} bg={GeoPattern.generate(application.companyName).toDataUrl()} />
 
         <Stack gap="xs" mt="md">
           <Group justify="space-between" wrap="nowrap">
@@ -110,15 +101,11 @@ const Application = ({ application }: { application: JobApplication }) => {
             </Menu>
           </Group>
 
-          <Text c="dimmed" truncate="end" title={application.jobTitle} className="align-center">
-            <IconBriefcase2 size={16} stroke={1.5} /> {application.jobTitle}
+          <Text c="dimmed" truncate="end" title={application.jobTitle}>
+            {application.jobTitle}
           </Text>
 
-          <Text c="dimmed" truncate="end" title={application.emailUsed} className="align-center">
-            <IconAt size={16} stroke={1.5} /> {application.emailUsed}
-          </Text>
-
-          <Box>
+          <Stack gap={0}>
             <Text
               c={Object.values(APPLICATION_STATUS).find(status => status.label === application.status)?.color}
               size="sm"
@@ -130,7 +117,7 @@ const Application = ({ application }: { application: JobApplication }) => {
             <Text c="dimmed" size="sm">
               {formatDate(application.date)}
             </Text>
-          </Box>
+          </Stack>
         </Stack>
       </Card>
     </>

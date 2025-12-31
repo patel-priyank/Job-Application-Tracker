@@ -1,6 +1,6 @@
 import { ActionIcon, Anchor, Button, Group, Menu, Modal, Stack, Text, Timeline } from '@mantine/core';
 
-import { IconAt, IconBriefcase2, IconDots, IconExternalLink, IconPencil, IconTrash } from '@tabler/icons-react';
+import { IconDots, IconExternalLink, IconPencil, IconTrash } from '@tabler/icons-react';
 
 import type { JobApplication } from '../contexts/ApplicationContext';
 
@@ -19,12 +19,12 @@ const ApplicationDetails = ({
   return (
     <Modal opened={opened} onClose={onClose} title={application?.companyName} overlayProps={{ blur: 2 }} centered>
       <Stack gap="md" align="flex-start">
-        <Text c="dimmed" truncate="end" title={application?.jobTitle} className="align-center">
-          <IconBriefcase2 size={16} stroke={1.5} /> {application?.jobTitle}
+        <Text truncate="end" title={application?.jobTitle} w="100%">
+          {application?.jobTitle}
         </Text>
 
-        <Text c="dimmed" truncate="end" title={application?.emailUsed} className="align-center">
-          <IconAt size={16} stroke={1.5} /> {application?.emailUsed}
+        <Text c="dimmed" truncate="end" title={application?.emailUsed} w="100%">
+          {application?.emailUsed}
         </Text>
 
         <Anchor
@@ -37,18 +37,20 @@ const ApplicationDetails = ({
               e.preventDefault();
             }
           }}
-          className="align-center"
-          style={
-            application?.link
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 'var(--mantine-spacing-xs)',
+            ...(application?.link
               ? {}
               : {
                   color: 'var(--mantine-color-disabled-color)',
                   opacity: 0.6,
                   cursor: 'not-allowed'
-                }
-          }
+                })
+          }}
         >
-          Track application <IconExternalLink size={16} stroke={1.5} />
+          <IconExternalLink size={16} stroke={1.5} /> Track application
         </Anchor>
 
         <Timeline bulletSize={16} lineWidth={2} mt="xs">
