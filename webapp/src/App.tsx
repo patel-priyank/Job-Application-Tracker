@@ -7,17 +7,15 @@ import {
   ActionIcon,
   AppShell,
   Burger,
-  Button,
   Group,
   MantineProvider,
   NavLink,
   Text,
   Tooltip,
-  Transition,
   useComputedColorScheme,
   useMantineColorScheme
 } from '@mantine/core';
-import { useDisclosure, useViewportSize, useWindowScroll } from '@mantine/hooks';
+import { useDisclosure } from '@mantine/hooks';
 import { Notifications } from '@mantine/notifications';
 
 import { IconChartBar, IconFiles, IconMoon, IconSun, IconUser } from '@tabler/icons-react';
@@ -50,9 +48,6 @@ const AppContent = () => {
   const [opened, { toggle, close }] = useDisclosure();
 
   const location = useLocation();
-
-  const [scroll, scrollTo] = useWindowScroll();
-  const { height } = useViewportSize();
 
   const { setColorScheme } = useMantineColorScheme();
   const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
@@ -122,28 +117,19 @@ const AppContent = () => {
             Job Application Tracker
           </Text>
 
-          <Group ml="auto" gap="xs" wrap="nowrap">
-            <Transition transition="slide-down" mounted={scroll.y > height * 0.25}>
-              {transitionStyles => (
-                <Button style={transitionStyles} size="compact-sm" onClick={() => scrollTo({ y: 0 })}>
-                  Scroll to top
-                </Button>
+          <Tooltip label={computedColorScheme === 'light' ? 'Dark mode' : 'Light mode'}>
+            <ActionIcon
+              ml="auto"
+              variant="default"
+              onClick={() => setColorScheme(computedColorScheme === 'light' ? 'dark' : 'light')}
+            >
+              {computedColorScheme === 'light' ? (
+                <IconMoon size={16} stroke={1.5} />
+              ) : (
+                <IconSun size={16} stroke={1.5} />
               )}
-            </Transition>
-
-            <Tooltip label={computedColorScheme === 'light' ? 'Dark mode' : 'Light mode'}>
-              <ActionIcon
-                variant="default"
-                onClick={() => setColorScheme(computedColorScheme === 'light' ? 'dark' : 'light')}
-              >
-                {computedColorScheme === 'light' ? (
-                  <IconMoon size={16} stroke={1.5} />
-                ) : (
-                  <IconSun size={16} stroke={1.5} />
-                )}
-              </ActionIcon>
-            </Tooltip>
-          </Group>
+            </ActionIcon>
+          </Tooltip>
         </Group>
       </AppShell.Header>
 
