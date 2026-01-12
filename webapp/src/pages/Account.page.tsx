@@ -1,7 +1,7 @@
-import { ActionIcon, Button, Card, Divider, Grid, Group, Image, Menu, Stack, Text } from '@mantine/core';
+import { ActionIcon, Button, Card, Divider, Grid, Group, Image, Stack, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
-import { IconBrandGithub, IconDots, IconLogout, IconPencil } from '@tabler/icons-react';
+import { IconLogout, IconPencil } from '@tabler/icons-react';
 
 import { useApplicationContext } from '../hooks/useApplicationContext';
 import { useAuthContext } from '../hooks/useAuthContext';
@@ -12,6 +12,7 @@ import EditEmail from '../components/EditEmail.component';
 import EditEmailsUsed from '../components/EditEmailsUsed.component';
 import EditName from '../components/EditName.component';
 import EditPassword from '../components/EditPassword.component';
+import FloatingActionButton from '../components/FloatingActionButton.component';
 import SignIn from '../components/SignIn.component';
 import SignOut from '../components/SignOut.component';
 import SignUp from '../components/SignUp.component';
@@ -51,39 +52,6 @@ const Account = () => {
         <Text component="h2" size="lg" fw="500">
           Account
         </Text>
-
-        <Menu withinPortal position="bottom-end" shadow="xl">
-          <Menu.Target>
-            <ActionIcon variant="light">
-              <IconDots size={16} stroke={1.5} />
-            </ActionIcon>
-          </Menu.Target>
-
-          <Menu.Dropdown>
-            {user && (
-              <>
-                <Menu.Item
-                  leftSection={<IconLogout size={16} stroke={1.5} />}
-                  onClick={() => setTimeout(openSignOut, 0)}
-                >
-                  Sign out
-                </Menu.Item>
-
-                <Menu.Divider />
-              </>
-            )}
-
-            <Menu.Item
-              component="a"
-              href="https://github.com/patel-priyank/Job-Application-Tracker"
-              target="_blank"
-              rel="noopener noreferrer"
-              leftSection={<IconBrandGithub size={16} stroke={1.5} />}
-            >
-              View source code
-            </Menu.Item>
-          </Menu.Dropdown>
-        </Menu>
       </Group>
 
       <Divider my="md" />
@@ -232,6 +200,8 @@ const Account = () => {
               </Card>
             </Grid.Col>
           </Grid>
+
+          <FloatingActionButton icon={IconLogout} label="Sign out" onClick={openSignOut} />
         </>
       )}
     </>
