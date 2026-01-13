@@ -46,7 +46,7 @@ const Application = ({ application }: { application: JobApplication }) => {
 
             <Menu withinPortal position="bottom-end" shadow="xl">
               <Menu.Target>
-                <ActionIcon variant="subtle" color="gray">
+                <ActionIcon variant="light" color="gray">
                   <IconDots size={16} stroke={1.5} />
                 </ActionIcon>
               </Menu.Target>

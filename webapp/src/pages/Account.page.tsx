@@ -96,7 +96,7 @@ const Account = () => {
                   <Group justify="space-between">
                     <Text>Name</Text>
 
-                    <ActionIcon variant="subtle" onClick={openEditName}>
+                    <ActionIcon variant="light" onClick={openEditName}>
                       <IconPencil size={20} stroke={1.5} />
                     </ActionIcon>
                   </Group>
@@ -114,7 +114,7 @@ const Account = () => {
                   <Group justify="space-between">
                     <Text>Email</Text>
 
-                    <ActionIcon variant="subtle" onClick={openEditEmail}>
+                    <ActionIcon variant="light" onClick={openEditEmail}>
                       <IconPencil size={20} stroke={1.5} />
                     </ActionIcon>
                   </Group>
@@ -132,7 +132,7 @@ const Account = () => {
                   <Group justify="space-between">
                     <Text>Password</Text>
 
-                    <ActionIcon variant="subtle" onClick={openEditPassword}>
+                    <ActionIcon variant="light" onClick={openEditPassword}>
                       <IconPencil size={20} stroke={1.5} />
                     </ActionIcon>
                   </Group>
@@ -148,7 +148,7 @@ const Account = () => {
                   <Group justify="space-between">
                     <Text>Emails Used</Text>
 
-                    <ActionIcon variant="subtle" onClick={openEditEmailsUsed}>
+                    <ActionIcon variant="light" onClick={openEditEmailsUsed}>
                       <IconPencil size={20} stroke={1.5} />
                     </ActionIcon>
                   </Group>

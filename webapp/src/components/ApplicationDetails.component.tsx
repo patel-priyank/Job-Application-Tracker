@@ -67,7 +67,7 @@ const ApplicationDetails = ({
 
                 <Menu withinPortal position="top-start" shadow="xl">
                   <Menu.Target>
-                    <ActionIcon size="sm" variant="subtle" color="gray">
+                    <ActionIcon size="sm" variant="light" color="gray">
                       <IconDots size={16} stroke={1.5} />
                     </ActionIcon>
                   </Menu.Target>
