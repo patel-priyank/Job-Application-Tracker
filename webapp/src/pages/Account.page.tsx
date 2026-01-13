@@ -3,7 +3,6 @@ import { useDisclosure } from '@mantine/hooks';
 
 import { IconLogout, IconPencil } from '@tabler/icons-react';
 
-import { useApplicationContext } from '../hooks/useApplicationContext';
 import { useAuthContext } from '../hooks/useAuthContext';
 
 import DeleteAccount from '../components/DeleteAccount.component';
@@ -23,7 +22,6 @@ import signInImage from '../assets/sign-in.png';
 import signUpImage from '../assets/sign-up.png';
 
 const Account = () => {
-  const { applications } = useApplicationContext();
   const { user } = useAuthContext();
 
   const [deleteAccOpened, { open: openDeleteAcc, close: closeDeleteAcc }] = useDisclosure(false);
@@ -170,7 +168,7 @@ const Account = () => {
                   <Text>Job Applications</Text>
 
                   <Text c="dimmed">
-                    Tracking {applications.length} application{applications.length !== 1 && 's'}
+                    Tracking {user.applicationsCount} application{user.applicationsCount !== 1 && 's'}
                   </Text>
 
                   <Button
@@ -178,7 +176,7 @@ const Account = () => {
                     size="sm"
                     color="red"
                     onClick={openDeleteApps}
-                    disabled={applications.length === 0}
+                    disabled={user.applicationsCount === 0}
                   >
                     Delete applications
                   </Button>

@@ -7,6 +7,7 @@ export interface User {
   emailsUsed: string[];
   createdAt: string;
   passwordUpdatedAt: string;
+  applicationsCount: number;
   token: string;
 }
 

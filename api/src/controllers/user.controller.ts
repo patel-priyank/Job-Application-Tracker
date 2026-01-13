@@ -25,12 +25,15 @@ const signin = async (req: Request, res: Response) => {
 
     const token = createToken(user._id);
 
+    const applicationsCount = await Application.countDocuments({ user: req.user?._id });
+
     res.status(200).json({
       name: user.name,
       email,
       emailsUsed: user.emailsUsed,
       createdAt: user.createdAt,
       passwordUpdatedAt: user.passwordUpdatedAt,
+      applicationsCount,
       token
     });
   } catch (err: unknown) {
@@ -62,12 +65,15 @@ const signup = async (req: Request, res: Response) => {
 
     const token = createToken(user._id);
 
+    const applicationsCount = await Application.countDocuments({ user: req.user?._id });
+
     res.status(201).json({
       name,
       email,
       emailsUsed: user.emailsUsed,
       createdAt: user.createdAt,
       passwordUpdatedAt: user.passwordUpdatedAt,
+      applicationsCount,
       token
     });
   } catch (err: unknown) {
@@ -95,12 +101,15 @@ const renewToken = async (req: Request, res: Response) => {
 
     const token = createToken(user._id);
 
+    const applicationsCount = await Application.countDocuments({ user: req.user?._id });
+
     res.status(200).json({
       name: user.name,
       email: user.email,
       emailsUsed: user.emailsUsed,
       createdAt: user.createdAt,
       passwordUpdatedAt: user.passwordUpdatedAt,
+      applicationsCount,
       token
     });
   } catch (err: unknown) {
@@ -120,12 +129,15 @@ const updateName = async (req: Request, res: Response) => {
 
     const token = createToken(user._id);
 
+    const applicationsCount = await Application.countDocuments({ user: req.user?._id });
+
     res.status(200).json({
       name: user.name,
       email: user.email,
       emailsUsed: user.emailsUsed,
       createdAt: user.createdAt,
       passwordUpdatedAt: user.passwordUpdatedAt,
+      applicationsCount,
       token
     });
   } catch (err: unknown) {
@@ -157,12 +169,15 @@ const updateEmail = async (req: Request, res: Response) => {
 
     const token = createToken(updatedUser._id);
 
+    const applicationsCount = await Application.countDocuments({ user: req.user?._id });
+
     res.status(200).json({
       name: updatedUser.name,
       email: updatedUser.email,
       emailsUsed: updatedUser.emailsUsed,
       createdAt: updatedUser.createdAt,
       passwordUpdatedAt: updatedUser.passwordUpdatedAt,
+      applicationsCount,
       token
     });
   } catch (err: unknown) {
@@ -209,12 +224,15 @@ const updatePassword = async (req: Request, res: Response) => {
 
     const token = createToken(updatedUser._id);
 
+    const applicationsCount = await Application.countDocuments({ user: req.user?._id });
+
     res.status(200).json({
       name: updatedUser.name,
       email: updatedUser.email,
       emailsUsed: updatedUser.emailsUsed,
       createdAt: updatedUser.createdAt,
       passwordUpdatedAt: updatedUser.passwordUpdatedAt,
+      applicationsCount,
       token
     });
   } catch (err: unknown) {

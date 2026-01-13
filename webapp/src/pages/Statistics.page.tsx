@@ -51,7 +51,7 @@ const Statistics = () => {
         </Grid>
       )}
 
-      {user && applications.length === 0 && (
+      {user && user.applicationsCount === 0 && (
         <Grid>
           <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
             <Card padding="md" shadow="md" radius="md" withBorder h="100%">
@@ -78,7 +78,7 @@ const Statistics = () => {
         </Grid>
       )}
 
-      {user && applications.length > 0 && (
+      {user && user.applicationsCount > 0 && (
         <Grid>
           <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
             <Card padding="md" shadow="md" radius="md" withBorder h="100%">
@@ -98,7 +98,7 @@ const Statistics = () => {
 
                 <Group justify="space-between">
                   <Text>Total</Text>
-                  <Text>{applications.length}</Text>
+                  <Text>{user.applicationsCount}</Text>
                 </Group>
               </Stack>
             </Card>
