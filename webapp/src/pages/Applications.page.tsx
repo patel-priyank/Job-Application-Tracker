@@ -204,7 +204,6 @@ const Applications = () => {
             <Pagination
               mb="lg"
               radius="md"
-              disabled={loading}
               total={totalPages}
               value={page}
               siblings={0}

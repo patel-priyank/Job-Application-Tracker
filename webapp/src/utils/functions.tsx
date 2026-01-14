@@ -4,6 +4,8 @@ import dayjs from 'dayjs';
 
 import type { ApplicationAction } from '../contexts/ApplicationContext';
 
+let abortController: AbortController | null = null;
+
 export const fetchApplications = async (
   sort: string,
   order: string,
@@ -12,27 +14,44 @@ export const fetchApplications = async (
   applicationDispatch: React.Dispatch<ApplicationAction>,
   query?: string
 ) => {
-  let apiUrl = `/api/applications?sort=${sort}&order=${order}&page=${page}`;
-
-  if (query) {
-    apiUrl += `&query=${query}`;
+  if (abortController) {
+    abortController.abort();
   }
 
-  const response = await fetch(apiUrl, {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  });
+  abortController = new AbortController();
 
-  const data = await response.json();
+  const { signal } = abortController;
 
-  if (response.ok) {
-    applicationDispatch({
-      type: 'SET_APPLICATIONS',
-      payload: data.applications
+  let fetchApplicationsUrl = `/api/applications?sort=${sort}&order=${order}&page=${page}`;
+
+  if (query) {
+    fetchApplicationsUrl += `&query=${query}`;
+  }
+
+  try {
+    const response = await fetch(fetchApplicationsUrl, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+      signal
     });
 
-    return data.count;
+    const data = await response.json();
+
+    if (response.ok) {
+      applicationDispatch({
+        type: 'SET_APPLICATIONS',
+        payload: data.applications
+      });
+
+      return data.count;
+    }
+  } catch (error: any) {
+    if (error.name === 'AbortError') {
+      return null;
+    }
+
+    console.error(error);
   }
 
   return null;
