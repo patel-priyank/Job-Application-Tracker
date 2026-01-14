@@ -67,6 +67,8 @@ const AppContent = () => {
             payload: null
           });
 
+          setTimeout(() => alert('Session expired. Please sign in again.'), 250);
+
           return;
         }
 
