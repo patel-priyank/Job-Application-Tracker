@@ -7,18 +7,20 @@ import {
   ActionIcon,
   AppShell,
   Burger,
+  Button,
   Group,
   MantineProvider,
   NavLink,
   Text,
   Tooltip,
+  Transition,
   useComputedColorScheme,
   useMantineColorScheme
 } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
+import { useDisclosure, useViewportSize, useWindowScroll } from '@mantine/hooks';
 import { Notifications } from '@mantine/notifications';
 
-import { IconChartBar, IconFiles, IconMoon, IconSun, IconUser } from '@tabler/icons-react';
+import { IconChartBar, IconCircleArrowUp, IconFiles, IconMoon, IconSun, IconUser } from '@tabler/icons-react';
 
 import { ApplicationContextProvider } from './contexts/ApplicationContext';
 import { AuthContextProvider } from './contexts/AuthContext';
@@ -48,6 +50,9 @@ const AppContent = () => {
   const [opened, { toggle, close }] = useDisclosure();
 
   const location = useLocation();
+
+  const [scroll, scrollTo] = useWindowScroll();
+  const { height } = useViewportSize();
 
   const { setColorScheme } = useMantineColorScheme();
   const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
@@ -119,19 +124,47 @@ const AppContent = () => {
             Job Application Tracker
           </Text>
 
-          <Tooltip label={computedColorScheme === 'light' ? 'Dark mode' : 'Light mode'}>
-            <ActionIcon
-              ml="auto"
-              variant="default"
-              onClick={() => setColorScheme(computedColorScheme === 'light' ? 'dark' : 'light')}
-            >
-              {computedColorScheme === 'light' ? (
-                <IconMoon size={16} stroke={1.5} />
-              ) : (
-                <IconSun size={16} stroke={1.5} />
+          <Group ml="auto" gap="xs" wrap="nowrap">
+            <Transition transition="slide-down" mounted={scroll.y > height * 0.25}>
+              {transitionStyles => (
+                <>
+                  <Button
+                    variant="light"
+                    style={transitionStyles}
+                    size="compact-sm"
+                    onClick={() => scrollTo({ y: 0 })}
+                    hiddenFrom="sm"
+                  >
+                    <IconCircleArrowUp size={16} stroke={1.5} />
+                  </Button>
+
+                  <Button
+                    variant="light"
+                    style={transitionStyles}
+                    size="compact-sm"
+                    onClick={() => scrollTo({ y: 0 })}
+                    visibleFrom="sm"
+                    leftSection={<IconCircleArrowUp size={16} stroke={1.5} />}
+                  >
+                    Scroll to top
+                  </Button>
+                </>
               )}
-            </ActionIcon>
-          </Tooltip>
+            </Transition>
+
+            <Tooltip label={computedColorScheme === 'light' ? 'Dark mode' : 'Light mode'}>
+              <ActionIcon
+                variant="default"
+                onClick={() => setColorScheme(computedColorScheme === 'light' ? 'dark' : 'light')}
+              >
+                {computedColorScheme === 'light' ? (
+                  <IconMoon size={16} stroke={1.5} />
+                ) : (
+                  <IconSun size={16} stroke={1.5} />
+                )}
+              </ActionIcon>
+            </Tooltip>
+          </Group>
         </Group>
       </AppShell.Header>
 
