@@ -115,7 +115,7 @@ const Applications = () => {
       <Divider my="md" />
 
       {!user && (
-        <Grid>
+        <Grid justify="center">
           <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
             <Card padding="md" shadow="md" radius="md" withBorder h="100%">
               <Image
@@ -141,7 +141,7 @@ const Applications = () => {
       )}
 
       {user && user.applicationsCount === 0 && (
-        <Grid>
+        <Grid justify="center">
           <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
             <Card padding="md" shadow="md" radius="md" withBorder h="100%">
               <Image

@@ -8,6 +8,7 @@ import {
   AppShell,
   Burger,
   Button,
+  Container,
   Group,
   MantineProvider,
   NavLink,
@@ -196,12 +197,14 @@ const AppContent = () => {
       </AppShell.Navbar>
 
       <AppShell.Main style={{ paddingBottom: '74px' }}>
-        <Routes>
-          <Route path="/" element={<Applications />} />
-          <Route path="/statistics" element={<Statistics />} />
-          <Route path="/account" element={<Account />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
+        <Container size="xl" p={0}>
+          <Routes>
+            <Route path="/" element={<Applications />} />
+            <Route path="/statistics" element={<Statistics />} />
+            <Route path="/account" element={<Account />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </Container>
       </AppShell.Main>
     </AppShell>
   ) : (
