@@ -25,7 +25,7 @@ const signin = async (req: Request, res: Response) => {
 
     const token = createToken(user._id);
 
-    const applicationsCount = await Application.countDocuments({ user: req.user?._id });
+    const applicationsCount = await Application.countDocuments({ user: user._id });
 
     res.status(200).json({
       name: user.name,
@@ -65,7 +65,7 @@ const signup = async (req: Request, res: Response) => {
 
     const token = createToken(user._id);
 
-    const applicationsCount = await Application.countDocuments({ user: req.user?._id });
+    const applicationsCount = await Application.countDocuments({ user: user._id });
 
     res.status(201).json({
       name,
