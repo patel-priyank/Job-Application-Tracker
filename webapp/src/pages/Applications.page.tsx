@@ -56,22 +56,16 @@ const Applications = () => {
   );
   const [createAppOpened, { open: openCreateApp, close: closeCreateApp }] = useDisclosure(false);
 
-  const paramsRef = useRef({ order, page, sort, token: user?.token });
+  const paramsRef = useRef({ order, sort });
 
   useEffect(() => {
-    paramsRef.current = { order, page, sort, token: user?.token };
-  }, [order, page, sort, user]);
+    paramsRef.current = { order, sort };
+  }, [order, sort]);
 
   useEffect(() => {
     return () => {
-      if (paramsRef.current.token) {
-        fetchApplications(
-          paramsRef.current.sort,
-          paramsRef.current.order,
-          paramsRef.current.page,
-          paramsRef.current.token,
-          applicationDispatch
-        );
+      if (user) {
+        fetchApplications(paramsRef.current.sort, paramsRef.current.order, 1, user.token, applicationDispatch);
       }
     };
   }, []);
