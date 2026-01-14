@@ -171,7 +171,7 @@ const Account = () => {
                   <div>
                     <Text>Danger zone</Text>
                     <Text size="sm" c="dimmed">
-                      Irreversible actions ahead. Please proceed with caution.
+                      Irreversible actions ahead. Proceed with caution.
                     </Text>
                   </div>
                 </Group>
