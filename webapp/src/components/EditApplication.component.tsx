@@ -150,7 +150,7 @@ const EditApplication = ({
           <Autocomplete
             label="Email used"
             withAsterisk
-            description="The email used to apply for the job. Type a new email or select from the list of previously used emails."
+            description="Email used to apply for the job. Type a new email or select from the list of previously used emails."
             placeholder={user?.email}
             key={form.key('emailUsed')}
             {...form.getInputProps('emailUsed')}
@@ -160,6 +160,7 @@ const EditApplication = ({
 
           <TextInput
             label="Link"
+            description="Link to track the job application."
             placeholder={application?.link || 'https://careers.google.com/jobs/I1roBwQfiBLbOizI'}
             key={form.key('link')}
             {...form.getInputProps('link')}
