@@ -42,7 +42,7 @@ import '@mantine/notifications/styles.css';
 import './App.scss';
 
 const AppContent = () => {
-  const { dispatch: applicationDispatch } = useApplicationContext();
+  const { order, page, sort, dispatch: applicationDispatch } = useApplicationContext();
   const { ready, dispatch: authDispatch } = useAuthContext();
 
   const [opened, { toggle, close }] = useDisclosure();
@@ -81,7 +81,7 @@ const AppContent = () => {
         const data = await response.json();
 
         if (response.ok) {
-          await fetchApplications(user, applicationDispatch);
+          await fetchApplications(sort, order, page, JSON.parse(user).token, applicationDispatch);
 
           localStorage.setItem('user', JSON.stringify(data));
 

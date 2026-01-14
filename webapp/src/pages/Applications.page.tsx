@@ -1,24 +1,111 @@
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { ActionIcon, Affix, Button, Card, Divider, Grid, Group, Image, Menu, Text } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
+import {
+  Button,
+  Card,
+  Center,
+  Divider,
+  Flex,
+  Grid,
+  Group,
+  Image,
+  Input,
+  Pagination,
+  Select,
+  Skeleton,
+  Stack,
+  Text,
+  TextInput
+} from '@mantine/core';
+import { useDisclosure, useDebouncedCallback } from '@mantine/hooks';
 
-import { IconDots, IconFile, IconFilter, IconJson } from '@tabler/icons-react';
+import { IconFile, IconSearch } from '@tabler/icons-react';
 
 import { useApplicationContext } from '../hooks/useApplicationContext';
 import { useAuthContext } from '../hooks/useAuthContext';
 
 import Application from '../components/Application.component';
 import CreateApplication from '../components/CreateApplication.component';
+import FloatingActionButton from '../components/FloatingActionButton.component';
+
+import { fetchApplications } from '../utils/functions';
 
 import authenticationImage from '../assets/authentication.png';
 import createApplicationImage from '../assets/create-application.png';
 
+const SORT_OPTIONS = [
+  { label: 'Date added (newest first)', sort: 'added', order: 'desc' },
+  { label: 'Date added (oldest first)', sort: 'added', order: 'asc' },
+  { label: 'Last updated (newest first)', sort: 'updated', order: 'desc' },
+  { label: 'Last updated (oldest first)', sort: 'updated', order: 'asc' },
+  { label: 'Company name (A-Z)', sort: 'company', order: 'asc' },
+  { label: 'Company name (Z-A)', sort: 'company', order: 'desc' },
+  { label: 'Application status (A-Z)', sort: 'status', order: 'asc' },
+  { label: 'Application status (Z-A)', sort: 'status', order: 'desc' }
+];
+
 const Applications = () => {
-  const { applications } = useApplicationContext();
+  const { applications, order, page, sort, dispatch: applicationDispatch } = useApplicationContext();
   const { user } = useAuthContext();
 
+  const [loading, setLoading] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [totalPages, setTotalPages] = useState(
+    Math.ceil((user?.applicationsCount || 0) / Number(import.meta.env.VITE_PAGE_SIZE))
+  );
   const [createAppOpened, { open: openCreateApp, close: closeCreateApp }] = useDisclosure(false);
+
+  const paramsRef = useRef({ order, page, sort, token: user?.token });
+
+  useEffect(() => {
+    paramsRef.current = { order, page, sort, token: user?.token };
+  }, [order, page, sort, user]);
+
+  useEffect(() => {
+    return () => {
+      if (paramsRef.current.token) {
+        fetchApplications(
+          paramsRef.current.sort,
+          paramsRef.current.order,
+          paramsRef.current.page,
+          paramsRef.current.token,
+          applicationDispatch
+        );
+      }
+    };
+  }, []);
+
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+    search(query.trim());
+  };
+
+  const search = useDebouncedCallback(async (query: string) => {
+    if (!user) {
+      return;
+    }
+
+    setLoading(true);
+    const count = await fetchApplications(sort, order, 1, user.token, applicationDispatch, query);
+    setLoading(false);
+
+    applicationDispatch({ type: 'SET_PAGE', payload: 1 });
+
+    setTotalPages(Math.ceil((searchQuery ? count : user.applicationsCount) / Number(import.meta.env.VITE_PAGE_SIZE)));
+  }, 500);
+
+  const handleSort = async (sort: string, order: string) => {
+    if (!user) {
+      return;
+    }
+
+    applicationDispatch({ type: 'SET_SORT', payload: { sort, order } });
+
+    setLoading(true);
+    await fetchApplications(sort, order, 1, user.token, applicationDispatch, searchQuery);
+    setLoading(false);
+  };
 
   return (
     <>
@@ -28,26 +115,6 @@ const Applications = () => {
         <Text component="h2" size="lg" fw="500">
           Applications
         </Text>
-
-        {user && applications.length > 0 && (
-          <Menu withinPortal position="bottom-end" shadow="xl">
-            <Menu.Target>
-              <ActionIcon variant="light">
-                <IconDots size={16} stroke={1.5} />
-              </ActionIcon>
-            </Menu.Target>
-
-            <Menu.Dropdown>
-              <Menu.Item leftSection={<IconFilter size={16} stroke={1.5} />} onClick={() => {}}>
-                View options
-              </Menu.Item>
-
-              <Menu.Item leftSection={<IconJson size={16} stroke={1.5} />} onClick={() => {}}>
-                Export applications
-              </Menu.Item>
-            </Menu.Dropdown>
-          </Menu>
-        )}
       </Group>
 
       <Divider my="md" />
@@ -78,7 +145,7 @@ const Applications = () => {
         </Grid>
       )}
 
-      {user && applications.length === 0 && (
+      {user && user.applicationsCount === 0 && (
         <Grid>
           <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
             <Card padding="md" shadow="md" radius="md" withBorder h="100%">
@@ -103,32 +170,105 @@ const Applications = () => {
         </Grid>
       )}
 
-      {user && applications.length > 0 && (
+      {user && user.applicationsCount > 0 && (
         <>
-          <Grid>
-            {applications.map(application => (
-              <Grid.Col span={{ base: 12, md: 6, lg: 4, xl: 3 }} key={application._id}>
-                <Application application={application} />
-              </Grid.Col>
-            ))}
-          </Grid>
+          <Flex direction={{ base: 'column', md: 'row' }} gap="xs" mb="lg">
+            <TextInput
+              flex={1}
+              label="Search"
+              placeholder="Company name, job title, or email used"
+              leftSection={<IconSearch size={16} stroke={1.5} />}
+              rightSection={searchQuery !== '' ? <Input.ClearButton onClick={() => handleSearch('')} /> : undefined}
+              rightSectionPointerEvents="auto"
+              value={searchQuery}
+              onChange={e => handleSearch(e.currentTarget.value)}
+            />
 
-          <Affix position={{ bottom: 16, right: 16 }} zIndex={100}>
-            <Button hiddenFrom="sm" size="md" radius="md" className="affix-shadow" onClick={openCreateApp}>
-              <IconFile size={20} stroke={2} />
-            </Button>
+            <Select
+              w={{ base: '100%', md: '15rem' }}
+              label="Sort by"
+              withAlignedLabels
+              allowDeselect={false}
+              maxDropdownHeight={320}
+              comboboxProps={{ shadow: 'xl' }}
+              data={SORT_OPTIONS.map(option => ({
+                value: `${option.sort}-${option.order}`,
+                label: option.label
+              }))}
+              value={`${sort}-${order}`}
+              onChange={value => {
+                if (value) {
+                  const [newSort, newOrder] = value.split('-');
+                  handleSort(newSort, newOrder);
+                }
+              }}
+            />
+          </Flex>
 
-            <Button
-              visibleFrom="sm"
-              leftSection={<IconFile size={20} stroke={2} />}
-              size="md"
+          <Center mb="lg">
+            <Pagination
               radius="md"
-              className="affix-shadow"
-              onClick={openCreateApp}
-            >
-              Create application
-            </Button>
-          </Affix>
+              disabled={loading}
+              total={totalPages}
+              value={page}
+              siblings={0}
+              onChange={async page => {
+                applicationDispatch({ type: 'SET_PAGE', payload: page });
+
+                setLoading(true);
+                await fetchApplications(sort, order, page, user.token, applicationDispatch, searchQuery);
+                setLoading(false);
+              }}
+            />
+          </Center>
+
+          {loading && (
+            <Grid>
+              {Array.from({ length: Number(import.meta.env.VITE_PAGE_SIZE) }).map((_, index) => (
+                <Grid.Col span={{ base: 12, md: 6, lg: 4, xl: 3 }} key={index}>
+                  <Card padding="md" shadow="md" radius="md" withBorder h="100%">
+                    <Card.Section h={140}>
+                      <Skeleton height={140} radius={0} animate={false} />
+                    </Card.Section>
+
+                    <Stack gap="xs" mt="md">
+                      <Skeleton animate={false}>
+                        <Text>Company name</Text>
+                      </Skeleton>
+
+                      <Skeleton animate={false}>
+                        <Text>Job title</Text>
+                      </Skeleton>
+
+                      <Stack gap="xs">
+                        <Skeleton w="75%" animate={false}>
+                          <Text size="xs">Status</Text>
+                        </Skeleton>
+
+                        <Skeleton w="50%" animate={false}>
+                          <Text size="xs">Date</Text>
+                        </Skeleton>
+                      </Stack>
+                    </Stack>
+                  </Card>
+                </Grid.Col>
+              ))}
+            </Grid>
+          )}
+
+          {!loading && (
+            <>
+              <Grid>
+                {applications.map(application => (
+                  <Grid.Col span={{ base: 12, md: 6, lg: 4, xl: 3 }} key={application._id}>
+                    <Application application={application} />
+                  </Grid.Col>
+                ))}
+              </Grid>
+
+              <FloatingActionButton icon={IconFile} label="Create application" onClick={openCreateApp} />
+            </>
+          )}
         </>
       )}
     </>

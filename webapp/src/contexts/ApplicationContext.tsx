@@ -17,13 +17,18 @@ export interface JobApplication {
 
 export interface ApplicationState {
   applications: JobApplication[];
+  order: string;
+  page: number;
+  sort: string;
 }
 
 export type ApplicationAction =
   | { type: 'SET_APPLICATIONS'; payload: JobApplication[] }
   | { type: 'CREATE_APPLICATION'; payload: JobApplication }
   | { type: 'UPDATE_APPLICATION'; payload: JobApplication }
-  | { type: 'DELETE_APPLICATION'; payload: JobApplication };
+  | { type: 'DELETE_APPLICATION'; payload: JobApplication }
+  | { type: 'SET_SORT'; payload: { sort: string; order: string } }
+  | { type: 'SET_PAGE'; payload: number };
 
 export interface ApplicationContextType extends ApplicationState {
   dispatch: Dispatch<ApplicationAction>;
@@ -31,6 +36,9 @@ export interface ApplicationContextType extends ApplicationState {
 
 export const ApplicationContext = createContext<ApplicationContextType>({
   applications: [],
+  order: 'desc',
+  page: 1,
+  sort: 'updated',
   dispatch: () => {}
 });
 
@@ -38,24 +46,52 @@ export const applicationsReducer = (state: ApplicationState, action: Application
   switch (action.type) {
     case 'SET_APPLICATIONS':
       return {
-        applications: action.payload
+        applications: action.payload,
+        order: state.order,
+        page: state.page,
+        sort: state.sort
       };
 
     case 'CREATE_APPLICATION':
       return {
-        applications: [...state.applications, action.payload]
+        applications: [...state.applications, action.payload],
+        order: state.order,
+        page: 1,
+        sort: state.sort
       };
 
     case 'UPDATE_APPLICATION':
       return {
         applications: state.applications.map(application =>
           application._id === action.payload._id ? action.payload : application
-        )
+        ),
+        order: state.order,
+        page: 1,
+        sort: state.sort
       };
 
     case 'DELETE_APPLICATION':
       return {
-        applications: state.applications.filter(application => application._id !== action.payload._id)
+        applications: state.applications.filter(application => application._id !== action.payload._id),
+        order: state.order,
+        page: 1,
+        sort: state.sort
+      };
+
+    case 'SET_SORT':
+      return {
+        applications: state.applications,
+        order: action.payload.order,
+        page: 1,
+        sort: action.payload.sort
+      };
+
+    case 'SET_PAGE':
+      return {
+        applications: state.applications,
+        order: state.order,
+        page: action.payload,
+        sort: state.sort
       };
 
     default:
@@ -69,7 +105,10 @@ interface ApplicationContextProviderProps {
 
 export const ApplicationContextProvider = ({ children }: ApplicationContextProviderProps) => {
   const [state, dispatch] = useReducer(applicationsReducer, {
-    applications: []
+    applications: [],
+    order: 'desc',
+    page: 1,
+    sort: 'updated'
   });
 
   return <ApplicationContext.Provider value={{ ...state, dispatch }}>{children}</ApplicationContext.Provider>;

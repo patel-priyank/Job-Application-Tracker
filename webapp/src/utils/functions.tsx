@@ -4,21 +4,38 @@ import dayjs from 'dayjs';
 
 import type { ApplicationAction } from '../contexts/ApplicationContext';
 
-export const fetchApplications = async (user: string, dispatch: React.Dispatch<ApplicationAction>) => {
-  const response = await fetch('/api/applications', {
+export const fetchApplications = async (
+  sort: string,
+  order: string,
+  page: number,
+  token: string,
+  applicationDispatch: React.Dispatch<ApplicationAction>,
+  query?: string
+) => {
+  let apiUrl = `/api/applications?sort=${sort}&order=${order}&page=${page}`;
+
+  if (query) {
+    apiUrl += `&query=${query}`;
+  }
+
+  const response = await fetch(apiUrl, {
     headers: {
-      Authorization: `Bearer ${JSON.parse(user).token}`
+      Authorization: `Bearer ${token}`
     }
   });
 
   const data = await response.json();
 
   if (response.ok) {
-    dispatch({
+    applicationDispatch({
       type: 'SET_APPLICATIONS',
-      payload: data
+      payload: data.applications
     });
+
+    return data.count;
   }
+
+  return null;
 };
 
 export const getNormalizedDate = (date: string | number | Date) => {

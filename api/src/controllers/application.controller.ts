@@ -7,10 +7,76 @@ import Application from '../models/application.model';
 import User from '../models/user.model';
 
 const getApplications = async (req: Request, res: Response) => {
-  try {
-    const applications = await Application.find({ user: req.user?._id });
+  const { query, sort, order, page } = req.query as { query: string; sort: string; order: string; page: string };
 
-    res.status(200).json(applications);
+  try {
+    if (!sort || !order || !page) {
+      return res.status(400).json({ error: 'Sort, order, and page are required.' });
+    }
+
+    if (!['added', 'updated', 'company', 'status'].includes(sort)) {
+      return res.status(400).json({ error: 'Invalid sort.' });
+    }
+
+    if (!['asc', 'desc'].includes(order)) {
+      return res.status(400).json({ error: 'Invalid order.' });
+    }
+
+    if (!Number(page) || Number(page) < 1) {
+      return res.status(400).json({ error: 'Invalid page.' });
+    }
+
+    let sortObj: any = {};
+
+    switch (sort) {
+      case 'added':
+        sortObj = {
+          'history.0.date': order === 'asc' ? 1 : -1
+        };
+        break;
+
+      case 'updated':
+        sortObj = {
+          date: order === 'asc' ? 1 : -1
+        };
+        break;
+
+      case 'company':
+        sortObj = {
+          companyName: order === 'asc' ? 1 : -1
+        };
+        break;
+
+      case 'status':
+        sortObj = {
+          status: order === 'asc' ? 1 : -1
+        };
+        break;
+    }
+
+    const filter: any = { user: req.user?._id };
+
+    if (query) {
+      const escapeRegex = (text: string) => text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+
+      const escapedQuery = escapeRegex(query);
+
+      filter.$or = [
+        { companyName: { $regex: escapedQuery, $options: 'i' } },
+        { jobTitle: { $regex: escapedQuery, $options: 'i' } },
+        { emailUsed: { $regex: escapedQuery, $options: 'i' } }
+      ];
+    }
+
+    const applications = await Application.find(filter)
+      .collation({ locale: 'en' })
+      .sort(sortObj)
+      .skip((Number(page) - 1) * Number(process.env.PAGE_SIZE))
+      .limit(Number(process.env.PAGE_SIZE));
+
+    const count = await Application.countDocuments(filter);
+
+    res.status(200).json({ applications, count });
   } catch (err: unknown) {
     return res.status(500).json({ error: 'Unknown error.' });
   }

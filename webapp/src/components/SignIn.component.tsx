@@ -10,7 +10,7 @@ import { EMAIL_REGEX } from '../utils/constants';
 import { fetchApplications, showNotification } from '../utils/functions';
 
 const SignIn = ({ opened, onClose }: { opened: boolean; onClose: () => void }) => {
-  const { dispatch: applicationDispatch } = useApplicationContext();
+  const { order, page, sort, dispatch: applicationDispatch } = useApplicationContext();
   const { dispatch: authDispatch } = useAuthContext();
 
   const [loading, setLoading] = useState(false);
@@ -71,7 +71,7 @@ const SignIn = ({ opened, onClose }: { opened: boolean; onClose: () => void }) =
         payload: data
       });
 
-      await fetchApplications(user, applicationDispatch);
+      await fetchApplications(sort, order, page, JSON.parse(user).token, applicationDispatch);
 
       showNotification('Welcome back!', 'You have signed in successfully.', false);
 
