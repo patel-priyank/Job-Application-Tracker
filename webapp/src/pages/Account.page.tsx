@@ -1,7 +1,7 @@
-import { ActionIcon, Button, Card, Divider, Grid, Group, Image, Stack, Text } from '@mantine/core';
+import { Accordion, ActionIcon, Avatar, Button, Card, Divider, Grid, Group, Image, Stack, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
-import { IconLogout, IconPencil } from '@tabler/icons-react';
+import { IconAlertTriangle, IconLogout, IconPencil } from '@tabler/icons-react';
 
 import { useAuthContext } from '../hooks/useAuthContext';
 
@@ -161,43 +161,62 @@ const Account = () => {
             </Grid.Col>
           </Grid>
 
-          <Grid mt="xs">
-            <Grid.Col span={{ base: 12, md: 6, lg: 4, xl: 3 }}>
-              <Card padding="md" shadow="xs" radius="lg" withBorder h="100%" bg="transparent">
-                <Stack gap="md" align="flex-start">
-                  <Text>Job Applications</Text>
+          <Accordion variant="separated" radius="lg" mt="lg">
+            <Accordion.Item value="danger">
+              <Accordion.Control>
+                <Group wrap="nowrap">
+                  <Avatar color="red" radius="xl" size="md">
+                    <IconAlertTriangle size={20} stroke={1.5} />
+                  </Avatar>
+                  <div>
+                    <Text>Danger zone</Text>
+                    <Text size="sm" c="dimmed">
+                      Irreversible actions ahead. Please proceed with caution.
+                    </Text>
+                  </div>
+                </Group>
+              </Accordion.Control>
+              <Accordion.Panel>
+                <Grid>
+                  <Grid.Col span={{ base: 12, md: 6, lg: 4, xl: 3 }}>
+                    <Card padding="md" shadow="md" radius="md" withBorder h="100%" bg="transparent">
+                      <Stack gap="md" align="flex-start">
+                        <Text>Job Applications</Text>
 
-                  <Text c="dimmed">
-                    Tracking {user.applicationsCount} application{user.applicationsCount !== 1 && 's'}
-                  </Text>
+                        <Text c="dimmed">
+                          Tracking {user.applicationsCount} application{user.applicationsCount !== 1 && 's'}
+                        </Text>
 
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    color="red"
-                    onClick={openDeleteApps}
-                    disabled={user.applicationsCount === 0}
-                  >
-                    Delete applications
-                  </Button>
-                </Stack>
-              </Card>
-            </Grid.Col>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          color="red"
+                          onClick={openDeleteApps}
+                          disabled={user.applicationsCount === 0}
+                        >
+                          Delete applications
+                        </Button>
+                      </Stack>
+                    </Card>
+                  </Grid.Col>
 
-            <Grid.Col span={{ base: 12, md: 6, lg: 4, xl: 3 }}>
-              <Card padding="md" shadow="xs" radius="lg" withBorder h="100%" bg="transparent">
-                <Stack gap="md" align="flex-start">
-                  <Text>Account</Text>
+                  <Grid.Col span={{ base: 12, md: 6, lg: 4, xl: 3 }}>
+                    <Card padding="md" shadow="md" radius="md" withBorder h="100%" bg="transparent">
+                      <Stack gap="md" align="flex-start">
+                        <Text>Account</Text>
 
-                  <Text c="dimmed">Member since {formatDate(user.createdAt)}</Text>
+                        <Text c="dimmed">Member since {formatDate(user.createdAt)}</Text>
 
-                  <Button variant="outline" size="sm" color="red" onClick={openDeleteAcc}>
-                    Delete account
-                  </Button>
-                </Stack>
-              </Card>
-            </Grid.Col>
-          </Grid>
+                        <Button variant="outline" size="sm" color="red" onClick={openDeleteAcc}>
+                          Delete account
+                        </Button>
+                      </Stack>
+                    </Card>
+                  </Grid.Col>
+                </Grid>
+              </Accordion.Panel>
+            </Accordion.Item>
+          </Accordion>
 
           <FloatingActionButton icon={IconLogout} label="Sign out" onClick={openSignOut} />
         </>
