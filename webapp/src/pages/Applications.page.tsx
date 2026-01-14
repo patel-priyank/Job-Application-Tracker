@@ -65,6 +65,7 @@ const Applications = () => {
   useEffect(() => {
     return () => {
       if (user) {
+        applicationDispatch({ type: 'SET_PAGE', payload: 1 });
         fetchApplications(paramsRef.current.sort, paramsRef.current.order, 1, user.token, applicationDispatch);
       }
     };
