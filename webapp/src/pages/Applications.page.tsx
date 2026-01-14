@@ -87,7 +87,7 @@ const Applications = () => {
 
     applicationDispatch({ type: 'SET_PAGE', payload: 1 });
 
-    setTotalPages(Math.ceil((searchQuery ? count : user.applicationsCount) / Number(import.meta.env.VITE_PAGE_SIZE)));
+    setTotalPages(Math.ceil((query ? count : user.applicationsCount) / Number(import.meta.env.VITE_PAGE_SIZE)));
   }, 500);
 
   const handleSort = async (sort: string, order: string) => {
@@ -200,8 +200,9 @@ const Applications = () => {
             />
           </Flex>
 
-          <Center mb="lg">
+          <Center>
             <Pagination
+              mb="lg"
               radius="md"
               disabled={loading}
               total={totalPages}
@@ -253,13 +254,19 @@ const Applications = () => {
 
           {!loading && (
             <>
-              <Grid>
-                {applications.map(application => (
-                  <Grid.Col span={{ base: 12, md: 6, lg: 4, xl: 3 }} key={application._id}>
-                    <Application application={application} />
-                  </Grid.Col>
-                ))}
-              </Grid>
+              {applications.length === 0 ? (
+                <Center>
+                  <Text c="dimmed">No applications match your search</Text>
+                </Center>
+              ) : (
+                <Grid>
+                  {applications.map(application => (
+                    <Grid.Col span={{ base: 12, md: 6, lg: 4, xl: 3 }} key={application._id}>
+                      <Application application={application} />
+                    </Grid.Col>
+                  ))}
+                </Grid>
+              )}
 
               <FloatingActionButton icon={IconFile} label="Create application" onClick={openCreateApp} />
             </>
