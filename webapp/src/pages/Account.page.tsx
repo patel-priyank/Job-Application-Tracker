@@ -1,4 +1,17 @@
-import { Accordion, ActionIcon, Avatar, Button, Card, Divider, Grid, Group, Image, Stack, Text } from '@mantine/core';
+import {
+  Accordion,
+  ActionIcon,
+  Avatar,
+  Box,
+  Button,
+  Card,
+  Divider,
+  Grid,
+  Group,
+  Image,
+  Stack,
+  Text
+} from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
 import { IconAlertTriangle, IconLogout, IconPencil } from '@tabler/icons-react';
@@ -168,14 +181,15 @@ const Account = () => {
                   <Avatar color="red" radius="xl" size="md">
                     <IconAlertTriangle size={20} stroke={1.5} />
                   </Avatar>
-                  <div>
+                  <Box>
                     <Text>Danger zone</Text>
                     <Text size="sm" c="dimmed">
                       Irreversible actions ahead. Proceed with caution.
                     </Text>
-                  </div>
+                  </Box>
                 </Group>
               </Accordion.Control>
+
               <Accordion.Panel>
                 <Grid>
                   <Grid.Col span={{ base: 12, md: 6, lg: 4, xl: 3 }}>
