@@ -116,7 +116,7 @@ const updateApplication = async (req: Request, res: Response) => {
   const { companyName, jobTitle, emailUsed, link } = req.body;
 
   try {
-    if (!mongoose.Types.ObjectId.isValid(id)) {
+    if (!mongoose.Types.ObjectId.isValid(id as string)) {
       return res.status(400).json({ error: 'Invalid application ID.' });
     }
 
@@ -154,7 +154,7 @@ const deleteApplication = async (req: Request, res: Response) => {
   const { id } = req.params;
 
   try {
-    if (!mongoose.Types.ObjectId.isValid(id)) {
+    if (!mongoose.Types.ObjectId.isValid(id as string)) {
       return res.status(400).json({ error: 'Invalid application ID.' });
     }
 
@@ -207,7 +207,7 @@ const createApplicationStatus = async (req: Request, res: Response) => {
   const { status, date } = req.body;
 
   try {
-    if (!mongoose.Types.ObjectId.isValid(id)) {
+    if (!mongoose.Types.ObjectId.isValid(id as string)) {
       return res.status(400).json({ error: 'Invalid application ID.' });
     }
 
@@ -245,11 +245,11 @@ const updateApplicationStatus = async (req: Request, res: Response) => {
   const { status, date } = req.body;
 
   try {
-    if (!mongoose.Types.ObjectId.isValid(id)) {
+    if (!mongoose.Types.ObjectId.isValid(id as string)) {
       return res.status(400).json({ error: 'Invalid application ID.' });
     }
 
-    if (!mongoose.Types.ObjectId.isValid(statusId)) {
+    if (!mongoose.Types.ObjectId.isValid(statusId as string)) {
       return res.status(400).json({ error: 'Invalid status ID.' });
     }
 
@@ -293,11 +293,11 @@ const deleteApplicationStatus = async (req: Request, res: Response) => {
   const { id, statusId } = req.params;
 
   try {
-    if (!mongoose.Types.ObjectId.isValid(id)) {
+    if (!mongoose.Types.ObjectId.isValid(id as string)) {
       return res.status(400).json({ error: 'Invalid application ID.' });
     }
 
-    if (!mongoose.Types.ObjectId.isValid(statusId)) {
+    if (!mongoose.Types.ObjectId.isValid(statusId as string)) {
       return res.status(400).json({ error: 'Invalid status ID.' });
     }
 
