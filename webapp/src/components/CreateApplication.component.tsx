@@ -10,7 +10,7 @@ import { useApplicationContext } from '../hooks/useApplicationContext';
 import { useAuthContext } from '../hooks/useAuthContext';
 
 import { APPLICATION_STATUS, EMAIL_REGEX } from '../utils/constants';
-import { formatDate, getEmailsUsed, getNormalizedDate, showNotification } from '../utils/functions';
+import { formatDate, getNormalizedDate, getSortedSuggestedEmails, showNotification } from '../utils/functions';
 
 const CreateApplication = ({ opened, onClose }: { opened: boolean; onClose: () => void }) => {
   const { dispatch: applicationDispatch } = useApplicationContext();
@@ -159,7 +159,7 @@ const CreateApplication = ({ opened, onClose }: { opened: boolean; onClose: () =
             placeholder={user?.email}
             key={form.key('emailUsed')}
             {...form.getInputProps('emailUsed')}
-            data={getEmailsUsed(user?.suggestedEmails || [], user?.email || '')}
+            data={getSortedSuggestedEmails(user?.suggestedEmails || [], user?.email || '')}
             maxDropdownHeight={120}
           />
 
