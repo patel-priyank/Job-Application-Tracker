@@ -79,6 +79,7 @@ const AppContent = () => {
         }
 
         const response = await fetch('/api/users/renew-token', {
+          method: 'POST',
           headers: {
             Authorization: `Bearer ${JSON.parse(user).token}`
           }
