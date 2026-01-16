@@ -117,6 +117,18 @@ const renewToken = async (req: Request, res: Response) => {
   }
 };
 
+const getEmailsInUse = async (req: Request, res: Response) => {
+  try {
+    const applications = await Application.find({ user: req.user?._id });
+
+    const emailsInUse = Array.from(new Set(applications.map(application => application.emailUsed)));
+
+    res.status(200).json({ emailsInUse });
+  } catch (err: unknown) {
+    return res.status(500).json({ error: 'Unknown error.' });
+  }
+};
+
 const updateName = async (req: Request, res: Response) => {
   const { name } = req.body;
 
@@ -240,6 +252,34 @@ const updatePassword = async (req: Request, res: Response) => {
   }
 };
 
+const updateSuggestedEmails = async (req: Request, res: Response) => {
+  const { emailsToDelete } = req.body;
+
+  try {
+    const user = await User.findById(req.user?._id);
+
+    user.suggestedEmails = user.suggestedEmails.filter((email: string) => !emailsToDelete.includes(email));
+
+    await user.save();
+
+    const token = createToken(user._id);
+
+    const applicationsCount = await Application.countDocuments({ user: req.user?._id });
+
+    res.status(200).json({
+      name: user.name,
+      email: user.email,
+      suggestedEmails: user.suggestedEmails,
+      createdAt: user.createdAt,
+      passwordUpdatedAt: user.passwordUpdatedAt,
+      applicationsCount,
+      token
+    });
+  } catch (err: unknown) {
+    return res.status(500).json({ error: 'Unknown error.' });
+  }
+};
+
 const deleteAccount = async (req: Request, res: Response) => {
   const { password } = req.body;
 
@@ -272,8 +312,10 @@ export default {
   signin,
   signup,
   renewToken,
+  getEmailsInUse,
   updateName,
   updateEmail,
   updatePassword,
+  updateSuggestedEmails,
   deleteAccount
 };
