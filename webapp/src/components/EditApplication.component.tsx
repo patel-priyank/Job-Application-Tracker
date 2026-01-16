@@ -107,8 +107,8 @@ const EditApplication = ({
     const data = await response.json();
 
     if (response.ok) {
-      if (!user?.emailsUsed.includes(values.emailUsed)) {
-        user?.emailsUsed.push(values.emailUsed);
+      if (!user?.suggestedEmails.includes(values.emailUsed)) {
+        user?.suggestedEmails.push(values.emailUsed);
       }
 
       applicationDispatch({
@@ -154,7 +154,7 @@ const EditApplication = ({
             placeholder={user?.email}
             key={form.key('emailUsed')}
             {...form.getInputProps('emailUsed')}
-            data={getEmailsUsed(user?.emailsUsed || [], user?.email || '')}
+            data={getEmailsUsed(user?.suggestedEmails || [], user?.email || '')}
             maxDropdownHeight={120}
           />
 

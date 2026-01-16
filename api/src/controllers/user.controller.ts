@@ -30,7 +30,7 @@ const signin = async (req: Request, res: Response) => {
     res.status(200).json({
       name: user.name,
       email,
-      emailsUsed: user.emailsUsed,
+      suggestedEmails: user.suggestedEmails,
       createdAt: user.createdAt,
       passwordUpdatedAt: user.passwordUpdatedAt,
       applicationsCount,
@@ -70,7 +70,7 @@ const signup = async (req: Request, res: Response) => {
     res.status(201).json({
       name,
       email,
-      emailsUsed: user.emailsUsed,
+      suggestedEmails: user.suggestedEmails,
       createdAt: user.createdAt,
       passwordUpdatedAt: user.passwordUpdatedAt,
       applicationsCount,
@@ -106,7 +106,7 @@ const renewToken = async (req: Request, res: Response) => {
     res.status(200).json({
       name: user.name,
       email: user.email,
-      emailsUsed: user.emailsUsed,
+      suggestedEmails: user.suggestedEmails,
       createdAt: user.createdAt,
       passwordUpdatedAt: user.passwordUpdatedAt,
       applicationsCount,
@@ -134,7 +134,7 @@ const updateName = async (req: Request, res: Response) => {
     res.status(200).json({
       name: user.name,
       email: user.email,
-      emailsUsed: user.emailsUsed,
+      suggestedEmails: user.suggestedEmails,
       createdAt: user.createdAt,
       passwordUpdatedAt: user.passwordUpdatedAt,
       applicationsCount,
@@ -174,7 +174,7 @@ const updateEmail = async (req: Request, res: Response) => {
     res.status(200).json({
       name: updatedUser.name,
       email: updatedUser.email,
-      emailsUsed: updatedUser.emailsUsed,
+      suggestedEmails: updatedUser.suggestedEmails,
       createdAt: updatedUser.createdAt,
       passwordUpdatedAt: updatedUser.passwordUpdatedAt,
       applicationsCount,
@@ -229,7 +229,7 @@ const updatePassword = async (req: Request, res: Response) => {
     res.status(200).json({
       name: updatedUser.name,
       email: updatedUser.email,
-      emailsUsed: updatedUser.emailsUsed,
+      suggestedEmails: updatedUser.suggestedEmails,
       createdAt: updatedUser.createdAt,
       passwordUpdatedAt: updatedUser.passwordUpdatedAt,
       applicationsCount,

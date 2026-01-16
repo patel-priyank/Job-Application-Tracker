@@ -90,8 +90,8 @@ const createApplication = async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'Company name, job title, email used, status, and date are required.' });
     }
 
-    if (!req.user?.emailsUsed.includes(emailUsed)) {
-      await User.findByIdAndUpdate(req.user?._id, { $push: { emailsUsed: emailUsed } });
+    if (!req.user?.suggestedEmails.includes(emailUsed)) {
+      await User.findByIdAndUpdate(req.user?._id, { $push: { suggestedEmails: emailUsed } });
     }
 
     const application = await Application.create({
@@ -134,8 +134,8 @@ const updateApplication = async (req: Request, res: Response) => {
       return res.status(401).json({ error: 'Unauthorized.' });
     }
 
-    if (!req.user?.emailsUsed.includes(emailUsed)) {
-      await User.findByIdAndUpdate(req.user?._id, { $push: { emailsUsed: emailUsed } });
+    if (!req.user?.suggestedEmails.includes(emailUsed)) {
+      await User.findByIdAndUpdate(req.user?._id, { $push: { suggestedEmails: emailUsed } });
     }
 
     const updatedApplication = await Application.findByIdAndUpdate(

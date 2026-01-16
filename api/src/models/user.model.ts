@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  emailsUsed: {
+  suggestedEmails: {
     type: [
       {
         type: String,

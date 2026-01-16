@@ -4,7 +4,7 @@ import type { ReactNode, Dispatch } from 'react';
 export interface User {
   name: string;
   email: string;
-  emailsUsed: string[];
+  suggestedEmails: string[];
   createdAt: string;
   passwordUpdatedAt: string;
   applicationsCount: number;
