@@ -37,8 +37,9 @@ import signUpImage from '../assets/sign-up.png';
 const Account = () => {
   const { user } = useAuthContext();
 
-  const [deleteAccOpened, { open: openDeleteAcc, close: closeDeleteAcc }] = useDisclosure(false);
-  const [deleteAppsOpened, { open: openDeleteApps, close: closeDeleteApps }] = useDisclosure(false);
+  const [deleteAccountOpened, { open: openDeleteAccount, close: closeDeleteAccount }] = useDisclosure(false);
+  const [deleteApplicationsOpened, { open: openDeleteApplications, close: closeDeleteApplications }] =
+    useDisclosure(false);
   const [editEmailOpened, { open: openEditEmail, close: closeEditEmail }] = useDisclosure(false);
   const [editNameOpened, { open: openEditName, close: closeEditName }] = useDisclosure(false);
   const [editPasswordOpened, { open: openEditPassword, close: closeEditPassword }] = useDisclosure(false);
@@ -49,8 +50,8 @@ const Account = () => {
 
   return (
     <>
-      <DeleteAccount opened={deleteAccOpened} onClose={closeDeleteAcc} />
-      <DeleteApplications opened={deleteAppsOpened} onClose={closeDeleteApps} />
+      <DeleteAccount opened={deleteAccountOpened} onClose={closeDeleteAccount} />
+      <DeleteApplications opened={deleteApplicationsOpened} onClose={closeDeleteApplications} />
       <EditEmail opened={editEmailOpened} onClose={closeEditEmail} />
       <EditEmailsUsed opened={editEmailsUsedOpened} onClose={closeEditEmailsUsed} />
       <EditName opened={editNameOpened} onClose={closeEditName} />
@@ -205,7 +206,7 @@ const Account = () => {
                           variant="outline"
                           size="sm"
                           color="red"
-                          onClick={openDeleteApps}
+                          onClick={openDeleteApplications}
                           disabled={user.applicationsCount === 0}
                         >
                           Delete applications
@@ -221,7 +222,7 @@ const Account = () => {
 
                         <Text c="dimmed">Member since {formatDate(user.createdAt)}</Text>
 
-                        <Button variant="outline" size="sm" color="red" onClick={openDeleteAcc}>
+                        <Button variant="outline" size="sm" color="red" onClick={openDeleteAccount}>
                           Delete account
                         </Button>
                       </Stack>
