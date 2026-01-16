@@ -21,15 +21,15 @@ import { useAuthContext } from '../hooks/useAuthContext';
 import DeleteAccount from '../components/DeleteAccount.component';
 import DeleteApplications from '../components/DeleteApplications.component';
 import EditEmail from '../components/EditEmail.component';
-import EditEmailsUsed from '../components/EditEmailsUsed.component';
 import EditName from '../components/EditName.component';
 import EditPassword from '../components/EditPassword.component';
+import EditSuggestedEmails from '../components/EditSuggestedEmails.component';
 import FloatingActionButton from '../components/FloatingActionButton.component';
 import SignIn from '../components/SignIn.component';
 import SignOut from '../components/SignOut.component';
 import SignUp from '../components/SignUp.component';
 
-import { formatDate } from '../utils/functions';
+import { formatDate, getSortedSuggestedEmails } from '../utils/functions';
 
 import signInImage from '../assets/sign-in.png';
 import signUpImage from '../assets/sign-up.png';
@@ -43,7 +43,8 @@ const Account = () => {
   const [editEmailOpened, { open: openEditEmail, close: closeEditEmail }] = useDisclosure(false);
   const [editNameOpened, { open: openEditName, close: closeEditName }] = useDisclosure(false);
   const [editPasswordOpened, { open: openEditPassword, close: closeEditPassword }] = useDisclosure(false);
-  const [editEmailsUsedOpened, { open: openEditEmailsUsed, close: closeEditEmailsUsed }] = useDisclosure(false);
+  const [editSuggestedEmailsOpened, { open: openEditSuggestedEmails, close: closeEditSuggestedEmails }] =
+    useDisclosure(false);
   const [signInOpened, { open: openSignIn, close: closeSignIn }] = useDisclosure(false);
   const [signOutOpened, { open: openSignOut, close: closeSignOut }] = useDisclosure(false);
   const [signUpOpened, { open: openSignUp, close: closeSignUp }] = useDisclosure(false);
@@ -53,9 +54,9 @@ const Account = () => {
       <DeleteAccount opened={deleteAccountOpened} onClose={closeDeleteAccount} />
       <DeleteApplications opened={deleteApplicationsOpened} onClose={closeDeleteApplications} />
       <EditEmail opened={editEmailOpened} onClose={closeEditEmail} />
-      <EditEmailsUsed opened={editEmailsUsedOpened} onClose={closeEditEmailsUsed} />
       <EditName opened={editNameOpened} onClose={closeEditName} />
       <EditPassword opened={editPasswordOpened} onClose={closeEditPassword} />
+      <EditSuggestedEmails opened={editSuggestedEmailsOpened} onClose={closeEditSuggestedEmails} />
       <SignIn opened={signInOpened} onClose={closeSignIn} />
       <SignOut opened={signOutOpened} onClose={closeSignOut} />
       <SignUp opened={signUpOpened} onClose={closeSignUp} />
@@ -160,15 +161,16 @@ const Account = () => {
               <Card padding="md" shadow="md" radius="md" withBorder h="100%">
                 <Stack gap="md">
                   <Group justify="space-between">
-                    <Text>Emails Used</Text>
+                    <Text>Suggested Emails</Text>
 
-                    <ActionIcon variant="light" onClick={openEditEmailsUsed}>
+                    <ActionIcon variant="light" onClick={openEditSuggestedEmails}>
                       <IconPencil size={20} stroke={1.5} />
                     </ActionIcon>
                   </Group>
 
                   <Text c="dimmed">
-                    {user.emailsUsed.length} email{user.emailsUsed.length !== 1 && 's'} used
+                    {getSortedSuggestedEmails(user.suggestedEmails, user.email).length} email
+                    {getSortedSuggestedEmails(user.suggestedEmails, user.email).length !== 1 && 's'}
                   </Text>
                 </Stack>
               </Card>
