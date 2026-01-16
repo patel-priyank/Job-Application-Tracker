@@ -161,7 +161,7 @@ const EditSuggestedEmails = ({ opened, onClose }: { opened: boolean; onClose: ()
         </Stack>
 
         <Group mt="sm">
-          <Button data-autofocus loading={saving} onClick={handleSubmit}>
+          <Button data-autofocus disabled={loading} loading={saving} onClick={handleSubmit}>
             Save
           </Button>
 
