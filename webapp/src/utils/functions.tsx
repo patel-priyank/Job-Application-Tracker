@@ -78,3 +78,8 @@ export const showNotification = (title: string, message: string, error: boolean)
     });
   }, 250);
 };
+
+export const getEmailsUsed = (emailsUsed: string[], userEmail: string) => {
+  const otherEmails = Array.from(new Set(emailsUsed.filter(email => email !== userEmail))).sort();
+  return [userEmail, ...otherEmails];
+};

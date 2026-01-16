@@ -9,7 +9,7 @@ import { useApplicationContext } from '../hooks/useApplicationContext';
 import { useAuthContext } from '../hooks/useAuthContext';
 
 import { EMAIL_REGEX } from '../utils/constants';
-import { showNotification } from '../utils/functions';
+import { getEmailsUsed, showNotification } from '../utils/functions';
 
 const EditApplication = ({
   opened,
@@ -154,7 +154,7 @@ const EditApplication = ({
             placeholder={user?.email}
             key={form.key('emailUsed')}
             {...form.getInputProps('emailUsed')}
-            data={user?.emailsUsed}
+            data={getEmailsUsed(user?.emailsUsed || [], user?.email || '')}
             maxDropdownHeight={120}
           />
 
