@@ -21,10 +21,13 @@ const EditSuggestedEmails = ({ opened, onClose }: { opened: boolean; onClose: ()
       setReady(false);
 
       setSuggestedEmails(
-        getSortedSuggestedEmails(user?.suggestedEmails || [], user?.email || '').reduce((acc, email) => {
-          acc[email] = true;
-          return acc;
-        }, {} as { [key: string]: boolean })
+        getSortedSuggestedEmails(user?.suggestedEmails || [], user?.email || '').reduce(
+          (acc, email) => {
+            acc[email] = true;
+            return acc;
+          },
+          {} as { [key: string]: boolean }
+        )
       );
 
       setEmailsToDelete([]);
