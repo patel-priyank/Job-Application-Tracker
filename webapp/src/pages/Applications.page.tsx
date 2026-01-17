@@ -201,30 +201,20 @@ const Applications = () => {
           </Flex>
 
           <Center>
-            {loading ? (
-              <Pagination
-                mb="lg"
-                radius="md"
-                total={Math.ceil(user.applicationsCount / Number(import.meta.env.VITE_PAGE_SIZE))}
-                siblings={0}
-                disabled
-              />
-            ) : (
-              <Pagination
-                mb="lg"
-                radius="md"
-                total={totalPages}
-                value={page}
-                siblings={0}
-                onChange={async page => {
-                  applicationDispatch({ type: 'SET_PAGE', payload: page });
+            <Pagination
+              mb="lg"
+              radius="md"
+              total={totalPages}
+              value={page}
+              siblings={0}
+              onChange={async page => {
+                applicationDispatch({ type: 'SET_PAGE', payload: page });
 
-                  setLoading(true);
-                  await fetchApplications(sort, order, page, user.token, applicationDispatch, searchQuery);
-                  setLoading(false);
-                }}
-              />
-            )}
+                setLoading(true);
+                await fetchApplications(sort, order, page, user.token, applicationDispatch, searchQuery);
+                setLoading(false);
+              }}
+            />
           </Center>
 
           {loading && (
