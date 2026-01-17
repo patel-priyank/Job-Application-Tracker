@@ -56,7 +56,7 @@ export const applicationsReducer = (state: ApplicationState, action: Application
       return {
         applications: [...state.applications, action.payload],
         order: state.order,
-        page: 1,
+        page: state.page,
         sort: state.sort
       };
 
@@ -66,7 +66,7 @@ export const applicationsReducer = (state: ApplicationState, action: Application
           application._id === action.payload._id ? action.payload : application
         ),
         order: state.order,
-        page: 1,
+        page: state.page,
         sort: state.sort
       };
 
@@ -74,7 +74,7 @@ export const applicationsReducer = (state: ApplicationState, action: Application
       return {
         applications: state.applications.filter(application => application._id !== action.payload._id),
         order: state.order,
-        page: 1,
+        page: state.page,
         sort: state.sort
       };
 
@@ -82,7 +82,7 @@ export const applicationsReducer = (state: ApplicationState, action: Application
       return {
         applications: state.applications,
         order: action.payload.order,
-        page: 1,
+        page: state.page,
         sort: action.payload.sort
       };
 
