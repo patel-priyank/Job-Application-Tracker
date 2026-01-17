@@ -65,7 +65,11 @@ const Applications = () => {
   useEffect(() => {
     return () => {
       if (user) {
-        applicationDispatch({ type: 'SET_PAGE', payload: 1 });
+        applicationDispatch({
+          type: 'SET_PAGE',
+          payload: 1
+        });
+
         fetchApplications(paramsRef.current.sort, paramsRef.current.order, 1, user.token, applicationDispatch);
       }
     };
@@ -85,7 +89,10 @@ const Applications = () => {
     const count = await fetchApplications(sort, order, 1, user.token, applicationDispatch, query);
     setLoading(false);
 
-    applicationDispatch({ type: 'SET_PAGE', payload: 1 });
+    applicationDispatch({
+      type: 'SET_PAGE',
+      payload: 1
+    });
 
     setTotalPages(Math.ceil((query ? count : user.applicationsCount) / Number(import.meta.env.VITE_PAGE_SIZE)));
   }, 500);
@@ -95,7 +102,10 @@ const Applications = () => {
       return;
     }
 
-    applicationDispatch({ type: 'SET_SORT', payload: { sort, order } });
+    applicationDispatch({
+      type: 'SET_SORT',
+      payload: { sort, order }
+    });
 
     setLoading(true);
     await fetchApplications(sort, order, page, user.token, applicationDispatch, searchQuery);
@@ -208,7 +218,10 @@ const Applications = () => {
               value={page}
               siblings={0}
               onChange={async pageVal => {
-                applicationDispatch({ type: 'SET_PAGE', payload: pageVal });
+                applicationDispatch({
+                  type: 'SET_PAGE',
+                  payload: pageVal
+                });
 
                 setLoading(true);
                 await fetchApplications(sort, order, pageVal, user.token, applicationDispatch, searchQuery);
