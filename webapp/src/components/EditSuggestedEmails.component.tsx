@@ -11,14 +11,14 @@ import { getSortedSuggestedEmails, showNotification } from '../utils/functions';
 const EditSuggestedEmails = ({ opened, onClose }: { opened: boolean; onClose: () => void }) => {
   const { user, dispatch: authDispatch } = useAuthContext();
 
-  const [loading, setLoading] = useState(false);
+  const [ready, setReady] = useState(true);
   const [suggestedEmails, setSuggestedEmails] = useState({} as { [key: string]: boolean });
   const [emailsToDelete, setEmailsToDelete] = useState([] as string[]);
-  const [saving, setSaving] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (opened) {
-      setLoading(true);
+      setReady(false);
 
       setSuggestedEmails(
         getSortedSuggestedEmails(user?.suggestedEmails || [], user?.email || '').reduce((acc, email) => {
@@ -28,7 +28,7 @@ const EditSuggestedEmails = ({ opened, onClose }: { opened: boolean; onClose: ()
       );
 
       setEmailsToDelete([]);
-      setSaving(false);
+      setLoading(false);
 
       setDeletableSuggestedEmails();
     }
@@ -58,7 +58,7 @@ const EditSuggestedEmails = ({ opened, onClose }: { opened: boolean; onClose: ()
 
       setSuggestedEmails(updatedEmails);
 
-      setLoading(false);
+      setReady(true);
     } else {
       showNotification('Something went wrong', data.error, true);
 
@@ -67,7 +67,7 @@ const EditSuggestedEmails = ({ opened, onClose }: { opened: boolean; onClose: ()
   };
 
   const handleSubmit = async () => {
-    setSaving(true);
+    setLoading(true);
 
     const response = await fetch('/api/users/account/suggested-emails', {
       method: 'PATCH',
@@ -95,7 +95,7 @@ const EditSuggestedEmails = ({ opened, onClose }: { opened: boolean; onClose: ()
       showNotification('Something went wrong', data.error, true);
     }
 
-    setSaving(false);
+    setLoading(false);
   };
 
   return (
@@ -109,15 +109,15 @@ const EditSuggestedEmails = ({ opened, onClose }: { opened: boolean; onClose: ()
         <Stack>
           {Object.keys(suggestedEmails).map(email => (
             <Group key={email} justify="space-between" wrap="nowrap">
-              {loading ? (
-                <Skeleton h={28} />
-              ) : (
+              {ready ? (
                 <Text truncate="end" title={email} c={emailsToDelete.includes(email) ? 'red' : undefined}>
                   {email}
                 </Text>
+              ) : (
+                <Skeleton h={28} />
               )}
 
-              {!loading && (
+              {ready && (
                 <Group gap="xs" wrap="nowrap">
                   {(email === user?.email || !suggestedEmails[email]) && (
                     <Popover width={240} shadow="xs">
@@ -161,7 +161,7 @@ const EditSuggestedEmails = ({ opened, onClose }: { opened: boolean; onClose: ()
         </Stack>
 
         <Group mt="sm">
-          <Button data-autofocus disabled={loading} loading={saving} onClick={handleSubmit}>
+          <Button data-autofocus disabled={!ready} loading={loading} onClick={handleSubmit}>
             Save
           </Button>
 
