@@ -133,7 +133,7 @@ const AppContent = () => {
                   <Button
                     variant="light"
                     style={transitionStyles}
-                    size="compact-sm"
+                    size="xs"
                     onClick={() => scrollTo({ y: 0 })}
                     hiddenFrom="sm"
                   >
@@ -143,7 +143,7 @@ const AppContent = () => {
                   <Button
                     variant="light"
                     style={transitionStyles}
-                    size="compact-sm"
+                    size="xs"
                     onClick={() => scrollTo({ y: 0 })}
                     visibleFrom="sm"
                     leftSection={<IconCircleArrowUp size={16} stroke={1.5} />}
