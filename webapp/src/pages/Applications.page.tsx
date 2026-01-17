@@ -98,7 +98,7 @@ const Applications = () => {
     applicationDispatch({ type: 'SET_SORT', payload: { sort, order } });
 
     setLoading(true);
-    await fetchApplications(sort, order, 1, user.token, applicationDispatch, searchQuery);
+    await fetchApplications(sort, order, page, user.token, applicationDispatch, searchQuery);
     setLoading(false);
   };
 
@@ -207,11 +207,11 @@ const Applications = () => {
               total={totalPages}
               value={page}
               siblings={0}
-              onChange={async page => {
-                applicationDispatch({ type: 'SET_PAGE', payload: page });
+              onChange={async pageVal => {
+                applicationDispatch({ type: 'SET_PAGE', payload: pageVal });
 
                 setLoading(true);
-                await fetchApplications(sort, order, page, user.token, applicationDispatch, searchQuery);
+                await fetchApplications(sort, order, pageVal, user.token, applicationDispatch, searchQuery);
                 setLoading(false);
               }}
             />
