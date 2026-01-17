@@ -90,7 +90,7 @@ const CreateApplicationStatus = ({
   };
 
   return (
-    <Modal opened={opened} onClose={onClose} title="Update Status" overlayProps={{ blur: 2 }} centered>
+    <Modal opened={opened} onClose={onClose} title={application?.companyName} overlayProps={{ blur: 2 }} centered>
       <form onSubmit={form.onSubmit(values => handleSubmit(values))}>
         <Stack gap="sm">
           <Select
