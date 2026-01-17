@@ -12,7 +12,7 @@ import { useApplicationContext } from '../hooks/useApplicationContext';
 import { useAuthContext } from '../hooks/useAuthContext';
 
 import { APPLICATION_STATUS } from '../utils/constants';
-import { formatDate, getNormalizedDate, showNotification } from '../utils/functions';
+import { fetchApplications, formatDate, getNormalizedDate, showNotification } from '../utils/functions';
 
 const CreateApplicationStatus = ({
   opened,
@@ -23,7 +23,7 @@ const CreateApplicationStatus = ({
   onClose: () => void;
   application: JobApplication | null;
 }) => {
-  const { dispatch: applicationDispatch } = useApplicationContext();
+  const { order, page, sort, dispatch: applicationDispatch } = useApplicationContext();
   const { user } = useAuthContext();
 
   const [loading, setLoading] = useState(false);
@@ -73,20 +73,21 @@ const CreateApplicationStatus = ({
 
     const data = await response.json();
 
-    if (response.ok) {
-      applicationDispatch({
-        type: 'UPDATE_APPLICATION',
-        payload: data
-      });
-
-      showNotification('Progress made!', 'The application status has been updated successfully.', false);
-
-      onClose();
-    } else {
+    if (!response.ok) {
       showNotification('Something went wrong', data.error, true);
+
+      setLoading(false);
+
+      return;
     }
 
+    await fetchApplications(sort, order, page, user?.token || '', applicationDispatch);
+
+    showNotification('Progress made!', 'The application status has been updated successfully.', false);
+
     setLoading(false);
+
+    onClose();
   };
 
   return (

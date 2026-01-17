@@ -10,10 +10,16 @@ import { useApplicationContext } from '../hooks/useApplicationContext';
 import { useAuthContext } from '../hooks/useAuthContext';
 
 import { APPLICATION_STATUS, EMAIL_REGEX } from '../utils/constants';
-import { formatDate, getNormalizedDate, getSortedSuggestedEmails, showNotification } from '../utils/functions';
+import {
+  fetchApplications,
+  formatDate,
+  getNormalizedDate,
+  getSortedSuggestedEmails,
+  showNotification
+} from '../utils/functions';
 
 const CreateApplication = ({ opened, onClose }: { opened: boolean; onClose: () => void }) => {
-  const { dispatch: applicationDispatch } = useApplicationContext();
+  const { order, page, sort, dispatch: applicationDispatch } = useApplicationContext();
   const { user } = useAuthContext();
 
   const [loading, setLoading] = useState(false);
@@ -111,24 +117,29 @@ const CreateApplication = ({ opened, onClose }: { opened: boolean; onClose: () =
 
     const data = await response.json();
 
-    if (response.ok) {
-      if (!user?.suggestedEmails.includes(values.emailUsed)) {
-        user?.suggestedEmails.push(values.emailUsed);
-      }
-
-      applicationDispatch({
-        type: 'CREATE_APPLICATION',
-        payload: data
-      });
-
-      showNotification('On the list', 'The application has been added successfully.', false);
-
-      onClose();
-    } else {
+    if (!response.ok) {
       showNotification('Something went wrong', data.error, true);
+
+      setLoading(false);
+
+      return;
     }
 
+    if (user) {
+      if (!user.suggestedEmails.includes(values.emailUsed)) {
+        user.suggestedEmails.push(values.emailUsed);
+      }
+
+      user.applicationsCount++;
+    }
+
+    await fetchApplications(sort, order, page, user?.token || '', applicationDispatch);
+
+    showNotification('On the list', 'The application has been added successfully.', false);
+
     setLoading(false);
+
+    onClose();
   };
 
   return (

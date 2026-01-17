@@ -9,7 +9,7 @@ import { useApplicationContext } from '../hooks/useApplicationContext';
 import { useAuthContext } from '../hooks/useAuthContext';
 
 import { EMAIL_REGEX } from '../utils/constants';
-import { getSortedSuggestedEmails, showNotification } from '../utils/functions';
+import { fetchApplications, getSortedSuggestedEmails, showNotification } from '../utils/functions';
 
 const EditApplication = ({
   opened,
@@ -20,7 +20,7 @@ const EditApplication = ({
   onClose: () => void;
   application: JobApplication | null;
 }) => {
-  const { dispatch: applicationDispatch } = useApplicationContext();
+  const { order, page, sort, dispatch: applicationDispatch } = useApplicationContext();
   const { user } = useAuthContext();
 
   const [loading, setLoading] = useState(false);
@@ -106,24 +106,27 @@ const EditApplication = ({
 
     const data = await response.json();
 
-    if (response.ok) {
-      if (!user?.suggestedEmails.includes(values.emailUsed)) {
-        user?.suggestedEmails.push(values.emailUsed);
-      }
-
-      applicationDispatch({
-        type: 'UPDATE_APPLICATION',
-        payload: data
-      });
-
-      showNotification('Polished up', 'Your changes have been saved successfully.', false);
-
-      onClose();
-    } else {
+    if (!response.ok) {
       showNotification('Something went wrong', data.error, true);
+
+      setLoading(false);
+
+      return;
     }
 
+    if (user) {
+      if (!user.suggestedEmails.includes(values.emailUsed)) {
+        user.suggestedEmails.push(values.emailUsed);
+      }
+    }
+
+    await fetchApplications(sort, order, page, user?.token || '', applicationDispatch);
+
+    showNotification('Polished up', 'Your changes have been saved successfully.', false);
+
     setLoading(false);
+
+    onClose();
   };
 
   return (
