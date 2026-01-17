@@ -31,25 +31,36 @@ const getApplications = async (req: Request, res: Response) => {
     switch (sort) {
       case 'added':
         sortObj = {
-          'history.0.date': order === 'asc' ? 1 : -1
+          'history.0.date': order === 'asc' ? 1 : -1,
+          'companyName': 1,
+          'jobTitle': 1,
+          'emailUsed': 1
         };
         break;
 
       case 'updated':
         sortObj = {
-          date: order === 'asc' ? 1 : -1
+          date: order === 'asc' ? 1 : -1,
+          companyName: 1,
+          jobTitle: 1,
+          emailUsed: 1
         };
         break;
 
       case 'company':
         sortObj = {
-          companyName: order === 'asc' ? 1 : -1
+          companyName: order === 'asc' ? 1 : -1,
+          jobTitle: 1,
+          emailUsed: 1
         };
         break;
 
       case 'status':
         sortObj = {
-          status: order === 'asc' ? 1 : -1
+          status: order === 'asc' ? 1 : -1,
+          companyName: 1,
+          jobTitle: 1,
+          emailUsed: 1
         };
         break;
     }
