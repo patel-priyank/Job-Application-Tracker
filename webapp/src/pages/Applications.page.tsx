@@ -50,7 +50,7 @@ const Applications = () => {
   const { user } = useAuthContext();
 
   const [loading, setLoading] = useState(false);
-  const [searchResultsCount, setSearchResultsCount] = useState(0);
+  const [searchResultsCount, setSearchResultsCount] = useState<number | null>(null);
   const [createAppOpened, { open: openCreateApp, close: closeCreateApp }] = useDisclosure(false);
 
   const paramsRef = useRef({ order, sort });
@@ -102,7 +102,7 @@ const Applications = () => {
       payload: 1
     });
 
-    setSearchResultsCount(query ? count : 0);
+    setSearchResultsCount(query ? count : null);
   }, 500);
 
   const handleSort = async (sort: string, order: string) => {
@@ -223,7 +223,7 @@ const Applications = () => {
               mb="lg"
               radius="md"
               total={(() => {
-                const totalApplications = searchQuery ? searchResultsCount : user.applicationsCount;
+                const totalApplications = searchResultsCount ?? user.applicationsCount;
                 return Math.ceil(totalApplications / Number(import.meta.env.VITE_PAGE_SIZE));
               })()}
               value={page}
