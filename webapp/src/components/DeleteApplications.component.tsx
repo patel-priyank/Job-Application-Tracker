@@ -43,13 +43,17 @@ const DeleteApplications = ({ opened, onClose }: { opened: boolean; onClose: () 
   };
 
   const handleDelete = async (values: typeof form.values) => {
+    if (!user) {
+      return;
+    }
+
     setLoading(true);
 
     const response = await fetch('/api/applications', {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${user?.token}`
+        'Authorization': `Bearer ${user.token}`
       },
       body: JSON.stringify(values)
     });

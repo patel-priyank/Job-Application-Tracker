@@ -58,6 +58,10 @@ const CreateApplicationStatus = ({
   });
 
   const handleSubmit = async (values: typeof form.values) => {
+    if (!user) {
+      return;
+    }
+
     setLoading(true);
 
     const date = getNormalizedDate(values.date);
@@ -66,7 +70,7 @@ const CreateApplicationStatus = ({
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${user?.token}`
+        'Authorization': `Bearer ${user.token}`
       },
       body: JSON.stringify({ ...values, date })
     });
@@ -81,7 +85,7 @@ const CreateApplicationStatus = ({
       return;
     }
 
-    await fetchApplications(sort, order, page, user?.token || '', applicationDispatch, searchQuery);
+    await fetchApplications(sort, order, page, user.token, applicationDispatch, searchQuery);
 
     showNotification('Progress made!', 'The application status has been updated successfully.', false);
 

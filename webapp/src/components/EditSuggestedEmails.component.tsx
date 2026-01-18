@@ -18,10 +18,14 @@ const EditSuggestedEmails = ({ opened, onClose }: { opened: boolean; onClose: ()
 
   useEffect(() => {
     if (opened) {
+      if (!user) {
+        return;
+      }
+
       setReady(false);
 
       setSuggestedEmails(
-        getSortedSuggestedEmails(user?.suggestedEmails || [], user?.email || '').reduce(
+        getSortedSuggestedEmails(user.suggestedEmails, user.email).reduce(
           (acc, email) => {
             acc[email] = true;
             return acc;
@@ -38,16 +42,20 @@ const EditSuggestedEmails = ({ opened, onClose }: { opened: boolean; onClose: ()
   }, [opened]);
 
   const setDeletableSuggestedEmails = async () => {
+    if (!user) {
+      return;
+    }
+
     const response = await fetch('/api/users/emails-in-use', {
       headers: {
-        Authorization: `Bearer ${user?.token}`
+        Authorization: `Bearer ${user.token}`
       }
     });
 
     const data = await response.json();
 
     if (response.ok) {
-      const updatedEmails = getSortedSuggestedEmails(user?.suggestedEmails || [], user?.email || '').reduce(
+      const updatedEmails = getSortedSuggestedEmails(user.suggestedEmails, user.email).reduce(
         (acc, email) => {
           acc[email] = true;
           return acc;
@@ -56,7 +64,7 @@ const EditSuggestedEmails = ({ opened, onClose }: { opened: boolean; onClose: ()
       );
 
       Object.keys(updatedEmails).forEach(email => {
-        updatedEmails[email] = !(data.emailsInUse.includes(email) || email === user?.email);
+        updatedEmails[email] = !(data.emailsInUse.includes(email) || email === user.email);
       });
 
       setSuggestedEmails(updatedEmails);
@@ -70,13 +78,17 @@ const EditSuggestedEmails = ({ opened, onClose }: { opened: boolean; onClose: ()
   };
 
   const handleSubmit = async () => {
+    if (!user) {
+      return;
+    }
+
     setLoading(true);
 
     const response = await fetch('/api/users/account/suggested-emails', {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${user?.token}`
+        'Authorization': `Bearer ${user.token}`
       },
       body: JSON.stringify({ emailsToDelete })
     });

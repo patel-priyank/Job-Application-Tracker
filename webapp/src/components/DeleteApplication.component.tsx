@@ -24,13 +24,17 @@ const DeleteApplication = ({
   const [loading, setLoading] = useState(false);
 
   const handleDelete = async () => {
+    if (!user) {
+      return;
+    }
+
     setLoading(true);
 
     const response = await fetch(`/api/applications/${application._id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${user?.token}`
+        'Authorization': `Bearer ${user.token}`
       }
     });
 
@@ -44,14 +48,10 @@ const DeleteApplication = ({
       return;
     }
 
-    const isLastApplication = (user?.applicationsCount || 0) % Number(import.meta.env.VITE_PAGE_SIZE) === 1;
-    const isLastPage = Math.ceil((user?.applicationsCount || 0) / Number(import.meta.env.VITE_PAGE_SIZE)) === page;
+    const isLastApplication = user.applicationsCount % Number(import.meta.env.VITE_PAGE_SIZE) === 1;
+    const isLastPage = Math.ceil(user.applicationsCount / Number(import.meta.env.VITE_PAGE_SIZE)) === page;
 
     let newPage = page;
-
-    if (user) {
-      user.applicationsCount--;
-    }
 
     if (isLastApplication && isLastPage) {
       newPage = page - 1;
@@ -62,7 +62,9 @@ const DeleteApplication = ({
       });
     }
 
-    await fetchApplications(sort, order, newPage, user?.token || '', applicationDispatch, searchQuery);
+    await fetchApplications(sort, order, newPage, user.token, applicationDispatch, searchQuery);
+
+    user.applicationsCount--;
 
     showNotification('Off the list', 'The application has been deleted successfully.', false);
 

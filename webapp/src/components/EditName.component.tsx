@@ -41,13 +41,17 @@ const EditName = ({ opened, onClose }: { opened: boolean; onClose: () => void })
   });
 
   const handleSubmit = async (values: typeof form.values) => {
+    if (!user) {
+      return;
+    }
+
     setLoading(true);
 
     const response = await fetch('/api/users/account/name', {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${user?.token}`
+        'Authorization': `Bearer ${user.token}`
       },
       body: JSON.stringify(values)
     });

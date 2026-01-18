@@ -62,49 +62,49 @@ const AppContent = () => {
     setTimeout(async () => {
       const user = localStorage.getItem('user');
 
-      if (user) {
-        const decodedToken = jwtDecode(JSON.parse(user).token);
-
-        if (decodedToken.exp && decodedToken.exp < Date.now() / 1000) {
-          localStorage.removeItem('user');
-
-          authDispatch({
-            type: 'SET_USER',
-            payload: null
-          });
-
-          setTimeout(() => alert('Session expired. Sign in again.'), 250);
-
-          return;
-        }
-
-        const response = await fetch('/api/users/renew-token', {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${JSON.parse(user).token}`
-          }
+      if (!user) {
+        authDispatch({
+          type: 'SET_USER',
+          payload: null
         });
-
-        const data = await response.json();
-
-        if (response.ok) {
-          await fetchApplications(sort, order, page, JSON.parse(user).token, applicationDispatch);
-
-          localStorage.setItem('user', JSON.stringify(data));
-
-          authDispatch({
-            type: 'SET_USER',
-            payload: data
-          });
-        }
 
         return;
       }
 
-      authDispatch({
-        type: 'SET_USER',
-        payload: null
+      const decodedToken = jwtDecode(JSON.parse(user).token);
+
+      if (decodedToken.exp && decodedToken.exp < Date.now() / 1000) {
+        localStorage.removeItem('user');
+
+        authDispatch({
+          type: 'SET_USER',
+          payload: null
+        });
+
+        setTimeout(() => alert('Session expired. Sign in again.'), 250);
+
+        return;
+      }
+
+      const response = await fetch('/api/users/renew-token', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${JSON.parse(user).token}`
+        }
       });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        await fetchApplications(sort, order, page, JSON.parse(user).token, applicationDispatch);
+
+        localStorage.setItem('user', JSON.stringify(data));
+
+        authDispatch({
+          type: 'SET_USER',
+          payload: data
+        });
+      }
     }, 1500);
   }, [authDispatch]);
 

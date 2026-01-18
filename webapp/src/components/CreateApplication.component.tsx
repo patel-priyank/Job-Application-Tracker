@@ -102,6 +102,10 @@ const CreateApplication = ({ opened, onClose }: { opened: boolean; onClose: () =
   });
 
   const handleSubmit = async (values: typeof form.values) => {
+    if (!user) {
+      return;
+    }
+
     setLoading(true);
 
     const date = getNormalizedDate(values.date);
@@ -110,7 +114,7 @@ const CreateApplication = ({ opened, onClose }: { opened: boolean; onClose: () =
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${user?.token}`
+        'Authorization': `Bearer ${user.token}`
       },
       body: JSON.stringify({ ...values, date })
     });
@@ -125,15 +129,13 @@ const CreateApplication = ({ opened, onClose }: { opened: boolean; onClose: () =
       return;
     }
 
-    if (user) {
-      if (!user.suggestedEmails.includes(values.emailUsed)) {
-        user.suggestedEmails.push(values.emailUsed);
-      }
+    await fetchApplications(sort, order, page, user.token, applicationDispatch, searchQuery);
 
-      user.applicationsCount++;
+    if (!user.suggestedEmails.includes(values.emailUsed)) {
+      user.suggestedEmails.push(values.emailUsed);
     }
 
-    await fetchApplications(sort, order, page, user?.token || '', applicationDispatch, searchQuery);
+    user.applicationsCount++;
 
     showNotification('On the list', 'The application has been added successfully.', false);
 

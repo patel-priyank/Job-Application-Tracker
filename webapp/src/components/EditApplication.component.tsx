@@ -93,13 +93,17 @@ const EditApplication = ({
   });
 
   const handleSubmit = async (values: typeof form.values) => {
+    if (!user) {
+      return;
+    }
+
     setLoading(true);
 
     const response = await fetch(`/api/applications/${application?._id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${user?.token}`
+        'Authorization': `Bearer ${user.token}`
       },
       body: JSON.stringify(values)
     });
@@ -114,13 +118,11 @@ const EditApplication = ({
       return;
     }
 
-    if (user) {
-      if (!user.suggestedEmails.includes(values.emailUsed)) {
-        user.suggestedEmails.push(values.emailUsed);
-      }
-    }
+    await fetchApplications(sort, order, page, user.token, applicationDispatch, searchQuery);
 
-    await fetchApplications(sort, order, page, user?.token || '', applicationDispatch, searchQuery);
+    if (!user.suggestedEmails.includes(values.emailUsed)) {
+      user.suggestedEmails.push(values.emailUsed);
+    }
 
     showNotification('Polished up', 'Your changes have been saved successfully.', false);
 
