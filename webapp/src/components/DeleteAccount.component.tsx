@@ -60,27 +60,31 @@ const DeleteAccount = ({ opened, onClose }: { opened: boolean; onClose: () => vo
 
     const data = await response.json();
 
-    if (response.ok) {
-      localStorage.removeItem('user');
-
-      applicationDispatch({
-        type: 'SET_APPLICATIONS',
-        payload: []
-      });
-
-      authDispatch({
-        type: 'SET_USER',
-        payload: null
-      });
-
-      showNotification('Goodbye!', 'Your account and all associated data have been permanently deleted.', false);
-
-      close();
-    } else {
+    if (!response.ok) {
       showNotification('Something went wrong', data.error, true);
+
+      setLoading(false);
+
+      return;
     }
 
+    localStorage.removeItem('user');
+
+    applicationDispatch({
+      type: 'SET_APPLICATIONS',
+      payload: []
+    });
+
+    authDispatch({
+      type: 'SET_USER',
+      payload: null
+    });
+
+    showNotification('Goodbye!', 'Your account and all associated data have been permanently deleted.', false);
+
     setLoading(false);
+
+    close();
   };
 
   const modalStack = useModalsStack(['delete-account', 'delete-account-confirmation']);

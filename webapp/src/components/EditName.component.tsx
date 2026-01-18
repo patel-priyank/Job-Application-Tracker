@@ -58,22 +58,26 @@ const EditName = ({ opened, onClose }: { opened: boolean; onClose: () => void })
 
     const data = await response.json();
 
-    if (response.ok) {
-      localStorage.setItem('user', JSON.stringify(data));
-
-      authDispatch({
-        type: 'SET_USER',
-        payload: data
-      });
-
-      showNotification('Fresh identity', 'Your name has been updated successfully.', false);
-
-      onClose();
-    } else {
+    if (!response.ok) {
       showNotification('Something went wrong', data.error, true);
+
+      setLoading(false);
+
+      return;
     }
 
+    localStorage.setItem('user', JSON.stringify(data));
+
+    authDispatch({
+      type: 'SET_USER',
+      payload: data
+    });
+
+    showNotification('Fresh identity', 'Your name has been updated successfully.', false);
+
     setLoading(false);
+
+    onClose();
   };
 
   return (

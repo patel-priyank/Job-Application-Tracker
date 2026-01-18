@@ -63,22 +63,26 @@ const EditEmail = ({ opened, onClose }: { opened: boolean; onClose: () => void }
 
     const data = await response.json();
 
-    if (response.ok) {
-      localStorage.setItem('user', JSON.stringify(data));
-
-      authDispatch({
-        type: 'SET_USER',
-        payload: data
-      });
-
-      showNotification('New inbox vibes', 'Your email address has been updated successfully.', false);
-
-      onClose();
-    } else {
+    if (!response.ok) {
       showNotification('Something went wrong', data.error, true);
+
+      setLoading(false);
+
+      return;
     }
 
+    localStorage.setItem('user', JSON.stringify(data));
+
+    authDispatch({
+      type: 'SET_USER',
+      payload: data
+    });
+
+    showNotification('New inbox vibes', 'Your email address has been updated successfully.', false);
+
     setLoading(false);
+
+    onClose();
   };
 
   return (

@@ -60,24 +60,28 @@ const DeleteApplications = ({ opened, onClose }: { opened: boolean; onClose: () 
 
     const data = await response.json();
 
-    if (response.ok) {
-      applicationDispatch({
-        type: 'SET_APPLICATIONS',
-        payload: []
-      });
-
-      showNotification(
-        'Cleanup complete',
-        'All job applications have been permanently deleted from your account.',
-        false
-      );
-
-      close();
-    } else {
+    if (!response.ok) {
       showNotification('Something went wrong', data.error, true);
+
+      setLoading(false);
+
+      return;
     }
 
+    applicationDispatch({
+      type: 'SET_APPLICATIONS',
+      payload: []
+    });
+
+    showNotification(
+      'Cleanup complete',
+      'All job applications have been permanently deleted from your account.',
+      false
+    );
+
     setLoading(false);
+
+    close();
   };
 
   const modalStack = useModalsStack(['delete-applications', 'delete-applications-confirmation']);

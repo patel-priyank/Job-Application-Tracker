@@ -61,26 +61,30 @@ const SignIn = ({ opened, onClose }: { opened: boolean; onClose: () => void }) =
 
     const data = await response.json();
 
-    if (response.ok) {
-      const user = JSON.stringify(data);
-
-      localStorage.setItem('user', user);
-
-      authDispatch({
-        type: 'SET_USER',
-        payload: data
-      });
-
-      await fetchApplications(sort, order, page, JSON.parse(user).token, applicationDispatch);
-
-      showNotification('Welcome back!', 'You have signed in successfully.', false);
-
-      onClose();
-    } else {
+    if (!response.ok) {
       showNotification('Something went wrong', data.error, true);
+
+      setLoading(false);
+
+      return;
     }
 
+    const user = JSON.stringify(data);
+
+    localStorage.setItem('user', user);
+
+    authDispatch({
+      type: 'SET_USER',
+      payload: data
+    });
+
+    await fetchApplications(sort, order, page, JSON.parse(user).token, applicationDispatch);
+
+    showNotification('Welcome back!', 'You have signed in successfully.', false);
+
     setLoading(false);
+
+    onClose();
   };
 
   return (

@@ -54,27 +54,29 @@ const EditSuggestedEmails = ({ opened, onClose }: { opened: boolean; onClose: ()
 
     const data = await response.json();
 
-    if (response.ok) {
-      const updatedEmails = getSortedSuggestedEmails(user.suggestedEmails, user.email).reduce(
-        (acc, email) => {
-          acc[email] = true;
-          return acc;
-        },
-        {} as { [key: string]: boolean }
-      );
-
-      Object.keys(updatedEmails).forEach(email => {
-        updatedEmails[email] = !(data.emailsInUse.includes(email) || email === user.email);
-      });
-
-      setSuggestedEmails(updatedEmails);
-
-      setReady(true);
-    } else {
+    if (!response.ok) {
       showNotification('Something went wrong', data.error, true);
 
       onClose();
+
+      return;
     }
+
+    const updatedEmails = getSortedSuggestedEmails(user.suggestedEmails, user.email).reduce(
+      (acc, email) => {
+        acc[email] = true;
+        return acc;
+      },
+      {} as { [key: string]: boolean }
+    );
+
+    Object.keys(updatedEmails).forEach(email => {
+      updatedEmails[email] = !(data.emailsInUse.includes(email) || email === user.email);
+    });
+
+    setSuggestedEmails(updatedEmails);
+
+    setReady(true);
   };
 
   const handleSubmit = async () => {
@@ -95,22 +97,26 @@ const EditSuggestedEmails = ({ opened, onClose }: { opened: boolean; onClose: ()
 
     const data = await response.json();
 
-    if (response.ok) {
-      localStorage.setItem('user', JSON.stringify(data));
-
-      authDispatch({
-        type: 'SET_USER',
-        payload: data
-      });
-
-      showNotification('Tidied up', 'Your suggested emails have been updated successfully.', false);
-
-      onClose();
-    } else {
+    if (!response.ok) {
       showNotification('Something went wrong', data.error, true);
+
+      setLoading(false);
+
+      return;
     }
 
+    localStorage.setItem('user', JSON.stringify(data));
+
+    authDispatch({
+      type: 'SET_USER',
+      payload: data
+    });
+
+    showNotification('Tidied up', 'Your suggested emails have been updated successfully.', false);
+
     setLoading(false);
+
+    onClose();
   };
 
   return (

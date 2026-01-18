@@ -123,22 +123,26 @@ const SignUp = ({ opened, onClose }: { opened: boolean; onClose: () => void }) =
 
     const data = await response.json();
 
-    if (response.ok) {
-      localStorage.setItem('user', JSON.stringify(data));
-
-      authDispatch({
-        type: 'SET_USER',
-        payload: data
-      });
-
-      showNotification("You're in!", 'Your account has been created successfully.', false);
-
-      onClose();
-    } else {
+    if (!response.ok) {
       showNotification('Something went wrong', data.error, true);
+
+      setLoading(false);
+
+      return;
     }
 
+    localStorage.setItem('user', JSON.stringify(data));
+
+    authDispatch({
+      type: 'SET_USER',
+      payload: data
+    });
+
+    showNotification("You're in!", 'Your account has been created successfully.', false);
+
     setLoading(false);
+
+    onClose();
   };
 
   return (
