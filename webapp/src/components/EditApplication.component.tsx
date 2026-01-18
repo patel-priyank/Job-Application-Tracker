@@ -20,7 +20,7 @@ const EditApplication = ({
   onClose: () => void;
   application: JobApplication | null;
 }) => {
-  const { order, page, sort, dispatch: applicationDispatch } = useApplicationContext();
+  const { order, page, searchQuery, sort, dispatch: applicationDispatch } = useApplicationContext();
   const { user } = useAuthContext();
 
   const [loading, setLoading] = useState(false);
@@ -120,7 +120,7 @@ const EditApplication = ({
       }
     }
 
-    await fetchApplications(sort, order, page, user?.token || '', applicationDispatch);
+    await fetchApplications(sort, order, page, user?.token || '', applicationDispatch, searchQuery);
 
     showNotification('Polished up', 'Your changes have been saved successfully.', false);
 

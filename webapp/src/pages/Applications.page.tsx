@@ -46,14 +46,11 @@ const SORT_OPTIONS = [
 ];
 
 const Applications = () => {
-  const { applications, order, page, sort, dispatch: applicationDispatch } = useApplicationContext();
+  const { applications, order, page, searchQuery, sort, dispatch: applicationDispatch } = useApplicationContext();
   const { user } = useAuthContext();
 
   const [loading, setLoading] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [totalPages, setTotalPages] = useState(
-    Math.ceil((user?.applicationsCount || 0) / Number(import.meta.env.VITE_PAGE_SIZE))
-  );
+  const [searchResultsCount, setSearchResultsCount] = useState(0);
   const [createAppOpened, { open: openCreateApp, close: closeCreateApp }] = useDisclosure(false);
 
   const paramsRef = useRef({ order, sort });
@@ -76,7 +73,11 @@ const Applications = () => {
   }, []);
 
   const handleSearch = (query: string) => {
-    setSearchQuery(query);
+    applicationDispatch({
+      type: 'SET_SEARCH_QUERY',
+      payload: query
+    });
+
     search(query.trim());
   };
 
@@ -94,7 +95,7 @@ const Applications = () => {
       payload: 1
     });
 
-    setTotalPages(Math.ceil((query ? count : user.applicationsCount) / Number(import.meta.env.VITE_PAGE_SIZE)));
+    setSearchResultsCount(query ? count : 0);
   }, 500);
 
   const handleSort = async (sort: string, order: string) => {
@@ -214,7 +215,10 @@ const Applications = () => {
             <Pagination
               mb="lg"
               radius="md"
-              total={totalPages}
+              total={(() => {
+                const totalApplications = searchQuery ? searchResultsCount : user.applicationsCount;
+                return Math.ceil(totalApplications / Number(import.meta.env.VITE_PAGE_SIZE));
+              })()}
               value={page}
               siblings={0}
               onChange={async pageVal => {

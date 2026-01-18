@@ -18,7 +18,7 @@ const DeleteApplication = ({
   onClose: () => void;
   application: JobApplication;
 }) => {
-  const { order, page, sort, dispatch: applicationDispatch } = useApplicationContext();
+  const { order, page, searchQuery, sort, dispatch: applicationDispatch } = useApplicationContext();
   const { user } = useAuthContext();
 
   const [loading, setLoading] = useState(false);
@@ -44,26 +44,25 @@ const DeleteApplication = ({
       return;
     }
 
+    const isLastApplication = (user?.applicationsCount || 0) % Number(import.meta.env.VITE_PAGE_SIZE) === 1;
+    const isLastPage = Math.ceil((user?.applicationsCount || 0) / Number(import.meta.env.VITE_PAGE_SIZE)) === page;
+
+    let newPage = page;
+
     if (user) {
-      const isLastApplication = user.applicationsCount % Number(import.meta.env.VITE_PAGE_SIZE) === 1;
-      const isLastPage = Math.ceil(user.applicationsCount / Number(import.meta.env.VITE_PAGE_SIZE)) === page;
-
-      if (isLastApplication && isLastPage) {
-        applicationDispatch({
-          type: 'SET_PAGE',
-          payload: page - 1
-        });
-
-        await fetchApplications(sort, order, page - 1, user?.token || '', applicationDispatch);
-      }
-
       user.applicationsCount--;
     }
 
-    applicationDispatch({
-      type: 'DELETE_APPLICATION',
-      payload: application
-    });
+    if (isLastApplication && isLastPage) {
+      newPage = page - 1;
+
+      applicationDispatch({
+        type: 'SET_PAGE',
+        payload: newPage
+      });
+    }
+
+    await fetchApplications(sort, order, newPage, user?.token || '', applicationDispatch, searchQuery);
 
     showNotification('Off the list', 'The application has been deleted successfully.', false);
 

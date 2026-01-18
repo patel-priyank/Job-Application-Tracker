@@ -19,7 +19,7 @@ import {
 } from '../utils/functions';
 
 const CreateApplication = ({ opened, onClose }: { opened: boolean; onClose: () => void }) => {
-  const { order, page, sort, dispatch: applicationDispatch } = useApplicationContext();
+  const { order, page, searchQuery, sort, dispatch: applicationDispatch } = useApplicationContext();
   const { user } = useAuthContext();
 
   const [loading, setLoading] = useState(false);
@@ -133,7 +133,7 @@ const CreateApplication = ({ opened, onClose }: { opened: boolean; onClose: () =
       user.applicationsCount++;
     }
 
-    await fetchApplications(sort, order, page, user?.token || '', applicationDispatch);
+    await fetchApplications(sort, order, page, user?.token || '', applicationDispatch, searchQuery);
 
     showNotification('On the list', 'The application has been added successfully.', false);
 

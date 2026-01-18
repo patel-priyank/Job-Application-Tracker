@@ -19,6 +19,7 @@ export interface ApplicationState {
   applications: JobApplication[];
   order: string;
   page: number;
+  searchQuery: string;
   sort: string;
 }
 
@@ -28,7 +29,8 @@ export type ApplicationAction =
   | { type: 'UPDATE_APPLICATION'; payload: JobApplication }
   | { type: 'DELETE_APPLICATION'; payload: JobApplication }
   | { type: 'SET_SORT'; payload: { sort: string; order: string } }
-  | { type: 'SET_PAGE'; payload: number };
+  | { type: 'SET_PAGE'; payload: number }
+  | { type: 'SET_SEARCH_QUERY'; payload: string };
 
 export interface ApplicationContextType extends ApplicationState {
   dispatch: Dispatch<ApplicationAction>;
@@ -38,6 +40,7 @@ export const ApplicationContext = createContext<ApplicationContextType>({
   applications: [],
   order: 'desc',
   page: 1,
+  searchQuery: '',
   sort: 'updated',
   dispatch: () => {}
 });
@@ -49,6 +52,7 @@ export const applicationsReducer = (state: ApplicationState, action: Application
         applications: action.payload,
         order: state.order,
         page: state.page,
+        searchQuery: state.searchQuery,
         sort: state.sort
       };
 
@@ -57,6 +61,7 @@ export const applicationsReducer = (state: ApplicationState, action: Application
         applications: [...state.applications, action.payload],
         order: state.order,
         page: state.page,
+        searchQuery: state.searchQuery,
         sort: state.sort
       };
 
@@ -67,6 +72,7 @@ export const applicationsReducer = (state: ApplicationState, action: Application
         ),
         order: state.order,
         page: state.page,
+        searchQuery: state.searchQuery,
         sort: state.sort
       };
 
@@ -75,6 +81,7 @@ export const applicationsReducer = (state: ApplicationState, action: Application
         applications: state.applications.filter(application => application._id !== action.payload._id),
         order: state.order,
         page: state.page,
+        searchQuery: state.searchQuery,
         sort: state.sort
       };
 
@@ -83,6 +90,7 @@ export const applicationsReducer = (state: ApplicationState, action: Application
         applications: state.applications,
         order: action.payload.order,
         page: state.page,
+        searchQuery: state.searchQuery,
         sort: action.payload.sort
       };
 
@@ -91,6 +99,16 @@ export const applicationsReducer = (state: ApplicationState, action: Application
         applications: state.applications,
         order: state.order,
         page: action.payload,
+        searchQuery: state.searchQuery,
+        sort: state.sort
+      };
+
+    case 'SET_SEARCH_QUERY':
+      return {
+        applications: state.applications,
+        order: state.order,
+        page: state.page,
+        searchQuery: action.payload,
         sort: state.sort
       };
 
@@ -108,6 +126,7 @@ export const ApplicationContextProvider = ({ children }: ApplicationContextProvi
     applications: [],
     order: 'desc',
     page: 1,
+    searchQuery: '',
     sort: 'updated'
   });
 
