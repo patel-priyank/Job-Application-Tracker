@@ -54,9 +54,9 @@ const ApplicationDetails = ({
         </Anchor>
 
         <Timeline bulletSize={16} lineWidth={2} mt="xs">
-          {application?.history.map((item, index) => (
+          {application?.history.map(item => (
             <Timeline.Item
-              key={index}
+              key={item._id}
               title={item.status}
               c={Object.values(APPLICATION_STATUS).find(status => status.label === item.status)?.color}
             >

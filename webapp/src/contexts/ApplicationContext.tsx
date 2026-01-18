@@ -10,6 +10,7 @@ export interface JobApplication {
   status: string;
   date: string;
   history: {
+    _id: string;
     status: string;
     date: string;
   }[];
