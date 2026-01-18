@@ -70,6 +70,11 @@ const Applications = () => {
         payload: 1
       });
 
+      applicationDispatch({
+        type: 'SET_SEARCH_QUERY',
+        payload: ''
+      });
+
       fetchApplications(paramsRef.current.sort, paramsRef.current.order, 1, user.token, applicationDispatch);
     };
   }, []);
