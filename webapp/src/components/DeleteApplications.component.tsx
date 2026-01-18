@@ -37,7 +37,7 @@ const DeleteApplications = ({ opened, onClose }: { opened: boolean; onClose: () 
     }
   });
 
-  const close = () => {
+  const handleClose = () => {
     modalStack.closeAll();
     onClose();
   };
@@ -81,7 +81,7 @@ const DeleteApplications = ({ opened, onClose }: { opened: boolean; onClose: () 
 
     setLoading(false);
 
-    close();
+    handleClose();
   };
 
   const modalStack = useModalsStack(['delete-applications', 'delete-applications-confirmation']);
@@ -91,7 +91,7 @@ const DeleteApplications = ({ opened, onClose }: { opened: boolean; onClose: () 
       <Modal
         {...modalStack.register('delete-applications')}
         opened={opened}
-        onClose={close}
+        onClose={handleClose}
         title="Delete Applications"
         overlayProps={{ blur: 2 }}
         centered
@@ -110,7 +110,7 @@ const DeleteApplications = ({ opened, onClose }: { opened: boolean; onClose: () 
               Continue
             </Button>
 
-            <Button variant="outline" onClick={close}>
+            <Button variant="outline" onClick={handleClose}>
               Cancel
             </Button>
           </Group>
@@ -119,7 +119,7 @@ const DeleteApplications = ({ opened, onClose }: { opened: boolean; onClose: () 
 
       <Modal
         {...modalStack.register('delete-applications-confirmation')}
-        onClose={close}
+        onClose={handleClose}
         title="Delete Applications"
         overlayProps={{ blur: 2 }}
         centered
@@ -148,7 +148,7 @@ const DeleteApplications = ({ opened, onClose }: { opened: boolean; onClose: () 
                 Delete applications
               </Button>
 
-              <Button variant="outline" onClick={close}>
+              <Button variant="outline" onClick={handleClose}>
                 Cancel
               </Button>
             </Group>

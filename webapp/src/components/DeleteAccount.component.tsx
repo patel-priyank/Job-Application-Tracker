@@ -37,7 +37,7 @@ const DeleteAccount = ({ opened, onClose }: { opened: boolean; onClose: () => vo
     }
   });
 
-  const close = () => {
+  const handleClose = () => {
     modalStack.closeAll();
     onClose();
   };
@@ -84,7 +84,7 @@ const DeleteAccount = ({ opened, onClose }: { opened: boolean; onClose: () => vo
 
     setLoading(false);
 
-    close();
+    handleClose();
   };
 
   const modalStack = useModalsStack(['delete-account', 'delete-account-confirmation']);
@@ -94,7 +94,7 @@ const DeleteAccount = ({ opened, onClose }: { opened: boolean; onClose: () => vo
       <Modal
         {...modalStack.register('delete-account')}
         opened={opened}
-        onClose={close}
+        onClose={handleClose}
         title="Delete Account"
         overlayProps={{ blur: 2 }}
         centered
@@ -113,7 +113,7 @@ const DeleteAccount = ({ opened, onClose }: { opened: boolean; onClose: () => vo
               Continue
             </Button>
 
-            <Button variant="outline" onClick={close}>
+            <Button variant="outline" onClick={handleClose}>
               Cancel
             </Button>
           </Group>
@@ -122,7 +122,7 @@ const DeleteAccount = ({ opened, onClose }: { opened: boolean; onClose: () => vo
 
       <Modal
         {...modalStack.register('delete-account-confirmation')}
-        onClose={close}
+        onClose={handleClose}
         title="Delete Account"
         overlayProps={{ blur: 2 }}
         centered
@@ -151,7 +151,7 @@ const DeleteAccount = ({ opened, onClose }: { opened: boolean; onClose: () => vo
                 Delete account
               </Button>
 
-              <Button variant="outline" onClick={close}>
+              <Button variant="outline" onClick={handleClose}>
                 Cancel
               </Button>
             </Group>
