@@ -52,13 +52,6 @@ app.get('/', (req: Request, res: Response): void => {
   res.json({ msg: 'api working' });
 });
 
-app.use((req: Request, res: Response, next: NextFunction): void => {
-  const min = 200;
-  const max = 300;
-
-  setTimeout(next, Math.floor(Math.random() * (max - min + 1)) + min);
-});
-
 app.use('/api/users', userRoutes);
 app.use('/api/statistics', statisticsRoutes);
 app.use('/api/applications', applicationRoutes);
