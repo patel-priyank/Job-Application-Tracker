@@ -3,6 +3,7 @@ import express, { NextFunction, Request, Response } from 'express';
 import dotenv from 'dotenv';
 
 import applicationRoutes from './routes/application.route';
+import statisticsRoutes from './routes/statistics.route';
 import userRoutes from './routes/user.route';
 
 import connectDB from './utils/connectDB';
@@ -59,6 +60,7 @@ app.use((req: Request, res: Response, next: NextFunction): void => {
 });
 
 app.use('/api/users', userRoutes);
+app.use('/api/statistics', statisticsRoutes);
 app.use('/api/applications', applicationRoutes);
 
 export default app;
