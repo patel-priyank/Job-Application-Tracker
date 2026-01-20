@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { Button, Card, Center, Divider, Grid, Group, Image, Loader, Stack, Text } from '@mantine/core';
-import { DonutChart } from '@mantine/charts';
+import { BarChart, DonutChart } from '@mantine/charts';
 
 import { useAuthContext } from '../hooks/useAuthContext';
 
@@ -18,7 +18,8 @@ const Statistics = () => {
 
   const [loading, setLoading] = useState(true);
   const [statistics, setStatistics] = useState({
-    statusCounts: []
+    statusCounts: [],
+    weeklyApplications: []
   });
 
   useEffect(() => {
@@ -49,17 +50,18 @@ const Statistics = () => {
     }
 
     setStatistics({
-      statusCounts: data.statusCounts.map((status: { name: string; value: number }) => {
-        const applicationStatus = Object.values(APPLICATION_STATUS).find(as => as.label === status.name);
-
-        return {
-          ...status,
-          color: applicationStatus?.color ?? ''
-        };
-      })
+      statusCounts: data.statusCounts.map((status: { name: string; value: number }) => ({
+        ...status,
+        color: getStatusColor(status.name)
+      })),
+      weeklyApplications: data.weeklyApplications
     });
 
     setLoading(false);
+  };
+
+  const getStatusColor = (status: string) => {
+    return Object.values(APPLICATION_STATUS).find(s => s.label === status)?.color ?? '';
   };
 
   const isError =
@@ -171,13 +173,25 @@ const Statistics = () => {
                   strokeWidth={0}
                   tooltipDataSource="segment"
                 />
+              </Stack>
+            </Card>
+          </Grid.Col>
 
-                <Group justify="space-between">
-                  <Text c="dimmed">Total Applications</Text>
-                  <Text c="dimmed" fw="500">
-                    {user.applicationsCount}
-                  </Text>
-                </Group>
+          <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
+            <Card padding="md" shadow="md" radius="md" withBorder h="100%">
+              <Stack gap="md">
+                <Text>Weekly Applications</Text>
+
+                <BarChart
+                  h={300}
+                  data={statistics.weeklyApplications}
+                  dataKey="label"
+                  type="stacked"
+                  series={Object.values(APPLICATION_STATUS).map(status => ({
+                    name: status.label,
+                    color: status.color
+                  }))}
+                />
               </Stack>
             </Card>
           </Grid.Col>
