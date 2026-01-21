@@ -212,7 +212,7 @@ const Statistics = () => {
                         <Stack gap="xs" align="center">
                           <Group gap="xs">
                             <ColorSwatch
-                              color={`var(--mantine-color-${status.color}-7)`}
+                              color={`var(--mantine-color-${status.color}-filled)`}
                               size="var(--mantine-font-size-md)"
                             />
                             <Text>{status.label}</Text>
