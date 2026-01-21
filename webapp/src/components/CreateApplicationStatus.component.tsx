@@ -118,7 +118,7 @@ const CreateApplicationStatus = ({
             {...form.getInputProps('date')}
             valueFormat="DD MMM YYYY"
             minDate={dayjs('2000-01-01').format('YYYY-MM-DD')}
-            maxDate={dayjs('2050-12-31').format('YYYY-MM-DD')}
+            maxDate={dayjs().format('YYYY-MM-DD')}
           />
 
           <Group mt="sm">
