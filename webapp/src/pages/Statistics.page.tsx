@@ -5,7 +5,6 @@ import {
   Accordion,
   ActionIcon,
   Avatar,
-  Box,
   Button,
   Card,
   Center,
@@ -195,12 +194,7 @@ const Statistics = () => {
                   <Avatar color="green" radius="xl" size="md">
                     <IconChecks size={20} stroke={1.5} />
                   </Avatar>
-                  <Box>
-                    <Text>Overview</Text>
-                    <Text size="sm" c="dimmed">
-                      Number of applications based on their current status
-                    </Text>
-                  </Box>
+                  <Text>Overview</Text>
                 </Group>
               </Accordion.Control>
 
