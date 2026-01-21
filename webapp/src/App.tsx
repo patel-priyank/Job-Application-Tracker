@@ -186,6 +186,7 @@ const AppContent = () => {
           leftSection={<IconFiles size={20} stroke={1.5} />}
           active={location.pathname === '/'}
           onClick={close}
+          style={{ borderRadius: 'var(--mantine-radius-md)' }}
         />
         <NavLink
           component={Link}
@@ -194,6 +195,7 @@ const AppContent = () => {
           leftSection={<IconChartBar size={20} stroke={1.5} />}
           active={location.pathname === '/statistics'}
           onClick={close}
+          style={{ borderRadius: 'var(--mantine-radius-md)' }}
         />
         <NavLink
           component={Link}
@@ -202,6 +204,7 @@ const AppContent = () => {
           leftSection={<IconUser size={20} stroke={1.5} />}
           active={location.pathname === '/account'}
           onClick={close}
+          style={{ borderRadius: 'var(--mantine-radius-md)' }}
         />
         <NavLink
           mt="auto"
@@ -211,6 +214,7 @@ const AppContent = () => {
           label="Source Code"
           leftSection={<IconBrandGithub size={20} stroke={1.5} />}
           onClick={close}
+          style={{ borderRadius: 'var(--mantine-radius-md)' }}
         />
       </AppShell.Navbar>
 
