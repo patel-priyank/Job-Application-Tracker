@@ -143,7 +143,13 @@ const EditPassword = ({ opened, onClose }: { opened: boolean; onClose: () => voi
             {...form.getInputProps('currentPassword')}
           />
 
-          <Popover opened={pwPopoverOpened} position="bottom" width="target" transitionProps={{ transition: 'pop' }}>
+          <Popover
+            opened={pwPopoverOpened}
+            position="bottom"
+            width="target"
+            transitionProps={{ transition: 'pop' }}
+            offset={2}
+          >
             <Popover.Target>
               <PasswordInput
                 label="New password"
@@ -175,6 +181,7 @@ const EditPassword = ({ opened, onClose }: { opened: boolean; onClose: () => voi
             position="bottom"
             width="target"
             transitionProps={{ transition: 'pop' }}
+            offset={2}
           >
             <Popover.Target>
               <PasswordInput

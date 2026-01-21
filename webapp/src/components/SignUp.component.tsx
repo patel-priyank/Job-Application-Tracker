@@ -166,7 +166,13 @@ const SignUp = ({ opened, onClose }: { opened: boolean; onClose: () => void }) =
             {...form.getInputProps('email')}
           />
 
-          <Popover opened={pwPopoverOpened} position="bottom" width="target" transitionProps={{ transition: 'pop' }}>
+          <Popover
+            opened={pwPopoverOpened}
+            position="bottom"
+            width="target"
+            transitionProps={{ transition: 'pop' }}
+            offset={2}
+          >
             <Popover.Target>
               <PasswordInput
                 label="Password"
@@ -198,6 +204,7 @@ const SignUp = ({ opened, onClose }: { opened: boolean; onClose: () => void }) =
             position="bottom"
             width="target"
             transitionProps={{ transition: 'pop' }}
+            offset={2}
           >
             <Popover.Target>
               <PasswordInput
