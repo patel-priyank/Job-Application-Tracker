@@ -202,8 +202,7 @@ const Applications = () => {
               label="Sort by"
               withAlignedLabels
               allowDeselect={false}
-              maxDropdownHeight={320}
-              comboboxProps={{ shadow: 'xl' }}
+              comboboxProps={{ shadow: 'xl', offset: 0 }}
               data={SORT_OPTIONS.map(option => ({
                 value: `${option.sort}-${option.order}`,
                 label: option.label

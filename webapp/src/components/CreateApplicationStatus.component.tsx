@@ -107,8 +107,7 @@ const CreateApplicationStatus = ({
             data={Object.values(APPLICATION_STATUS).map(status => status.label)}
             withAlignedLabels
             allowDeselect={false}
-            comboboxProps={{ withinPortal: false }}
-            maxDropdownHeight={120}
+            comboboxProps={{ shadow: 'xl', offset: 0 }}
           />
 
           <DatePickerInput
