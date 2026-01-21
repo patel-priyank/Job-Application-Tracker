@@ -1,20 +1,24 @@
 export const APPLICATION_STATUS: Record<string, { label: string; color: string; default?: boolean }> = {
   REFERRED: {
     label: 'Referred',
-    color: 'gray'
+    color: 'grape'
   },
   APPLIED: {
     label: 'Applied',
-    color: 'grape',
+    color: 'violet',
     default: true
   },
   INTERVIEW_PHONE: {
     label: 'Phone Interview',
-    color: 'violet'
+    color: 'indigo'
+  },
+  INTERVIEW_IN_PERSON: {
+    label: 'In Person Interview',
+    color: 'blue'
   },
   OFFER_RECEIVED: {
     label: 'Offer Received',
-    color: 'teal'
+    color: 'green'
   },
   OFFER_ACCEPTED: {
     label: 'Offer Accepted',
@@ -22,7 +26,7 @@ export const APPLICATION_STATUS: Record<string, { label: string; color: string; 
   },
   OFFER_DECLINED: {
     label: 'Offer Declined',
-    color: 'yellow'
+    color: 'orange'
   },
   REJECTED: {
     label: 'Rejected',
