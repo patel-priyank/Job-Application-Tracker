@@ -185,7 +185,7 @@ const Account = () => {
                     <IconAlertTriangle size={20} stroke={1.5} />
                   </Avatar>
                   <Box>
-                    <Text>Danger zone</Text>
+                    <Text>Danger Zone</Text>
                     <Text size="sm" c="dimmed">
                       Irreversible actions ahead. Proceed with caution.
                     </Text>

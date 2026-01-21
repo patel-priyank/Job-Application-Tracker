@@ -8,7 +8,7 @@ const getStatistics = async (req: Request, res: Response) => {
 
     const statusCounts = Array.from(new Set(applications.map(application => application.status))).map(status => ({
       label: status,
-      [status]: applications.filter(application => application.status === status).length
+      value: applications.filter(application => application.status === status).length
     }));
 
     const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
