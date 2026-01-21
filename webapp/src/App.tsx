@@ -21,7 +21,15 @@ import {
 import { useDisclosure, useViewportSize, useWindowScroll } from '@mantine/hooks';
 import { Notifications } from '@mantine/notifications';
 
-import { IconChartBar, IconCircleArrowUp, IconFiles, IconMoon, IconSun, IconUser } from '@tabler/icons-react';
+import {
+  IconBrandGithub,
+  IconChartBar,
+  IconCircleArrowUp,
+  IconFiles,
+  IconMoon,
+  IconSun,
+  IconUser
+} from '@tabler/icons-react';
 
 import { ApplicationContextProvider } from './contexts/ApplicationContext';
 import { AuthContextProvider } from './contexts/AuthContext';
@@ -193,6 +201,15 @@ const AppContent = () => {
           label="Account"
           leftSection={<IconUser size={20} stroke={1.5} />}
           active={location.pathname === '/account'}
+          onClick={close}
+        />
+        <NavLink
+          mt="auto"
+          href="https://github.com/patel-priyank/Job-Application-Tracker"
+          target="_blank"
+          rel="noopener noreferrer"
+          label="Source Code"
+          leftSection={<IconBrandGithub size={20} stroke={1.5} />}
           onClick={close}
         />
       </AppShell.Navbar>
