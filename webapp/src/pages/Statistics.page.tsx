@@ -1,8 +1,23 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { Button, Card, Center, Divider, Grid, Group, Image, Loader, Stack, Text } from '@mantine/core';
-import { BarChart, DonutChart } from '@mantine/charts';
+import {
+  ActionIcon,
+  Button,
+  Card,
+  Center,
+  Divider,
+  Grid,
+  Group,
+  Image,
+  Loader,
+  Popover,
+  Stack,
+  Text
+} from '@mantine/core';
+import { BarChart } from '@mantine/charts';
+
+import { IconInfoCircle } from '@tabler/icons-react';
 
 import { useAuthContext } from '../hooks/useAuthContext';
 
@@ -19,7 +34,8 @@ const Statistics = () => {
   const [loading, setLoading] = useState(true);
   const [statistics, setStatistics] = useState({
     statusCounts: [],
-    weeklyApplications: []
+    weeklyActivity: [],
+    monthlyActivity: []
   });
 
   useEffect(() => {
@@ -49,19 +65,17 @@ const Statistics = () => {
       return;
     }
 
+    const orderedStatuses = Object.values(APPLICATION_STATUS).map(s => s.label);
+
     setStatistics({
-      statusCounts: data.statusCounts.map((status: { name: string; value: number }) => ({
-        ...status,
-        color: getStatusColor(status.name)
-      })),
-      weeklyApplications: data.weeklyApplications
+      statusCounts: data.statusCounts.sort((a: { label: string }, b: { label: string }) => {
+        return orderedStatuses.indexOf(a.label) - orderedStatuses.indexOf(b.label);
+      }),
+      weeklyActivity: data.weeklyActivity,
+      monthlyActivity: data.monthlyActivity
     });
 
     setLoading(false);
-  };
-
-  const getStatusColor = (status: string) => {
-    return Object.values(APPLICATION_STATUS).find(s => s.label === status)?.color ?? '';
   };
 
   const isError =
@@ -161,17 +175,39 @@ const Statistics = () => {
         <Grid>
           <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
             <Card padding="md" shadow="md" radius="md" withBorder h="100%">
-              <Stack gap="md">
-                <Text>Applications by Status</Text>
+              <Stack gap="xl">
+                <Group justify="space-between">
+                  <Stack gap={0}>
+                    <Text>Current Status Overview</Text>
+                    <Text size="sm" c="dimmed">
+                      Tracking {user.applicationsCount} applications
+                    </Text>
+                  </Stack>
 
-                <DonutChart
-                  w="100%"
+                  <Popover width={240} shadow="xs">
+                    <Popover.Target>
+                      <ActionIcon variant="subtle">
+                        <IconInfoCircle size={16} stroke={1.5} />
+                      </ActionIcon>
+                    </Popover.Target>
+
+                    <Popover.Dropdown>
+                      <Text size="sm">Shows the count of applications based on their latest status.</Text>
+                    </Popover.Dropdown>
+                  </Popover>
+                </Group>
+
+                <BarChart
+                  h={400}
                   data={statistics.statusCounts}
-                  size={240}
-                  thickness={48}
-                  withLabels
-                  strokeWidth={0}
-                  tooltipDataSource="segment"
+                  dataKey="label"
+                  type="stacked"
+                  series={Object.values(APPLICATION_STATUS).map(status => ({
+                    name: status.label,
+                    color: status.color
+                  }))}
+                  tickLine="none"
+                  gridAxis="none"
                 />
               </Stack>
             </Card>
@@ -179,18 +215,85 @@ const Statistics = () => {
 
           <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
             <Card padding="md" shadow="md" radius="md" withBorder h="100%">
-              <Stack gap="md">
-                <Text>Weekly Applications</Text>
+              <Stack gap="xl">
+                <Group justify="space-between">
+                  <Stack gap={0}>
+                    <Text>Weekly Activity</Text>
+                    <Text size="sm" c="dimmed">
+                      Last 4 weeks
+                    </Text>
+                  </Stack>
+
+                  <Popover width={240} shadow="xs">
+                    <Popover.Target>
+                      <ActionIcon variant="subtle">
+                        <IconInfoCircle size={16} stroke={1.5} />
+                      </ActionIcon>
+                    </Popover.Target>
+
+                    <Popover.Dropdown>
+                      <Text size="sm">
+                        Number of status updates per week. It includes both new applications and existing ones that
+                        moved to a different status during the week.
+                      </Text>
+                    </Popover.Dropdown>
+                  </Popover>
+                </Group>
 
                 <BarChart
-                  h={300}
-                  data={statistics.weeklyApplications}
+                  h={400}
+                  data={statistics.weeklyActivity}
                   dataKey="label"
                   type="stacked"
                   series={Object.values(APPLICATION_STATUS).map(status => ({
                     name: status.label,
                     color: status.color
                   }))}
+                  tickLine="none"
+                  gridAxis="none"
+                />
+              </Stack>
+            </Card>
+          </Grid.Col>
+
+          <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
+            <Card padding="md" shadow="md" radius="md" withBorder h="100%">
+              <Stack gap="xl">
+                <Group justify="space-between">
+                  <Stack gap={0}>
+                    <Text>Monthly Activity</Text>
+                    <Text size="sm" c="dimmed">
+                      Last 6 months
+                    </Text>
+                  </Stack>
+
+                  <Popover width={240} shadow="xs">
+                    <Popover.Target>
+                      <ActionIcon variant="subtle">
+                        <IconInfoCircle size={16} stroke={1.5} />
+                      </ActionIcon>
+                    </Popover.Target>
+
+                    <Popover.Dropdown>
+                      <Text size="sm">
+                        Number of status updates per month. It includes both new applications and existing ones that
+                        moved to a different status during the month.
+                      </Text>
+                    </Popover.Dropdown>
+                  </Popover>
+                </Group>
+
+                <BarChart
+                  h={400}
+                  data={statistics.monthlyActivity}
+                  dataKey="label"
+                  type="stacked"
+                  series={Object.values(APPLICATION_STATUS).map(status => ({
+                    name: status.label,
+                    color: status.color
+                  }))}
+                  tickLine="none"
+                  gridAxis="none"
                 />
               </Stack>
             </Card>
