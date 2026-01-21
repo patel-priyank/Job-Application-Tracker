@@ -14,7 +14,7 @@ export const APPLICATION_STATUS: Record<string, { label: string; color: string; 
   },
   INTERVIEW_IN_PERSON: {
     label: 'In Person Interview',
-    color: 'blue'
+    color: 'cyan'
   },
   OFFER_RECEIVED: {
     label: 'Offer Received',
