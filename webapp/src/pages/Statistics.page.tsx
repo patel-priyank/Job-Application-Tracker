@@ -259,7 +259,7 @@ const Statistics = () => {
                   </Group>
 
                   <BarChart
-                    h={400}
+                    h={480}
                     data={statistics.weeklyActivity}
                     dataKey="label"
                     type="stacked"
@@ -269,6 +269,7 @@ const Statistics = () => {
                     }))}
                     tickLine="y"
                     gridAxis="x"
+                    xAxisProps={{ angle: -90, textAnchor: 'end', height: 100 }}
                   />
                 </Stack>
               </Card>
@@ -302,7 +303,7 @@ const Statistics = () => {
                   </Group>
 
                   <BarChart
-                    h={400}
+                    h={480}
                     data={statistics.monthlyActivity}
                     dataKey="label"
                     type="stacked"
@@ -312,6 +313,7 @@ const Statistics = () => {
                     }))}
                     tickLine="y"
                     gridAxis="x"
+                    xAxisProps={{ angle: -90, textAnchor: 'end', height: 100 }}
                   />
                 </Stack>
               </Card>
