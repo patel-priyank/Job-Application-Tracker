@@ -15,12 +15,13 @@ import {
   Image,
   Loader,
   Popover,
+  Progress,
   Stack,
   Text
 } from '@mantine/core';
 import { BarChart } from '@mantine/charts';
 
-import { IconChecks, IconInfoCircle } from '@tabler/icons-react';
+import { IconInfoCircle, IconNumber123 } from '@tabler/icons-react';
 
 import { useAuthContext } from '../hooks/useAuthContext';
 
@@ -192,7 +193,7 @@ const Statistics = () => {
               <Accordion.Control>
                 <Group wrap="nowrap">
                   <Avatar color="green" radius="xl" size="md">
-                    <IconChecks size={20} stroke={1.5} />
+                    <IconNumber123 size={20} stroke={1.5} />
                   </Avatar>
                   <Text>Overview</Text>
                 </Group>
@@ -200,25 +201,38 @@ const Statistics = () => {
 
               <Accordion.Panel>
                 <Grid justify="center">
-                  {Object.values(APPLICATION_STATUS).map(status => (
-                    <Grid.Col span={{ base: 12, md: 6, lg: 4, xl: 3 }} key={status.label}>
-                      <Card padding="md" shadow="md" radius="md" withBorder h="100%">
-                        <Stack gap="xs" align="center">
-                          <Group gap="xs">
-                            <ColorSwatch
-                              color={`var(--mantine-color-${status.color}-filled)`}
-                              size="var(--mantine-font-size-md)"
-                            />
-                            <Text>{status.label}</Text>
-                          </Group>
+                  {Object.values(APPLICATION_STATUS).map(status => {
+                    const count = statistics.statusCounts.find(s => s.label === status.label)?.value ?? 0;
 
-                          <Text c="dimmed" size="xl" fw="500">
-                            {statistics.statusCounts.find(s => s.label === status.label)?.value ?? 0}
-                          </Text>
-                        </Stack>
-                      </Card>
-                    </Grid.Col>
-                  ))}
+                    return (
+                      <Grid.Col span={{ base: 12, md: 6, lg: 4, xl: 3 }} key={status.label}>
+                        <Card padding="md" shadow="md" radius="md" withBorder h="100%">
+                          <Stack gap="xs" align="center">
+                            <Group gap="xs">
+                              <ColorSwatch
+                                color={`var(--mantine-color-${status.color}-filled)`}
+                                size="var(--mantine-font-size-md)"
+                              />
+                              <Text>{status.label}</Text>
+                            </Group>
+
+                            <Text c="dimmed" size="xl" fw="500">
+                              {count}
+                            </Text>
+
+                            <Progress
+                              mt="xs"
+                              mx="md"
+                              w="75%"
+                              size="sm"
+                              value={(Number(count) / user.applicationsCount) * 100}
+                              color={status.color}
+                            />
+                          </Stack>
+                        </Card>
+                      </Grid.Col>
+                    );
+                  })}
                 </Grid>
               </Accordion.Panel>
             </Accordion.Item>
