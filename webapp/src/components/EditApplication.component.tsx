@@ -160,7 +160,7 @@ const EditApplication = ({
             key={form.key('emailUsed')}
             {...form.getInputProps('emailUsed')}
             data={getSortedSuggestedEmails(user?.suggestedEmails || [], user?.email || '')}
-            maxDropdownHeight={120}
+            comboboxProps={{ shadow: 'xl', offset: 0 }}
           />
 
           <TextInput
