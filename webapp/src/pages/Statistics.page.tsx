@@ -261,6 +261,7 @@ const Statistics = () => {
                       name: status.label,
                       color: status.color
                     }))}
+                    tooltipAnimationDuration={250}
                     tickLine="y"
                     gridAxis="x"
                     xAxisProps={{ angle: -90, textAnchor: 'end', height: 100 }}
@@ -305,6 +306,7 @@ const Statistics = () => {
                       name: status.label,
                       color: status.color
                     }))}
+                    tooltipAnimationDuration={250}
                     tickLine="y"
                     gridAxis="x"
                     xAxisProps={{ angle: -90, textAnchor: 'end', height: 100 }}
