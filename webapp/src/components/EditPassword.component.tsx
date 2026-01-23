@@ -133,7 +133,7 @@ const EditPassword = ({ opened, onClose }: { opened: boolean; onClose: () => voi
             label="New password"
             withAsterisk
             description="Must be 8-128 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character."
-            placeholder="SecureP@ssw0rd"
+            placeholder="N3wSecureP@ssw0rd"
             key={form.key('newPassword')}
             {...form.getInputProps('newPassword')}
           />
@@ -164,7 +164,7 @@ const EditPassword = ({ opened, onClose }: { opened: boolean; onClose: () => voi
           <PasswordInput
             label="Confirm new password"
             withAsterisk
-            placeholder="SecureP@ssw0rd"
+            placeholder="N3wSecureP@ssw0rd"
             key={form.key('pwConfirmation')}
             {...form.getInputProps('pwConfirmation')}
           />
