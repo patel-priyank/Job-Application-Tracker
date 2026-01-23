@@ -13,11 +13,6 @@ const getStatistics = async (req: Request, res: Response) => {
 
     const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-    const today = new Date();
-    today.setHours(23, 59, 59, 999);
-
-    const weeklyActivity: any[] = [];
-
     const allStatuses = applications
       .map(application => application.history)
       .flat()
@@ -25,15 +20,26 @@ const getStatistics = async (req: Request, res: Response) => {
 
     const uniqueStatuses = new Set(allStatuses);
 
+    const today = new Date();
+    today.setHours(23, 59, 59, 999);
+
+    const currentWeekStart = new Date(today);
+    const currentDay = currentWeekStart.getDay();
+    const diff = currentWeekStart.getDate() - currentDay + (currentDay === 0 ? -6 : 1);
+    currentWeekStart.setDate(diff);
+    currentWeekStart.setHours(0, 0, 0, 0);
+
+    const weeklyActivity: any[] = [];
+
     let weekNumber = 4;
 
     while (weekNumber--) {
-      const end = new Date(today);
-      end.setDate(end.getDate() - weekNumber * 7);
+      const start = new Date(currentWeekStart);
+      start.setDate(start.getDate() - weekNumber * 7);
 
-      const start = new Date(end);
-      start.setDate(end.getDate() - 6);
-      start.setHours(0, 0, 0, 0);
+      const end = new Date(start);
+      end.setDate(end.getDate() + 6);
+      end.setHours(23, 59, 59, 999);
 
       const startDate = `${start.getDate().toString().padStart(2, '0')} ${monthNames[start.getMonth()]}`;
       const endDate = `${end.getDate().toString().padStart(2, '0')} ${monthNames[end.getMonth()]}`;
