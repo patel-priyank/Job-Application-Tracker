@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { BrowserRouter, Link, Navigate, Route, Routes, useLocation } from 'react-router-dom';
 
 import { jwtDecode } from 'jwt-decode';
@@ -13,7 +13,9 @@ import {
   Group,
   Loader,
   MantineProvider,
+  Modal,
   NavLink,
+  Stack,
   Text,
   Tooltip,
   Transition,
@@ -59,6 +61,9 @@ const AppContent = () => {
   const { ready, dispatch: authDispatch } = useAuthContext();
 
   const [opened, { toggle, close }] = useDisclosure();
+  const [signedOutOpened, { open: openSignedOut, close: closeSignedOut }] = useDisclosure(false);
+
+  const [signedOutMessage, setSignedOutMessage] = useState('');
 
   const location = useLocation();
 
@@ -91,7 +96,9 @@ const AppContent = () => {
           payload: null
         });
 
-        setTimeout(() => alert('Session expired. Sign in again.'), 250);
+        setSignedOutMessage("You've been signed out because your session expired.");
+
+        openSignedOut();
 
         return;
       }
@@ -113,7 +120,9 @@ const AppContent = () => {
           payload: null
         });
 
-        setTimeout(() => alert("You've been signed out because your session could not be verified."), 250);
+        setSignedOutMessage("You've been signed out because your session could not be verified.");
+
+        openSignedOut();
 
         return;
       }
@@ -232,6 +241,18 @@ const AppContent = () => {
       </AppShell.Navbar>
 
       <AppShell.Main pb={ready ? 74 : undefined}>
+        <Modal opened={signedOutOpened} onClose={closeSignedOut} title="Signed Out" overlayProps={{ blur: 2 }} centered>
+          <Stack gap="sm">
+            <Text size="sm">{signedOutMessage}</Text>
+
+            <Group mt="sm">
+              <Button data-autofocus variant="outline" onClick={closeSignedOut}>
+                Close
+              </Button>
+            </Group>
+          </Stack>
+        </Modal>
+
         {ready ? (
           <Container size="xl" p={0}>
             <Routes>
