@@ -222,9 +222,8 @@ const Statistics = () => {
 
                             <Progress
                               mt="xs"
-                              mx="md"
                               w="75%"
-                              size="sm"
+                              size="xs"
                               value={(Number(count) / user.applicationsCount) * 100}
                               color={status.color}
                             />
