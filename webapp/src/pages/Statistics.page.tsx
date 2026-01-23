@@ -26,7 +26,7 @@ import { IconInfoCircle, IconNumber123 } from '@tabler/icons-react';
 
 import { useAuthContext } from '../hooks/useAuthContext';
 
-import { APPLICATION_STATUS } from '../utils/constants';
+import { APPLICATION_STATUS, HEADER_HEIGHT } from '../utils/constants';
 import { showNotification } from '../utils/functions';
 
 import createStatisticsImage from '../assets/create-statistics.png';
@@ -158,7 +158,7 @@ const Statistics = () => {
       )}
 
       {user && user.applicationsCount > 0 && loading && (
-        <Center pt="xl">
+        <Center h={`calc(100dvh - ${HEADER_HEIGHT}px - 92.8px )`}>
           <Loader />
         </Center>
       )}

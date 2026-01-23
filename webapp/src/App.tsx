@@ -8,8 +8,10 @@ import {
   AppShell,
   Burger,
   Button,
+  Center,
   Container,
   Group,
+  Loader,
   MantineProvider,
   NavLink,
   Text,
@@ -39,9 +41,9 @@ import { useAuthContext } from './hooks/useAuthContext';
 
 import Account from './pages/Account.page';
 import Applications from './pages/Applications.page';
-import Loading from './pages/Loading.page';
 import Statistics from './pages/Statistics.page';
 
+import { HEADER_HEIGHT } from './utils/constants';
 import { fetchApplications } from './utils/functions';
 
 import '@mantine/core/styles.css';
@@ -127,10 +129,10 @@ const AppContent = () => {
     }, 1500);
   }, [authDispatch]);
 
-  return ready ? (
+  return (
     <AppShell
       padding="md"
-      header={{ height: 60 }}
+      header={{ height: HEADER_HEIGHT }}
       navbar={{
         width: 300,
         breakpoint: 'sm',
@@ -229,19 +231,23 @@ const AppContent = () => {
         />
       </AppShell.Navbar>
 
-      <AppShell.Main style={{ paddingBottom: '74px' }}>
-        <Container size="xl" p={0}>
-          <Routes>
-            <Route path="/" element={<Applications />} />
-            <Route path="/statistics" element={<Statistics />} />
-            <Route path="/account" element={<Account />} />
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </Container>
+      <AppShell.Main pb={ready ? 74 : undefined}>
+        {ready ? (
+          <Container size="xl" p={0}>
+            <Routes>
+              <Route path="/" element={<Applications />} />
+              <Route path="/statistics" element={<Statistics />} />
+              <Route path="/account" element={<Account />} />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </Container>
+        ) : (
+          <Center h={`calc(100dvh - ${HEADER_HEIGHT}px - 32px)`}>
+            <Loader />
+          </Center>
+        )}
       </AppShell.Main>
     </AppShell>
-  ) : (
-    <Loading />
   );
 };
 
