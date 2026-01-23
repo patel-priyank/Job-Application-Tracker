@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 
-import { Box, Button, Group, Modal, PasswordInput, Popover, Stack, Text } from '@mantine/core';
+import { Box, Button, Group, Modal, Paper, PasswordInput, Stack, Text } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { useDisclosure } from '@mantine/hooks';
 
 import { IconCheck, IconX } from '@tabler/icons-react';
 
@@ -10,15 +9,6 @@ import { useAuthContext } from '../hooks/useAuthContext';
 
 import { PW_REGEX, PW_SPECIAL_CHARS_REGEX } from '../utils/constants';
 import { showNotification } from '../utils/functions';
-
-const PasswordRequirement = ({ meets, label }: { meets: boolean; label: string }) => {
-  return (
-    <Text c={meets ? 'green' : 'red'} style={{ display: 'flex', alignItems: 'center' }} size="sm">
-      {meets ? <IconCheck size={14} stroke={1.5} /> : <IconX size={14} stroke={1.5} />}
-      <Box ml={10}>{label}</Box>
-    </Text>
-  );
-};
 
 const pwRequirements = [
   { re: /^.{8,128}$/, label: '8-128 characters' },
@@ -31,15 +21,11 @@ const pwRequirements = [
 const EditPassword = ({ opened, onClose }: { opened: boolean; onClose: () => void }) => {
   const { user, dispatch: authDispatch } = useAuthContext();
 
-  const [pwPopoverOpened, { open: openPwPopover, close: closePwPopover }] = useDisclosure(false);
-  const [pwConfirmPopoverOpened, { open: openPwConfirmPopover, close: closePwConfirmPopover }] = useDisclosure(false);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (opened) {
       form.reset();
-      closePwPopover();
-      closePwConfirmPopover();
     }
   }, [opened]);
 
@@ -143,65 +129,62 @@ const EditPassword = ({ opened, onClose }: { opened: boolean; onClose: () => voi
             {...form.getInputProps('currentPassword')}
           />
 
-          <Popover
-            opened={pwPopoverOpened}
-            position="bottom"
-            width="target"
-            transitionProps={{ transition: 'pop' }}
-            offset={2}
-          >
-            <Popover.Target>
-              <PasswordInput
-                label="New password"
-                withAsterisk
-                description="Must be 8-128 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character."
-                placeholder="SecureP@ssw0rd"
-                key={form.key('newPassword')}
-                {...form.getInputProps('newPassword')}
-                onFocusCapture={openPwPopover}
-                onBlurCapture={closePwPopover}
-              />
-            </Popover.Target>
+          <PasswordInput
+            label="New password"
+            withAsterisk
+            description="Must be 8-128 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character."
+            placeholder="SecureP@ssw0rd"
+            key={form.key('newPassword')}
+            {...form.getInputProps('newPassword')}
+          />
 
-            <Popover.Dropdown>
-              <Stack gap="xs">
-                {pwRequirements.map((requirement, index) => (
-                  <PasswordRequirement
-                    key={index}
-                    label={requirement.label}
-                    meets={requirement.re.test(form.values.newPassword)}
-                  />
-                ))}
-              </Stack>
-            </Popover.Dropdown>
-          </Popover>
+          <Paper withBorder px="md" py="sm">
+            <Stack gap="xs">
+              {pwRequirements.map((req, index) => (
+                <Box key={index}>
+                  <Text
+                    c={req.re.test(form.values.newPassword) ? 'green' : 'red'}
+                    style={{ display: 'flex', alignItems: 'center' }}
+                    size="sm"
+                  >
+                    {req.re.test(form.values.newPassword) ? (
+                      <IconCheck size={14} stroke={1.5} />
+                    ) : (
+                      <IconX size={14} stroke={1.5} />
+                    )}
+                    <Text span ml="xs">
+                      {req.label}
+                    </Text>
+                  </Text>
+                </Box>
+              ))}
+            </Stack>
+          </Paper>
 
-          <Popover
-            opened={pwConfirmPopoverOpened}
-            position="bottom"
-            width="target"
-            transitionProps={{ transition: 'pop' }}
-            offset={2}
-          >
-            <Popover.Target>
-              <PasswordInput
-                label="Confirm new password"
-                withAsterisk
-                placeholder="SecureP@ssw0rd"
-                key={form.key('pwConfirmation')}
-                {...form.getInputProps('pwConfirmation')}
-                onFocusCapture={openPwConfirmPopover}
-                onBlurCapture={closePwConfirmPopover}
-              />
-            </Popover.Target>
+          <PasswordInput
+            label="Confirm new password"
+            withAsterisk
+            placeholder="SecureP@ssw0rd"
+            key={form.key('pwConfirmation')}
+            {...form.getInputProps('pwConfirmation')}
+          />
 
-            <Popover.Dropdown>
-              <PasswordRequirement
-                label="Passwords match"
-                meets={form.values.newPassword === form.values.pwConfirmation}
-              />
-            </Popover.Dropdown>
-          </Popover>
+          <Paper withBorder px="md" py="sm">
+            <Text
+              c={form.values.newPassword === form.values.pwConfirmation ? 'green' : 'red'}
+              style={{ display: 'flex', alignItems: 'center' }}
+              size="sm"
+            >
+              {form.values.newPassword === form.values.pwConfirmation ? (
+                <IconCheck size={14} stroke={1.5} />
+              ) : (
+                <IconX size={14} stroke={1.5} />
+              )}
+              <Text span ml="xs">
+                Passwords match
+              </Text>
+            </Text>
+          </Paper>
 
           <Group mt="sm">
             <Button type="submit" loading={loading}>
