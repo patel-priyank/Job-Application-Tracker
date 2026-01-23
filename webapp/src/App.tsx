@@ -103,16 +103,27 @@ const AppContent = () => {
 
       const data = await response.json();
 
-      if (response.ok) {
-        await fetchApplications(sort, order, page, JSON.parse(user).token, applicationDispatch);
-
-        localStorage.setItem('user', JSON.stringify(data));
+      if (!response.ok) {
+        localStorage.removeItem('user');
 
         authDispatch({
           type: 'SET_USER',
-          payload: data
+          payload: null
         });
+
+        setTimeout(() => alert("You've been signed out because your session could not be verified."), 250);
+
+        return;
       }
+
+      await fetchApplications(sort, order, page, JSON.parse(user).token, applicationDispatch);
+
+      localStorage.setItem('user', JSON.stringify(data));
+
+      authDispatch({
+        type: 'SET_USER',
+        payload: data
+      });
     }, 1500);
   }, [authDispatch]);
 
