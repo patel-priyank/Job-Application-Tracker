@@ -20,10 +20,18 @@ const requireAuth = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { _id } = jwtPayload as JwtPayload & { _id: string };
 
-    const user = await User.findById(_id).select('_id suggestedEmails');
+    const user = await User.findById(_id).select('_id suggestedEmails passwordUpdatedAt');
 
     if (!user) {
-      return res.status(401).json({ error: 'User associated with token not found' });
+      return res.status(401).json({ error: 'User associated with token not found.' });
+    }
+
+    const lastPasswordReset = Math.floor(user.passwordUpdatedAt.getTime() / 1000);
+
+    if (jwtPayload.iat && jwtPayload.iat < lastPasswordReset) {
+      return res.status(401).json({
+        error: 'Password was changed on another device. Sign in again to access your account.'
+      });
     }
 
     req.user = user;
