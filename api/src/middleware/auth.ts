@@ -8,13 +8,13 @@ const requireAuth = async (req: Request, res: Response, next: NextFunction) => {
   const { authorization } = req.headers;
 
   if (!authorization || !authorization.startsWith('Bearer ')) {
-    return res.status(401).json({ error: 'Authorization token missing or invalid' });
+    return res.status(401).json({ error: 'Authorization token missing or invalid.' });
   }
 
   const jwtPayload = jwt.verify(authorization.split(' ')[1], process.env.JWT_SECRET || '');
 
   if (typeof jwtPayload === 'string' || !('_id' in jwtPayload)) {
-    return res.status(403).json({ error: 'Invalid or expired authorization token' });
+    return res.status(403).json({ error: 'Invalid or expired authorization token.' });
   }
 
   try {
@@ -30,7 +30,7 @@ const requireAuth = async (req: Request, res: Response, next: NextFunction) => {
 
     next();
   } catch (err) {
-    res.status(401).json({ error: 'Authentication failed' });
+    res.status(401).json({ error: 'Authentication failed.' });
   }
 };
 
