@@ -38,23 +38,23 @@ export const fetchApplications = async (
 
     const data = await response.json();
 
-    if (response.ok) {
-      applicationDispatch({
-        type: 'SET_APPLICATIONS',
-        payload: data.applications
-      });
-
-      return data.count;
+    if (!response.ok) {
+      return;
     }
+
+    applicationDispatch({
+      type: 'SET_APPLICATIONS',
+      payload: data.applications
+    });
+
+    return data.count;
   } catch (error: any) {
     if (error.name === 'AbortError') {
-      return null;
+      return;
     }
 
     console.error(error);
   }
-
-  return null;
 };
 
 export const getNormalizedDate = (date: string | number | Date) => {
