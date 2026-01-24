@@ -246,8 +246,8 @@ const AppContent = () => {
             <Text size="sm">{signedOutMessage}</Text>
 
             <Group mt="sm">
-              <Button data-autofocus variant="outline" onClick={closeSignedOut}>
-                Close
+              <Button variant="outline" onClick={closeSignedOut}>
+                Okay
               </Button>
             </Group>
           </Stack>
