@@ -22,7 +22,7 @@ import {
   useComputedColorScheme,
   useMantineColorScheme
 } from '@mantine/core';
-import { useDisclosure, useViewportSize, useWindowScroll } from '@mantine/hooks';
+import { useDisclosure, useViewportSize, useWindowEvent, useWindowScroll } from '@mantine/hooks';
 import { Notifications } from '@mantine/notifications';
 
 import {
@@ -69,6 +69,46 @@ const AppContent = () => {
 
   const [scroll, scrollTo] = useWindowScroll();
   const { height } = useViewportSize();
+
+  const checkSessionValidity = async () => {
+    const user = localStorage.getItem('user');
+
+    if (!user) {
+      return;
+    }
+
+    const response = await fetch('/api/users/renew-token', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${JSON.parse(user).token}`
+      }
+    });
+
+    if (!response.ok) {
+      localStorage.removeItem('user');
+
+      applicationDispatch({
+        type: 'SET_APPLICATIONS',
+        payload: []
+      });
+
+      authDispatch({
+        type: 'SET_USER',
+        payload: null
+      });
+
+      if (response.status === 401) {
+        setSignedOutMessage("You've been signed out because your password was changed on another device.");
+      } else {
+        setSignedOutMessage("You've been signed out because your session could not be verified.");
+      }
+
+      openSignedOut();
+    }
+  };
+
+  useWindowEvent('focus', checkSessionValidity);
+  useWindowEvent('blur', checkSessionValidity);
 
   const { setColorScheme } = useMantineColorScheme();
   const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
@@ -120,7 +160,11 @@ const AppContent = () => {
           payload: null
         });
 
-        setSignedOutMessage("You've been signed out because your session could not be verified.");
+        if (response.status === 401) {
+          setSignedOutMessage("You've been signed out because your password was changed on another device.");
+        } else {
+          setSignedOutMessage("You've been signed out because your session could not be verified.");
+        }
 
         openSignedOut();
 
@@ -246,7 +290,7 @@ const AppContent = () => {
             <Text size="sm">{signedOutMessage}</Text>
 
             <Group mt="sm">
-              <Button variant="outline" onClick={closeSignedOut}>
+              <Button data-autofocus variant="outline" onClick={closeSignedOut}>
                 Okay
               </Button>
             </Group>
