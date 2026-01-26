@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import {
   Button,
   Card,
-  Center,
   Divider,
   Flex,
   Grid,
@@ -217,7 +216,7 @@ const Applications = () => {
             />
           </Flex>
 
-          <Center>
+          <Group justify="center">
             <Pagination
               mb="lg"
               radius="md"
@@ -238,7 +237,7 @@ const Applications = () => {
                 setLoading(false);
               }}
             />
-          </Center>
+          </Group>
 
           {loading && (
             <Grid>
@@ -277,9 +276,9 @@ const Applications = () => {
           {!loading && (
             <>
               {applications.length === 0 ? (
-                <Center>
-                  <Text c="dimmed">No applications match your search</Text>
-                </Center>
+                <Text c="dimmed" ta="center">
+                  No applications match your search
+                </Text>
               ) : (
                 <Grid>
                   {applications.map(application => (
