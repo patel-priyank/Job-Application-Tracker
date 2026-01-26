@@ -4,6 +4,8 @@ import dayjs from 'dayjs';
 
 import type { ApplicationAction } from '../contexts/ApplicationContext';
 
+import notificationClasses from '../styles/Notification.module.css';
+
 let abortController: AbortController | null = null;
 
 export const fetchApplications = async (
@@ -74,7 +76,7 @@ export const showNotification = (title: string, message: string, error: boolean)
       title,
       message,
       color: error ? 'red' : 'green',
-      withBorder: true
+      classNames: notificationClasses
     });
   }, 250);
 };

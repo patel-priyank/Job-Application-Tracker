@@ -54,7 +54,7 @@ import '@mantine/charts/styles.css';
 import '@mantine/dates/styles.css';
 import '@mantine/notifications/styles.css';
 
-import './App.scss';
+import './App.css';
 
 const AppContent = () => {
   const { order, page, sort, dispatch: applicationDispatch } = useApplicationContext();
