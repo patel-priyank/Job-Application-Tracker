@@ -283,7 +283,15 @@ const Statistics = () => {
                     tooltipAnimationDuration={250}
                     tickLine="y"
                     gridAxis="x"
-                    xAxisProps={{ angle: -90, textAnchor: 'end', height: 100 }}
+                    xAxisProps={{
+                      angle: -90,
+                      height: 100,
+                      tick: {
+                        textAnchor: 'end',
+                        fill: 'var(--mantine-color-dimmed)',
+                        fontSize: 'var(--mantine-font-size-xs)'
+                      }
+                    }}
                   />
                 </Stack>
               </Card>
@@ -328,7 +336,15 @@ const Statistics = () => {
                     tooltipAnimationDuration={250}
                     tickLine="y"
                     gridAxis="x"
-                    xAxisProps={{ angle: -90, textAnchor: 'end', height: 100 }}
+                    xAxisProps={{
+                      angle: -90,
+                      height: 100,
+                      tick: {
+                        textAnchor: 'end',
+                        fill: 'var(--mantine-color-dimmed)',
+                        fontSize: 'var(--mantine-font-size-xs)'
+                      }
+                    }}
                   />
                 </Stack>
               </Card>
