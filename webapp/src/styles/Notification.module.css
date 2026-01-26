@@ -1,20 +1,20 @@
 .root {
-  background-color: var(--notification-color);
+  background-color: var(--notification-color) !important;
 
   &::before {
-    background-color: var(--mantine-color-white);
+    background-color: var(--mantine-color-white) !important;
   }
 }
 
 .description,
 .title {
-  color: var(--mantine-color-white);
+  color: var(--mantine-color-white) !important;
 }
 
 .closeButton {
-  color: var(--mantine-color-white);
+  color: var(--mantine-color-white) !important;
 
   &:hover {
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: rgba(0, 0, 0, 0.1) !important;
   }
 }
