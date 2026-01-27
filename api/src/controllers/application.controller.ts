@@ -291,6 +291,9 @@ const updateApplicationStatus = async (req: Request, res: Response) => {
     if (updatedApplication) {
       updatedApplication.history.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
+      updatedApplication.status = updatedApplication.history[updatedApplication.history.length - 1].status;
+      updatedApplication.date = updatedApplication.history[updatedApplication.history.length - 1].date;
+
       await updatedApplication.save();
     }
 
@@ -333,10 +336,8 @@ const deleteApplicationStatus = async (req: Request, res: Response) => {
     );
 
     if (updatedApplication) {
-      if (application.history[application.history.length - 1]._id.toString() === statusId) {
-        updatedApplication.status = updatedApplication.history[updatedApplication.history.length - 1].status;
-        updatedApplication.date = updatedApplication.history[updatedApplication.history.length - 1].date;
-      }
+      updatedApplication.status = updatedApplication.history[updatedApplication.history.length - 1].status;
+      updatedApplication.date = updatedApplication.history[updatedApplication.history.length - 1].date;
 
       await updatedApplication.save();
     }
