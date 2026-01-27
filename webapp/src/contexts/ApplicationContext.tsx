@@ -26,9 +26,6 @@ export interface ApplicationState {
 
 export type ApplicationAction =
   | { type: 'SET_APPLICATIONS'; payload: JobApplication[] }
-  | { type: 'CREATE_APPLICATION'; payload: JobApplication }
-  | { type: 'UPDATE_APPLICATION'; payload: JobApplication }
-  | { type: 'DELETE_APPLICATION'; payload: JobApplication }
   | { type: 'SET_SORT'; payload: { sort: string; order: string } }
   | { type: 'SET_PAGE'; payload: number }
   | { type: 'SET_SEARCH_QUERY'; payload: string };
@@ -51,35 +48,6 @@ export const applicationsReducer = (state: ApplicationState, action: Application
     case 'SET_APPLICATIONS':
       return {
         applications: action.payload,
-        order: state.order,
-        page: state.page,
-        searchQuery: state.searchQuery,
-        sort: state.sort
-      };
-
-    case 'CREATE_APPLICATION':
-      return {
-        applications: [...state.applications, action.payload],
-        order: state.order,
-        page: state.page,
-        searchQuery: state.searchQuery,
-        sort: state.sort
-      };
-
-    case 'UPDATE_APPLICATION':
-      return {
-        applications: state.applications.map(application =>
-          application._id === action.payload._id ? action.payload : application
-        ),
-        order: state.order,
-        page: state.page,
-        searchQuery: state.searchQuery,
-        sort: state.sort
-      };
-
-    case 'DELETE_APPLICATION':
-      return {
-        applications: state.applications.filter(application => application._id !== action.payload._id),
         order: state.order,
         page: state.page,
         searchQuery: state.searchQuery,
