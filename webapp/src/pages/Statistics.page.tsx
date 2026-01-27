@@ -20,6 +20,7 @@ import {
   Stack,
   Text
 } from '@mantine/core';
+
 import { BarChart } from '@mantine/charts';
 
 import { IconInfoCircle, IconNumber123 } from '@tabler/icons-react';
@@ -38,17 +39,15 @@ interface StatisticItem {
   [key: string]: string | number;
 }
 
-interface StatisticsState {
-  statusCounts: StatisticItem[];
-  weeklyActivity: StatisticItem[];
-  monthlyActivity: StatisticItem[];
-}
-
 const Statistics = () => {
   const { user } = useAuthContext();
 
   const [loading, setLoading] = useState(true);
-  const [statistics, setStatistics] = useState<StatisticsState>({
+  const [statistics, setStatistics] = useState<{
+    statusCounts: StatisticItem[];
+    weeklyActivity: StatisticItem[];
+    monthlyActivity: StatisticItem[];
+  }>({
     statusCounts: [],
     weeklyActivity: [],
     monthlyActivity: []
