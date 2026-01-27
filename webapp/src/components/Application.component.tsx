@@ -109,7 +109,7 @@ const Application = ({ application }: { application: JobApplication }) => {
             </Menu>
           </Group>
 
-          <Text c="dimmed" truncate="end" title={application.jobTitle}>
+          <Text c="dimmed" w="max-content" maw="100%" truncate="end" title={application.jobTitle}>
             {application.jobTitle}
           </Text>
 

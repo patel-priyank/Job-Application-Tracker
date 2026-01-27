@@ -117,7 +117,7 @@ const Account = () => {
                     </ActionIcon>
                   </Group>
 
-                  <Text c="dimmed" truncate="end" title={user.name}>
+                  <Text c="dimmed" w="max-content" maw="100%" truncate="end" title={user.name}>
                     {user.name}
                   </Text>
                 </Stack>
@@ -135,7 +135,7 @@ const Account = () => {
                     </ActionIcon>
                   </Group>
 
-                  <Text c="dimmed" truncate="end" title={user.email}>
+                  <Text c="dimmed" w="max-content" maw="100%" truncate="end" title={user.email}>
                     {user.email}
                   </Text>
                 </Stack>
