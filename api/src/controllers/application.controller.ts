@@ -326,9 +326,22 @@ const deleteApplicationStatus = async (req: Request, res: Response) => {
       return res.status(401).json({ error: 'Unauthorized.' });
     }
 
-    const deletedApplication = await Application.findByIdAndDelete(id);
+    const updatedApplication = await Application.findByIdAndUpdate(
+      id,
+      { $pull: { history: { _id: statusId } } },
+      { new: true }
+    );
 
-    res.status(200).json(deletedApplication);
+    if (updatedApplication) {
+      if (application.history[application.history.length - 1]._id.toString() === statusId) {
+        updatedApplication.status = updatedApplication.history[updatedApplication.history.length - 1].status;
+        updatedApplication.date = updatedApplication.history[updatedApplication.history.length - 1].date;
+      }
+
+      await updatedApplication.save();
+    }
+
+    res.status(200).json(updatedApplication);
   } catch (err: unknown) {
     return res.status(500).json({ error: 'Unknown error.' });
   }
