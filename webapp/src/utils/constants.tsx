@@ -38,6 +38,6 @@ export const APPLICATION_STATUS: Record<string, { label: string; color: string; 
 
 export const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-export const PW_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$&+,:;=?@#|'<>.^*()%!-]).+$/;
+export const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$&+,:;=?@#|'<>.^*()%!-]).+$/;
 
-export const PW_SPECIAL_CHARS_REGEX = /[$&+,:;=?@#|'<>.^*()%!-]/;
+export const PASSWORD_SPECIAL_CHARS_REGEX = /[$&+,:;=?@#|'<>.^*()%!-]/;
