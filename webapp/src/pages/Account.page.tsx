@@ -12,6 +12,7 @@ import {
   Stack,
   Text
 } from '@mantine/core';
+
 import { useDisclosure } from '@mantine/hooks';
 
 import { IconAlertTriangle, IconLogout, IconPencil } from '@tabler/icons-react';

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { Box, Button, Group, Modal, Paper, PasswordInput, Stack, Text } from '@mantine/core';
+
 import { useForm } from '@mantine/form';
 
 import { IconCheck, IconX } from '@tabler/icons-react';

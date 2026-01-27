@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { Autocomplete, Button, Group, Modal, Stack, TextInput } from '@mantine/core';
+
 import { useForm } from '@mantine/form';
 
 import type { JobApplication } from '../contexts/ApplicationContext';

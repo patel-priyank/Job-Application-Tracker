@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { Button, Group, Modal, PasswordInput, Stack, TextInput } from '@mantine/core';
+
 import { useForm } from '@mantine/form';
 
 import { useApplicationContext } from '../hooks/useApplicationContext';

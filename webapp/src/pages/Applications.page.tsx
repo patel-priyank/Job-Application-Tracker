@@ -17,6 +17,7 @@ import {
   Text,
   TextInput
 } from '@mantine/core';
+
 import { useDisclosure, useDebouncedCallback } from '@mantine/hooks';
 
 import { IconFile, IconSearch } from '@tabler/icons-react';
