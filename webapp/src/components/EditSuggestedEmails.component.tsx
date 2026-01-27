@@ -37,11 +37,11 @@ const EditSuggestedEmails = ({ opened, onClose }: { opened: boolean; onClose: ()
       setEmailsToDelete([]);
       setLoading(false);
 
-      setDeletableSuggestedEmails();
+      setDeletableEmails();
     }
   }, [opened]);
 
-  const setDeletableSuggestedEmails = async () => {
+  const setDeletableEmails = async () => {
     if (!user) {
       return;
     }

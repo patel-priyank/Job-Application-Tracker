@@ -17,24 +17,31 @@ import { APPLICATION_STATUS } from '../utils/constants';
 import { formatDate } from '../utils/functions';
 
 const Application = ({ application }: { application: JobApplication }) => {
-  const [appDetailsOpened, { open: openAppDetails, close: closeAppDetails }] = useDisclosure(false);
-  const [createAppStatusOpened, { open: openCreateAppStatus, close: closeCreateAppStatus }] = useDisclosure(false);
-  const [deleteAppOpened, { open: openDeleteApp, close: closeDeleteApp }] = useDisclosure(false);
-  const [editAppOpened, { open: openEditApp, close: closeEditApp }] = useDisclosure(false);
+  const [applicationDetailsOpened, { open: openApplicationDetails, close: closeApplicationDetails }] =
+    useDisclosure(false);
+  const [createApplicationStatusOpened, { open: openCreateApplicationStatus, close: closeCreateApplicationStatus }] =
+    useDisclosure(false);
+  const [deleteApplicationOpened, { open: openDeleteApplication, close: closeDeleteApplication }] =
+    useDisclosure(false);
+  const [editApplicationOpened, { open: openEditApplication, close: closeEditApplication }] = useDisclosure(false);
 
   return (
     <>
-      <ApplicationDetails opened={appDetailsOpened} onClose={closeAppDetails} application={application} />
-
-      <CreateApplicationStatus
-        opened={createAppStatusOpened}
-        onClose={closeCreateAppStatus}
+      <ApplicationDetails
+        opened={applicationDetailsOpened}
+        onClose={closeApplicationDetails}
         application={application}
       />
 
-      <DeleteApplication opened={deleteAppOpened} onClose={closeDeleteApp} application={application} />
+      <CreateApplicationStatus
+        opened={createApplicationStatusOpened}
+        onClose={closeCreateApplicationStatus}
+        application={application}
+      />
 
-      <EditApplication opened={editAppOpened} onClose={closeEditApp} application={application} />
+      <DeleteApplication opened={deleteApplicationOpened} onClose={closeDeleteApplication} application={application} />
+
+      <EditApplication opened={editApplicationOpened} onClose={closeEditApplication} application={application} />
 
       <Card padding="md" shadow="md" radius="md" withBorder h="100%">
         <Card.Section h={140} bg={GeoPattern.generate(application.companyName).toDataUrl()} />
@@ -55,7 +62,7 @@ const Application = ({ application }: { application: JobApplication }) => {
               <Menu.Dropdown>
                 <Menu.Item
                   leftSection={<IconFileText size={16} stroke={1.5} />}
-                  onClick={() => setTimeout(openAppDetails, 0)}
+                  onClick={() => setTimeout(openApplicationDetails, 0)}
                 >
                   View details
                 </Menu.Item>
@@ -64,14 +71,14 @@ const Application = ({ application }: { application: JobApplication }) => {
 
                 <Menu.Item
                   leftSection={<IconPencil size={16} stroke={1.5} />}
-                  onClick={() => setTimeout(openEditApp, 0)}
+                  onClick={() => setTimeout(openEditApplication, 0)}
                 >
                   Edit application
                 </Menu.Item>
 
                 <Menu.Item
                   leftSection={<IconStatusChange size={16} stroke={1.5} />}
-                  onClick={() => setTimeout(openCreateAppStatus, 0)}
+                  onClick={() => setTimeout(openCreateApplicationStatus, 0)}
                 >
                   Update status
                 </Menu.Item>
@@ -94,7 +101,7 @@ const Application = ({ application }: { application: JobApplication }) => {
                 <Menu.Item
                   leftSection={<IconTrash size={16} stroke={1.5} />}
                   color="red"
-                  onClick={() => setTimeout(openDeleteApp, 0)}
+                  onClick={() => setTimeout(openDeleteApplication, 0)}
                 >
                   Delete application
                 </Menu.Item>
