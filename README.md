@@ -9,6 +9,24 @@ A comprehensive full-stack web application designed to help users track and mana
 - **Statistics and Insights**: Visualize your application progress with built-in analytics and charts.
 - **Secure Authentication**: User registration and login system to keep your data private.
 - **Responsive Design**: Modern and responsive user interface built with Mantine UI.
+- **Dark Mode**: Fully supported dark theme for better visibility in low-light environments.
+
+## Screenshots
+
+![Applications List](./screenshots/applications.jpg)
+_Manage all your applications in one place_
+
+![Application Details](./screenshots/application-details.jpg)
+_View and edit details for each application_
+
+![Statistics](./screenshots/statistics.jpg)
+_Visualize your job search progress_
+
+![Statistics (Dark Mode)](./screenshots/statistics-dark.jpg)
+_Sleek dark mode for comfortable viewing_
+
+![Account Settings](./screenshots/account.jpg)
+_Manage your account settings_
 
 ## Tech Stack
 
