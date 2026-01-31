@@ -8,16 +8,8 @@ import { IconCheck, IconX } from '@tabler/icons-react';
 
 import { useAuthContext } from '../hooks/useAuthContext';
 
-import { PASSWORD_REGEX, PASSWORD_SPECIAL_CHARS_REGEX } from '../utils/constants';
+import { PASSWORD_REGEX, PASSWORD_REQUIREMENTS } from '../utils/constants';
 import { showNotification } from '../utils/functions';
-
-const pwRequirements = [
-  { re: /^.{8,128}$/, label: '8-128 characters' },
-  { re: /[A-Z]/, label: 'Uppercase letter' },
-  { re: /[a-z]/, label: 'Lowercase letter' },
-  { re: /[0-9]/, label: 'Number' },
-  { re: PASSWORD_SPECIAL_CHARS_REGEX, label: 'Special character' }
-];
 
 const EditPassword = ({ opened, onClose }: { opened: boolean; onClose: () => void }) => {
   const { user, dispatch: authDispatch } = useAuthContext();
@@ -141,7 +133,7 @@ const EditPassword = ({ opened, onClose }: { opened: boolean; onClose: () => voi
 
           <Paper withBorder px="md" py="sm">
             <Stack gap="xs">
-              {pwRequirements.map((req, index) => (
+              {PASSWORD_REQUIREMENTS.map((req, index) => (
                 <Box key={index}>
                   <Text
                     c={req.re.test(form.values.newPassword) ? 'green' : 'red'}

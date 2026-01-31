@@ -41,3 +41,11 @@ export const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 export const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$&+,:;=?@#|'<>.^*()%!-]).+$/;
 
 export const PASSWORD_SPECIAL_CHARS_REGEX = /[$&+,:;=?@#|'<>.^*()%!-]/;
+
+export const PASSWORD_REQUIREMENTS = [
+  { re: /^.{8,128}$/, label: '8-128 characters' },
+  { re: /[A-Z]/, label: 'Uppercase letter' },
+  { re: /[a-z]/, label: 'Lowercase letter' },
+  { re: /[0-9]/, label: 'Number' },
+  { re: PASSWORD_SPECIAL_CHARS_REGEX, label: 'Special character' }
+];
