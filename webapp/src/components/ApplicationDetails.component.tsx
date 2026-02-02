@@ -154,22 +154,11 @@ const ApplicationDetails = ({
             target="_blank"
             rel="noopener noreferrer"
             underline={application?.link ? 'hover' : 'never'}
+            className={`anchor ${!application?.link && 'anchor-disabled'}`}
             onClick={e => {
               if (!application?.link) {
                 e.preventDefault();
               }
-            }}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 'var(--mantine-spacing-xs)',
-              ...(application?.link
-                ? {}
-                : {
-                    color: 'var(--mantine-color-disabled-color)',
-                    opacity: 0.6,
-                    cursor: 'not-allowed'
-                  })
             }}
           >
             <IconExternalLink size={16} stroke={1.5} /> Track application
