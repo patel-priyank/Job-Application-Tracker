@@ -117,7 +117,7 @@ const Application = ({ application }: { application: JobApplication }) => {
             </Menu>
           </Group>
 
-          <Text c="dimmed" w="max-content" maw="100%" className="text">
+          <Text c="dimmed" w="max-content" maw="100%" className="text-with-icon">
             <IconBriefcase2 size={16} stroke={1.5} />
             <Text span truncate="end" title={application?.jobTitle} flex={1}>
               {application.jobTitle}

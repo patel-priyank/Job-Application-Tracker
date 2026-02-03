@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { Anchor, Button, Divider, Group, Modal, Select, Stack, Text, Timeline, useModalsStack } from '@mantine/core';
+import { Button, Group, Modal, Select, Stack, Text, Timeline, useModalsStack } from '@mantine/core';
 
 import { DatePickerInput } from '@mantine/dates';
 import { useForm } from '@mantine/form';
@@ -141,36 +141,32 @@ const ApplicationDetails = ({
         centered
       >
         <Stack gap="md" align="flex-start">
-          <Text c="dimmed" w="max-content" maw="100%" className="text">
+          <Text c="dimmed" w="max-content" maw="100%" className="text-with-icon">
             <IconBriefcase2 size={16} stroke={1.5} />
             <Text span truncate="end" title={application?.jobTitle} flex={1}>
               {application?.jobTitle}
             </Text>
           </Text>
 
-          <Text c="dimmed" w="max-content" maw="100%" className="text">
+          <Text c="dimmed" w="max-content" maw="100%" className="text-with-icon">
             <IconAt size={16} stroke={1.5} />
             <Text span truncate="end" title={application?.emailUsed} flex={1}>
               {application?.emailUsed}
             </Text>
           </Text>
 
-          <Divider variant="dotted" w="100%" />
-
-          <Anchor
+          <Button
+            component="a"
             href={application?.link || undefined}
             target="_blank"
             rel="noopener noreferrer"
-            underline={application?.link ? 'hover' : 'never'}
-            className={`anchor ${!application?.link && 'anchor-disabled'}`}
-            onClick={e => {
-              if (!application?.link) {
-                e.preventDefault();
-              }
-            }}
+            leftSection={<IconRoute size={16} stroke={1.5} />}
+            disabled={!application?.link}
+            variant="light"
+            size="xs"
           >
-            <IconRoute size={16} stroke={1.5} /> Track application
-          </Anchor>
+            Track application
+          </Button>
 
           <Timeline bulletSize={16} lineWidth={2} mt="xs">
             {application?.history.map(item => (
