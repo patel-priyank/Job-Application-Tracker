@@ -1,13 +1,13 @@
 import { useState } from 'react';
 
-import { Anchor, Button, Group, Modal, Select, Stack, Text, Timeline, useModalsStack } from '@mantine/core';
+import { Anchor, Button, Divider, Group, Modal, Select, Stack, Text, Timeline, useModalsStack } from '@mantine/core';
 
 import { DatePickerInput } from '@mantine/dates';
 import { useForm } from '@mantine/form';
 
 import dayjs from 'dayjs';
 
-import { IconExternalLink, IconPencil, IconTrash } from '@tabler/icons-react';
+import { IconAt, IconBriefcase2, IconPencil, IconRoute, IconTrash } from '@tabler/icons-react';
 
 import type { JobApplication } from '../contexts/ApplicationContext';
 
@@ -141,13 +141,21 @@ const ApplicationDetails = ({
         centered
       >
         <Stack gap="md" align="flex-start">
-          <Text w="max-content" maw="100%" truncate="end" title={application?.jobTitle}>
-            {application?.jobTitle}
+          <Text c="dimmed" w="max-content" maw="100%" className="text">
+            <IconBriefcase2 size={16} stroke={1.5} />
+            <Text span truncate="end" title={application?.jobTitle} flex={1}>
+              {application?.jobTitle}
+            </Text>
           </Text>
 
-          <Text c="dimmed" w="max-content" maw="100%" truncate="end" title={application?.emailUsed}>
-            {application?.emailUsed}
+          <Text c="dimmed" w="max-content" maw="100%" className="text">
+            <IconAt size={16} stroke={1.5} />
+            <Text span truncate="end" title={application?.emailUsed} flex={1}>
+              {application?.emailUsed}
+            </Text>
           </Text>
+
+          <Divider variant="dotted" w="100%" />
 
           <Anchor
             href={application?.link || undefined}
@@ -161,7 +169,7 @@ const ApplicationDetails = ({
               }
             }}
           >
-            <IconExternalLink size={16} stroke={1.5} /> Track application
+            <IconRoute size={16} stroke={1.5} /> Track application
           </Anchor>
 
           <Timeline bulletSize={16} lineWidth={2} mt="xs">

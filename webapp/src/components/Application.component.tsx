@@ -4,7 +4,15 @@ import { useDisclosure } from '@mantine/hooks';
 
 import GeoPattern from 'geopattern';
 
-import { IconDots, IconExternalLink, IconFileText, IconPencil, IconStatusChange, IconTrash } from '@tabler/icons-react';
+import {
+  IconBriefcase2,
+  IconDots,
+  IconFileText,
+  IconPencil,
+  IconRoute,
+  IconStatusChange,
+  IconTrash
+} from '@tabler/icons-react';
 
 import type { JobApplication } from '../contexts/ApplicationContext';
 
@@ -90,7 +98,7 @@ const Application = ({ application }: { application: JobApplication }) => {
                   href={application.link || undefined}
                   target="_blank"
                   rel="noopener noreferrer"
-                  leftSection={<IconExternalLink size={16} stroke={1.5} />}
+                  leftSection={<IconRoute size={16} stroke={1.5} />}
                   disabled={!application.link}
                 >
                   Track application
@@ -109,8 +117,11 @@ const Application = ({ application }: { application: JobApplication }) => {
             </Menu>
           </Group>
 
-          <Text c="dimmed" w="max-content" maw="100%" truncate="end" title={application.jobTitle}>
-            {application.jobTitle}
+          <Text c="dimmed" w="max-content" maw="100%" className="text">
+            <IconBriefcase2 size={16} stroke={1.5} />
+            <Text span truncate="end" title={application?.jobTitle} flex={1}>
+              {application.jobTitle}
+            </Text>
           </Text>
 
           <Stack gap={0}>
