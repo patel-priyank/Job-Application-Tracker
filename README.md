@@ -84,9 +84,6 @@ Configure environment variables:
 
    # Database
    MONGO_URI=mongodb://localhost:27017/job-tracker
-
-   # Pagination
-   PAGE_SIZE=24
    ```
 
 Start the development server:
@@ -110,18 +107,6 @@ Install dependencies:
 ```bash
 npm install
 ```
-
-Configure environment variables:
-
-1. Create a `.env` file in the `webapp` root (copy from `.env.example`). You can do this by running:
-   ```bash
-   cp .env.example .env
-   ```
-2. Add your configuration:
-   ```env
-   VITE_PAGE_SIZE=24
-   # Note: This must be the same as PAGE_SIZE in the api .env
-   ```
 
 Start the development server:
 

@@ -7,11 +7,17 @@ import Application from '../models/application.model';
 import User from '../models/user.model';
 
 const getApplications = async (req: Request, res: Response) => {
-  const { query, sort, order, page } = req.query as { query: string; sort: string; order: string; page: string };
+  const { query, sort, order, page, pageSize } = req.query as {
+    query: string;
+    sort: string;
+    order: string;
+    page: string;
+    pageSize: string;
+  };
 
   try {
-    if (!sort || !order || !page) {
-      return res.status(400).json({ error: 'Sort, order, and page are required.' });
+    if (!sort || !order || !page || !pageSize) {
+      return res.status(400).json({ error: 'Sort, order, page, and pageSize are required.' });
     }
 
     if (!['added', 'updated', 'company', 'status'].includes(sort)) {
@@ -24,6 +30,10 @@ const getApplications = async (req: Request, res: Response) => {
 
     if (!Number(page) || Number(page) < 1) {
       return res.status(400).json({ error: 'Invalid page.' });
+    }
+
+    if (!Number(pageSize) || Number(pageSize) < 1) {
+      return res.status(400).json({ error: 'Invalid pageSize.' });
     }
 
     let sortObj: any = {};
@@ -82,8 +92,8 @@ const getApplications = async (req: Request, res: Response) => {
     const applications = await Application.find(filter)
       .collation({ locale: 'en' })
       .sort(sortObj)
-      .skip((Number(page) - 1) * Number(process.env.PAGE_SIZE))
-      .limit(Number(process.env.PAGE_SIZE));
+      .skip((Number(page) - 1) * Number(pageSize))
+      .limit(Number(pageSize));
 
     const count = await Application.countDocuments(filter);
 

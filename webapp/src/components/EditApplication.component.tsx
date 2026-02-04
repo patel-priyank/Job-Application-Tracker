@@ -21,7 +21,7 @@ const EditApplication = ({
   onClose: () => void;
   application: JobApplication | null;
 }) => {
-  const { order, page, searchQuery, sort, dispatch: applicationDispatch } = useApplicationContext();
+  const { order, page, pageSize, searchQuery, sort, dispatch: applicationDispatch } = useApplicationContext();
   const { user } = useAuthContext();
 
   const [loading, setLoading] = useState(false);
@@ -119,7 +119,7 @@ const EditApplication = ({
       return;
     }
 
-    await fetchApplications(sort, order, page, user.token, applicationDispatch, searchQuery);
+    await fetchApplications(sort, order, page, pageSize, user.token, applicationDispatch, searchQuery);
 
     if (!user.suggestedEmails.includes(values.emailUsed)) {
       user.suggestedEmails.push(values.emailUsed);

@@ -24,7 +24,7 @@ const CreateApplicationStatus = ({
   onClose: () => void;
   application: JobApplication | null;
 }) => {
-  const { order, page, searchQuery, sort, dispatch: applicationDispatch } = useApplicationContext();
+  const { order, page, pageSize, searchQuery, sort, dispatch: applicationDispatch } = useApplicationContext();
   const { user } = useAuthContext();
 
   const [loading, setLoading] = useState(false);
@@ -86,7 +86,7 @@ const CreateApplicationStatus = ({
       return;
     }
 
-    await fetchApplications(sort, order, page, user.token, applicationDispatch, searchQuery);
+    await fetchApplications(sort, order, page, pageSize, user.token, applicationDispatch, searchQuery);
 
     showNotification('Progress made!', 'The application status has been updated successfully.', false);
 

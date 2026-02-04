@@ -12,6 +12,7 @@ export const fetchApplications = async (
   sort: string,
   order: string,
   page: number,
+  pageSize: number,
   token: string,
   applicationDispatch: React.Dispatch<ApplicationAction>,
   query?: string
@@ -24,7 +25,7 @@ export const fetchApplications = async (
 
   const { signal } = abortController;
 
-  let fetchApplicationsUrl = `/api/applications?sort=${sort}&order=${order}&page=${page}`;
+  let fetchApplicationsUrl = `/api/applications?sort=${sort}&order=${order}&page=${page}&pageSize=${pageSize}`;
 
   if (query) {
     fetchApplicationsUrl += `&query=${query}`;

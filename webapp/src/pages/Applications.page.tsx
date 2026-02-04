@@ -46,7 +46,15 @@ const SORT_OPTIONS = [
 ];
 
 const Applications = () => {
-  const { applications, order, page, searchQuery, sort, dispatch: applicationDispatch } = useApplicationContext();
+  const {
+    applications,
+    order,
+    page,
+    pageSize,
+    searchQuery,
+    sort,
+    dispatch: applicationDispatch
+  } = useApplicationContext();
   const { user } = useAuthContext();
 
   const [loading, setLoading] = useState(false);
@@ -75,7 +83,7 @@ const Applications = () => {
         payload: ''
       });
 
-      fetchApplications(paramsRef.current.sort, paramsRef.current.order, 1, user.token, applicationDispatch);
+      fetchApplications(paramsRef.current.sort, paramsRef.current.order, 1, pageSize, user.token, applicationDispatch);
     };
   }, []);
 
@@ -94,7 +102,7 @@ const Applications = () => {
     }
 
     setLoading(true);
-    const count = await fetchApplications(sort, order, 1, user.token, applicationDispatch, query);
+    const count = await fetchApplications(sort, order, 1, pageSize, user.token, applicationDispatch, query);
     setLoading(false);
 
     applicationDispatch({
@@ -116,7 +124,7 @@ const Applications = () => {
     });
 
     setLoading(true);
-    await fetchApplications(sort, order, page, user.token, applicationDispatch, searchQuery);
+    await fetchApplications(sort, order, page, pageSize, user.token, applicationDispatch, searchQuery);
     setLoading(false);
   };
 
@@ -221,10 +229,7 @@ const Applications = () => {
             <Pagination
               mb="lg"
               radius="md"
-              total={(() => {
-                const totalApplications = searchResultsCount ?? user.applicationsCount;
-                return Math.ceil(totalApplications / Number(import.meta.env.VITE_PAGE_SIZE));
-              })()}
+              total={Math.ceil((searchResultsCount ?? user.applicationsCount) / pageSize)}
               value={page}
               siblings={0}
               onChange={async pageVal => {
@@ -234,7 +239,7 @@ const Applications = () => {
                 });
 
                 setLoading(true);
-                await fetchApplications(sort, order, pageVal, user.token, applicationDispatch, searchQuery);
+                await fetchApplications(sort, order, pageVal, pageSize, user.token, applicationDispatch, searchQuery);
                 setLoading(false);
               }}
             />
@@ -242,7 +247,7 @@ const Applications = () => {
 
           {loading && (
             <Grid>
-              {Array.from({ length: Number(import.meta.env.VITE_PAGE_SIZE) }).map((_, index) => (
+              {Array.from({ length: pageSize }).map((_, index) => (
                 <Grid.Col span={{ base: 12, sm: 6, lg: 4, xl: 3 }} key={index}>
                   <Card padding="md" shadow="md" radius="md" withBorder h="100%">
                     <Card.Section h={140}>

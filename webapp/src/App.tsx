@@ -89,7 +89,7 @@ const NavItems = ({ isDesktop }: { isDesktop: boolean }) => {
 };
 
 const AppContent = () => {
-  const { order, page, sort, dispatch: applicationDispatch } = useApplicationContext();
+  const { order, page, pageSize, sort, dispatch: applicationDispatch } = useApplicationContext();
   const { ready, dispatch: authDispatch } = useAuthContext();
 
   const [opened, { toggle }] = useDisclosure();
@@ -198,7 +198,7 @@ const AppContent = () => {
         return;
       }
 
-      await fetchApplications(sort, order, page, JSON.parse(user).token, applicationDispatch);
+      await fetchApplications(sort, order, page, pageSize, JSON.parse(user).token, applicationDispatch);
 
       localStorage.setItem('user', JSON.stringify(data));
 

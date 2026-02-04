@@ -20,6 +20,7 @@ export interface ApplicationState {
   applications: JobApplication[];
   order: string;
   page: number;
+  pageSize: number;
   searchQuery: string;
   sort: string;
 }
@@ -38,6 +39,7 @@ export const ApplicationContext = createContext<ApplicationContextType>({
   applications: [],
   order: 'desc',
   page: 1,
+  pageSize: 24,
   searchQuery: '',
   sort: 'updated',
   dispatch: () => {}
@@ -50,6 +52,7 @@ export const applicationsReducer = (state: ApplicationState, action: Application
         applications: action.payload,
         order: state.order,
         page: state.page,
+        pageSize: state.pageSize,
         searchQuery: state.searchQuery,
         sort: state.sort
       };
@@ -59,6 +62,7 @@ export const applicationsReducer = (state: ApplicationState, action: Application
         applications: state.applications,
         order: action.payload.order,
         page: state.page,
+        pageSize: state.pageSize,
         searchQuery: state.searchQuery,
         sort: action.payload.sort
       };
@@ -68,6 +72,7 @@ export const applicationsReducer = (state: ApplicationState, action: Application
         applications: state.applications,
         order: state.order,
         page: action.payload,
+        pageSize: state.pageSize,
         searchQuery: state.searchQuery,
         sort: state.sort
       };
@@ -77,6 +82,7 @@ export const applicationsReducer = (state: ApplicationState, action: Application
         applications: state.applications,
         order: state.order,
         page: state.page,
+        pageSize: state.pageSize,
         searchQuery: action.payload,
         sort: state.sort
       };
@@ -95,6 +101,7 @@ export const ApplicationContextProvider = ({ children }: ApplicationContextProvi
     applications: [],
     order: 'desc',
     page: 1,
+    pageSize: 24,
     searchQuery: '',
     sort: 'updated'
   });

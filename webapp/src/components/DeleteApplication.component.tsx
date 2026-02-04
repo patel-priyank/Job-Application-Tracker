@@ -18,7 +18,7 @@ const DeleteApplication = ({
   onClose: () => void;
   application: JobApplication;
 }) => {
-  const { order, page, searchQuery, sort, dispatch: applicationDispatch } = useApplicationContext();
+  const { order, page, pageSize, searchQuery, sort, dispatch: applicationDispatch } = useApplicationContext();
   const { user } = useAuthContext();
 
   const [loading, setLoading] = useState(false);
@@ -48,8 +48,8 @@ const DeleteApplication = ({
       return;
     }
 
-    const isLastApplication = user.applicationsCount % Number(import.meta.env.VITE_PAGE_SIZE) === 1;
-    const isLastPage = Math.ceil(user.applicationsCount / Number(import.meta.env.VITE_PAGE_SIZE)) === page;
+    const isLastApplication = user.applicationsCount % pageSize === 1;
+    const isLastPage = Math.ceil(user.applicationsCount / pageSize) === page;
 
     let newPage = page;
 
@@ -62,7 +62,7 @@ const DeleteApplication = ({
       });
     }
 
-    await fetchApplications(sort, order, newPage, user.token, applicationDispatch, searchQuery);
+    await fetchApplications(sort, order, newPage, pageSize, user.token, applicationDispatch, searchQuery);
 
     user.applicationsCount--;
 
