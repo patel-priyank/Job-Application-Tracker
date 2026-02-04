@@ -210,7 +210,7 @@ const Statistics = () => {
                     const count = statistics.statusCounts.find(s => s.label === status.label)?.value ?? 0;
 
                     return (
-                      <Grid.Col span={{ base: 12, md: 6, lg: 4, xl: 3 }} key={status.label}>
+                      <Grid.Col span={{ base: 12, sm: 6, lg: 4, xl: 3 }} key={status.label}>
                         <Card padding="md" shadow="md" radius="md" withBorder h="100%">
                           <Stack gap="xs" align="center">
                             <Group gap="xs">

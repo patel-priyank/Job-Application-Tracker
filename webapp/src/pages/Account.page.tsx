@@ -106,7 +106,7 @@ const Account = () => {
       {user && (
         <>
           <Grid>
-            <Grid.Col span={{ base: 12, md: 6, lg: 4, xl: 3 }}>
+            <Grid.Col span={{ base: 12, sm: 6, lg: 4, xl: 3 }}>
               <Card padding="md" shadow="md" radius="md" withBorder h="100%">
                 <Stack gap="md">
                   <Group justify="space-between">
@@ -124,7 +124,7 @@ const Account = () => {
               </Card>
             </Grid.Col>
 
-            <Grid.Col span={{ base: 12, md: 6, lg: 4, xl: 3 }}>
+            <Grid.Col span={{ base: 12, sm: 6, lg: 4, xl: 3 }}>
               <Card padding="md" shadow="md" radius="md" withBorder h="100%">
                 <Stack gap="md">
                   <Group justify="space-between">
@@ -142,7 +142,7 @@ const Account = () => {
               </Card>
             </Grid.Col>
 
-            <Grid.Col span={{ base: 12, md: 6, lg: 4, xl: 3 }}>
+            <Grid.Col span={{ base: 12, sm: 6, lg: 4, xl: 3 }}>
               <Card padding="md" shadow="md" radius="md" withBorder h="100%">
                 <Stack gap="md">
                   <Group justify="space-between">
@@ -158,7 +158,7 @@ const Account = () => {
               </Card>
             </Grid.Col>
 
-            <Grid.Col span={{ base: 12, md: 6, lg: 4, xl: 3 }}>
+            <Grid.Col span={{ base: 12, sm: 6, lg: 4, xl: 3 }}>
               <Card padding="md" shadow="md" radius="md" withBorder h="100%">
                 <Stack gap="md">
                   <Group justify="space-between">
@@ -196,7 +196,7 @@ const Account = () => {
 
               <Accordion.Panel>
                 <Grid>
-                  <Grid.Col span={{ base: 12, md: 6, lg: 4, xl: 3 }}>
+                  <Grid.Col span={{ base: 12, sm: 6, lg: 4, xl: 3 }}>
                     <Card padding="md" shadow="md" radius="md" withBorder h="100%" bg="var(--mantine-color-body)">
                       <Stack gap="md" align="flex-start">
                         <Text>Job Applications</Text>
@@ -218,7 +218,7 @@ const Account = () => {
                     </Card>
                   </Grid.Col>
 
-                  <Grid.Col span={{ base: 12, md: 6, lg: 4, xl: 3 }}>
+                  <Grid.Col span={{ base: 12, sm: 6, lg: 4, xl: 3 }}>
                     <Card padding="md" shadow="md" radius="md" withBorder h="100%" bg="var(--mantine-color-body)">
                       <Stack gap="md" align="flex-start">
                         <Text>Account</Text>

@@ -18,22 +18,13 @@ import {
   Stack,
   Text,
   Tooltip,
-  Transition,
   useComputedColorScheme,
   useMantineColorScheme
 } from '@mantine/core';
-import { useDisclosure, useViewportSize, useWindowEvent, useWindowScroll } from '@mantine/hooks';
+import { useDisclosure, useWindowEvent } from '@mantine/hooks';
 import { Notifications } from '@mantine/notifications';
 
-import {
-  IconBrandGithub,
-  IconChartBar,
-  IconCircleArrowUp,
-  IconFiles,
-  IconMoon,
-  IconSun,
-  IconUser
-} from '@tabler/icons-react';
+import { IconBrandGithub, IconChartBar, IconFiles, IconMoon, IconSun, IconUser } from '@tabler/icons-react';
 
 import { ApplicationContextProvider } from './contexts/ApplicationContext';
 import { AuthContextProvider } from './contexts/AuthContext';
@@ -56,19 +47,55 @@ import '@mantine/notifications/styles.css';
 
 import './App.css';
 
+const NavItems = ({ isDesktop }: { isDesktop: boolean }) => {
+  const [_, { close }] = useDisclosure();
+
+  const location = useLocation();
+
+  const navItems = [
+    {
+      label: 'Applications',
+      link: '/',
+      icon: <IconFiles size={20} stroke={1.5} />
+    },
+    {
+      label: 'Statistics',
+      link: '/statistics',
+      icon: <IconChartBar size={20} stroke={1.5} />
+    },
+    {
+      label: 'Account',
+      link: '/account',
+      icon: <IconUser size={20} stroke={1.5} />
+    }
+  ];
+
+  return (
+    <>
+      {navItems.map((item, index) => (
+        <NavLink
+          key={index}
+          component={Link}
+          to={item.link}
+          label={item.label}
+          leftSection={item.icon}
+          active={location.pathname === item.link}
+          onClick={close}
+          style={{ borderRadius: 'var(--mantine-radius-md)', width: isDesktop ? 'max-content' : '100%' }}
+        />
+      ))}
+    </>
+  );
+};
+
 const AppContent = () => {
   const { order, page, sort, dispatch: applicationDispatch } = useApplicationContext();
   const { ready, dispatch: authDispatch } = useAuthContext();
 
-  const [opened, { toggle, close }] = useDisclosure();
+  const [opened, { toggle }] = useDisclosure();
   const [signedOutOpened, { open: openSignedOut, close: closeSignedOut }] = useDisclosure(false);
 
   const [signedOutMessage, setSignedOutMessage] = useState('');
-
-  const location = useLocation();
-
-  const [scroll, scrollTo] = useWindowScroll();
-  const { height } = useViewportSize();
 
   const checkSessionValidity = async () => {
     const user = localStorage.getItem('user');
@@ -189,7 +216,7 @@ const AppContent = () => {
       navbar={{
         width: 300,
         breakpoint: 'sm',
-        collapsed: { mobile: !opened }
+        collapsed: { desktop: true, mobile: !opened }
       }}
     >
       <AppShell.Header>
@@ -201,32 +228,21 @@ const AppContent = () => {
           </Text>
 
           <Group ml="auto" gap="xs" wrap="nowrap">
-            <Transition transition="slide-down" mounted={scroll.y > height * 0.25}>
-              {transitionStyles => (
-                <>
-                  <Button
-                    variant="light"
-                    style={transitionStyles}
-                    size="xs"
-                    onClick={() => scrollTo({ y: 0 })}
-                    hiddenFrom="sm"
-                  >
-                    <IconCircleArrowUp size={16} stroke={1.5} />
-                  </Button>
+            <Group gap={0} visibleFrom="sm" wrap="nowrap">
+              <NavItems isDesktop={true} />
+            </Group>
 
-                  <Button
-                    variant="light"
-                    style={transitionStyles}
-                    size="xs"
-                    onClick={() => scrollTo({ y: 0 })}
-                    visibleFrom="sm"
-                    leftSection={<IconCircleArrowUp size={16} stroke={1.5} />}
-                  >
-                    Scroll to top
-                  </Button>
-                </>
-              )}
-            </Transition>
+            <Tooltip label="Source code">
+              <ActionIcon
+                variant="default"
+                component={Link}
+                to="https://github.com/patel-priyank/Job-Application-Tracker"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <IconBrandGithub size={16} stroke={1.5} />
+              </ActionIcon>
+            </Tooltip>
 
             <Tooltip label={computedColorScheme === 'light' ? 'Dark mode' : 'Light mode'}>
               <ActionIcon
@@ -245,43 +261,7 @@ const AppContent = () => {
       </AppShell.Header>
 
       <AppShell.Navbar p="xs">
-        <NavLink
-          component={Link}
-          to="/"
-          label="Applications"
-          leftSection={<IconFiles size={20} stroke={1.5} />}
-          active={location.pathname === '/'}
-          onClick={close}
-          style={{ borderRadius: 'var(--mantine-radius-md)' }}
-        />
-        <NavLink
-          component={Link}
-          to="/statistics"
-          label="Statistics"
-          leftSection={<IconChartBar size={20} stroke={1.5} />}
-          active={location.pathname === '/statistics'}
-          onClick={close}
-          style={{ borderRadius: 'var(--mantine-radius-md)' }}
-        />
-        <NavLink
-          component={Link}
-          to="/account"
-          label="Account"
-          leftSection={<IconUser size={20} stroke={1.5} />}
-          active={location.pathname === '/account'}
-          onClick={close}
-          style={{ borderRadius: 'var(--mantine-radius-md)' }}
-        />
-        <NavLink
-          mt="auto"
-          href="https://github.com/patel-priyank/Job-Application-Tracker"
-          target="_blank"
-          rel="noopener noreferrer"
-          label="Source Code"
-          leftSection={<IconBrandGithub size={20} stroke={1.5} />}
-          onClick={close}
-          style={{ borderRadius: 'var(--mantine-radius-md)' }}
-        />
+        <NavItems isDesktop={false} />
       </AppShell.Navbar>
 
       <AppShell.Main pb={ready ? 74 : undefined}>

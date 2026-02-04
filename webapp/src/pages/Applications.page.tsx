@@ -243,7 +243,7 @@ const Applications = () => {
           {loading && (
             <Grid>
               {Array.from({ length: Number(import.meta.env.VITE_PAGE_SIZE) }).map((_, index) => (
-                <Grid.Col span={{ base: 12, md: 6, lg: 4, xl: 3 }} key={index}>
+                <Grid.Col span={{ base: 12, sm: 6, lg: 4, xl: 3 }} key={index}>
                   <Card padding="md" shadow="md" radius="md" withBorder h="100%">
                     <Card.Section h={140}>
                       <Skeleton height={140} radius={0} animate={false} />
@@ -283,7 +283,7 @@ const Applications = () => {
               ) : (
                 <Grid>
                   {applications.map(application => (
-                    <Grid.Col span={{ base: 12, md: 6, lg: 4, xl: 3 }} key={application._id}>
+                    <Grid.Col span={{ base: 12, sm: 6, lg: 4, xl: 3 }} key={application._id}>
                       <Application application={application} />
                     </Grid.Col>
                   ))}
