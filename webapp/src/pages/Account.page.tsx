@@ -176,7 +176,7 @@ const Account = () => {
               <Accordion.Panel>
                 <Grid>
                   <Grid.Col span={{ base: 12, sm: 6, lg: 4, xl: 3 }}>
-                    <Card padding="md" shadow="md" radius="md" withBorder h="100%" bg="var(--mantine-color-body)">
+                    <Card padding="md" shadow="md" radius="md" withBorder h="100%">
                       <Stack gap="md" align="flex-start">
                         <Text>Job Applications</Text>
 
@@ -198,7 +198,7 @@ const Account = () => {
                   </Grid.Col>
 
                   <Grid.Col span={{ base: 12, sm: 6, lg: 4, xl: 3 }}>
-                    <Card padding="md" shadow="md" radius="md" withBorder h="100%" bg="var(--mantine-color-body)">
+                    <Card padding="md" shadow="md" radius="md" withBorder h="100%">
                       <Stack gap="md" align="flex-start">
                         <Text>Account</Text>
 
