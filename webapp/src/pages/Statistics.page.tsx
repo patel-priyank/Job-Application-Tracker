@@ -10,7 +10,6 @@ import {
   Card,
   Center,
   ColorSwatch,
-  Divider,
   Grid,
   Group,
   Image,
@@ -101,14 +100,6 @@ const Statistics = () => {
 
   return (
     <>
-      <Group>
-        <Text component="h2" size="lg" fw="500">
-          Statistics
-        </Text>
-      </Group>
-
-      <Divider my="md" />
-
       {!user && (
         <Grid justify="center">
           <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>

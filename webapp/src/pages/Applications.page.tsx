@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import {
   Button,
   Card,
-  Divider,
   Flex,
   Grid,
   Group,
@@ -131,14 +130,6 @@ const Applications = () => {
   return (
     <>
       <CreateApplication opened={createAppOpened} onClose={closeCreateApp} />
-
-      <Group justify="space-between">
-        <Text component="h2" size="lg" fw="500">
-          Applications
-        </Text>
-      </Group>
-
-      <Divider my="md" />
 
       {!user && (
         <Grid justify="center">

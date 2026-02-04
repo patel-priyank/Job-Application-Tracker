@@ -1,17 +1,4 @@
-import {
-  Accordion,
-  ActionIcon,
-  Avatar,
-  Box,
-  Button,
-  Card,
-  Divider,
-  Grid,
-  Group,
-  Image,
-  Stack,
-  Text
-} from '@mantine/core';
+import { Accordion, ActionIcon, Avatar, Box, Button, Card, Grid, Group, Image, Stack, Text } from '@mantine/core';
 
 import { useDisclosure } from '@mantine/hooks';
 
@@ -61,14 +48,6 @@ const Account = () => {
       <SignIn opened={signInOpened} onClose={closeSignIn} />
       <SignOut opened={signOutOpened} onClose={closeSignOut} />
       <SignUp opened={signUpOpened} onClose={closeSignUp} />
-
-      <Group justify="space-between">
-        <Text component="h2" size="lg" fw="500">
-          Account
-        </Text>
-      </Group>
-
-      <Divider my="md" />
 
       {!user && (
         <Grid justify="center">

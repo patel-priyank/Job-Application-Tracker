@@ -95,6 +95,8 @@ const AppContent = () => {
 
   const [signedOutMessage, setSignedOutMessage] = useState('');
 
+  const location = useLocation();
+
   const checkSessionValidity = async () => {
     const user = localStorage.getItem('user');
 
@@ -222,7 +224,9 @@ const AppContent = () => {
           <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
 
           <Text component="h1" size="lg" truncate="end" fw="bold">
-            Job Application Tracker
+            {location.pathname === '/' && 'Applications'}
+            {location.pathname === '/statistics' && 'Statistics'}
+            {location.pathname === '/account' && 'Account'}
           </Text>
 
           <Group ml="auto" gap="xs" wrap="nowrap">
