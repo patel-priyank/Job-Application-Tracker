@@ -10,6 +10,7 @@ import {
   Button,
   Center,
   Container,
+  FocusTrap,
   Group,
   Loader,
   MantineProvider,
@@ -47,7 +48,7 @@ import '@mantine/notifications/styles.css';
 
 import './App.css';
 
-const NavItems = ({ close, isDesktop }: { close: () => void; isDesktop: boolean }) => {
+const NavItems = ({ opened, close, isDesktop }: { opened: boolean; close: () => void; isDesktop: boolean }) => {
   const location = useLocation();
 
   const navItems = [
@@ -80,6 +81,7 @@ const NavItems = ({ close, isDesktop }: { close: () => void; isDesktop: boolean 
           active={location.pathname === item.link}
           onClick={close}
           style={{ borderRadius: 'var(--mantine-radius-md)', width: isDesktop ? 'max-content' : '100%' }}
+          tabIndex={isDesktop || opened ? undefined : -1}
         />
       ))}
     </>
@@ -231,7 +233,7 @@ const AppContent = () => {
 
           <Group ml="auto" gap="xs" wrap="nowrap">
             <Group gap={0} visibleFrom="sm" wrap="nowrap">
-              <NavItems close={close} isDesktop={true} />
+              <NavItems opened={opened} close={close} isDesktop={true} />
             </Group>
 
             <Tooltip label="Source code">
@@ -262,10 +264,11 @@ const AppContent = () => {
         </Group>
       </AppShell.Header>
 
-      <AppShell.Navbar p="xs">
-        <NavItems close={close} isDesktop={false} />
-      </AppShell.Navbar>
-
+      <FocusTrap active={opened}>
+        <AppShell.Navbar p="xs" hiddenFrom="sm">
+          <NavItems opened={opened} close={close} isDesktop={false} />
+        </AppShell.Navbar>
+      </FocusTrap>
       <AppShell.Main pb={ready ? 74 : undefined}>
         <Modal opened={signedOutOpened} onClose={closeSignedOut} title="Signed Out" overlayProps={{ blur: 2 }} centered>
           <Stack gap="sm">
