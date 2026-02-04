@@ -1,4 +1,4 @@
-import { ActionIcon, Card, Group, Indicator, Menu, Stack, Text } from '@mantine/core';
+import { ActionIcon, Badge, Card, Group, Menu, Stack, Text } from '@mantine/core';
 
 import { useDisclosure } from '@mantine/hooks';
 
@@ -52,103 +52,102 @@ const Application = ({ application }: { application: JobApplication }) => {
 
       <EditApplication opened={editApplicationOpened} onClose={closeEditApplication} application={application} />
 
-      <Indicator
-        w="100%"
-        size={16}
-        withBorder
-        zIndex={90}
-        color={Object.values(APPLICATION_STATUS).find(status => status.label === application.status)?.color}
-        disabled={!dayjs(application.history[application.history.length - 1].date).isSame(dayjs(), 'day')}
-      >
-        <Card padding="md" shadow="md" radius="md" withBorder h="100%">
-          <Card.Section h={140} bg={GeoPattern.generate(application.companyName).toDataUrl()} />
-
-          <Stack gap="xs" mt="md">
-            <Group justify="space-between" wrap="nowrap">
-              <Text truncate="end" title={application.companyName}>
-                {application.companyName}
-              </Text>
-
-              <Menu withinPortal position="bottom-end" shadow="xl">
-                <Menu.Target>
-                  <ActionIcon variant="light" color="gray">
-                    <IconDots size={16} stroke={1.5} />
-                  </ActionIcon>
-                </Menu.Target>
-
-                <Menu.Dropdown>
-                  <Menu.Item
-                    leftSection={<IconFileText size={16} stroke={1.5} />}
-                    onClick={() => setTimeout(openApplicationDetails, 0)}
-                  >
-                    View details
-                  </Menu.Item>
-
-                  <Menu.Divider />
-
-                  <Menu.Item
-                    leftSection={<IconPencil size={16} stroke={1.5} />}
-                    onClick={() => setTimeout(openEditApplication, 0)}
-                  >
-                    Edit application
-                  </Menu.Item>
-
-                  <Menu.Item
-                    leftSection={<IconStatusChange size={16} stroke={1.5} />}
-                    onClick={() => setTimeout(openCreateApplicationStatus, 0)}
-                  >
-                    Update status
-                  </Menu.Item>
-
-                  <Menu.Divider />
-
-                  <Menu.Item
-                    component="a"
-                    href={application.link || undefined}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    leftSection={<IconRoute size={16} stroke={1.5} />}
-                    disabled={!application.link}
-                  >
-                    Track application
-                  </Menu.Item>
-
-                  <Menu.Divider />
-
-                  <Menu.Item
-                    leftSection={<IconTrash size={16} stroke={1.5} />}
-                    color="red"
-                    onClick={() => setTimeout(openDeleteApplication, 0)}
-                  >
-                    Delete application
-                  </Menu.Item>
-                </Menu.Dropdown>
-              </Menu>
+      <Card padding="md" shadow="md" radius="md" withBorder h="100%">
+        <Card.Section h={140} bg={GeoPattern.generate(application.companyName).toDataUrl()}>
+          {dayjs(application.history[application.history.length - 1].date).isSame(dayjs(), 'day') && (
+            <Group m="xs">
+              <Badge radius="sm" ml="auto" style={{ border: '1px solid var(--mantine-color-white)' }}>
+                {application.history.length === 1 ? 'New' : 'Recently updated'}
+              </Badge>
             </Group>
+          )}
+        </Card.Section>
 
-            <Text c="dimmed" w="max-content" maw="100%" className="text-with-icon">
-              <IconBriefcase2 size={16} stroke={1.5} />
-              <Text span truncate="end" title={application?.jobTitle} flex={1}>
-                {application.jobTitle}
-              </Text>
+        <Stack gap="xs" mt="md">
+          <Group justify="space-between" wrap="nowrap">
+            <Text truncate="end" title={application.companyName}>
+              {application.companyName}
             </Text>
 
-            <Stack gap={0}>
-              <Text
-                c={Object.values(APPLICATION_STATUS).find(status => status.label === application.status)?.color}
-                size="sm"
-                fw="500"
-              >
-                {application.status}
-              </Text>
+            <Menu withinPortal position="bottom-end" shadow="xl">
+              <Menu.Target>
+                <ActionIcon variant="light" color="gray">
+                  <IconDots size={16} stroke={1.5} />
+                </ActionIcon>
+              </Menu.Target>
 
-              <Text c="dimmed" size="sm">
-                {formatDate(application.date)}
-              </Text>
-            </Stack>
+              <Menu.Dropdown>
+                <Menu.Item
+                  leftSection={<IconFileText size={16} stroke={1.5} />}
+                  onClick={() => setTimeout(openApplicationDetails, 0)}
+                >
+                  View details
+                </Menu.Item>
+
+                <Menu.Divider />
+
+                <Menu.Item
+                  leftSection={<IconPencil size={16} stroke={1.5} />}
+                  onClick={() => setTimeout(openEditApplication, 0)}
+                >
+                  Edit application
+                </Menu.Item>
+
+                <Menu.Item
+                  leftSection={<IconStatusChange size={16} stroke={1.5} />}
+                  onClick={() => setTimeout(openCreateApplicationStatus, 0)}
+                >
+                  Update status
+                </Menu.Item>
+
+                <Menu.Divider />
+
+                <Menu.Item
+                  component="a"
+                  href={application.link || undefined}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  leftSection={<IconRoute size={16} stroke={1.5} />}
+                  disabled={!application.link}
+                >
+                  Track application
+                </Menu.Item>
+
+                <Menu.Divider />
+
+                <Menu.Item
+                  leftSection={<IconTrash size={16} stroke={1.5} />}
+                  color="red"
+                  onClick={() => setTimeout(openDeleteApplication, 0)}
+                >
+                  Delete application
+                </Menu.Item>
+              </Menu.Dropdown>
+            </Menu>
+          </Group>
+
+          <Text c="dimmed" w="max-content" maw="100%" className="text-with-icon">
+            <IconBriefcase2 size={16} stroke={1.5} />
+            <Text span truncate="end" title={application?.jobTitle} flex={1}>
+              {application.jobTitle}
+            </Text>
+          </Text>
+
+          <Stack gap={0}>
+            <Text
+              c={Object.values(APPLICATION_STATUS).find(status => status.label === application.status)?.color}
+              size="sm"
+              fw="500"
+            >
+              {application.status}
+            </Text>
+
+            <Text c="dimmed" size="sm">
+              {formatDate(application.date)}
+            </Text>
           </Stack>
-        </Card>
-      </Indicator>
+        </Stack>
+      </Card>
     </>
   );
 };
