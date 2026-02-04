@@ -8,6 +8,7 @@ import GeoPattern from 'geopattern';
 import {
   IconBriefcase2,
   IconDots,
+  IconFileSpark,
   IconFileText,
   IconPencil,
   IconRoute,
@@ -54,13 +55,19 @@ const Application = ({ application }: { application: JobApplication }) => {
 
       <Card padding="md" shadow="md" radius="md" withBorder h="100%">
         <Card.Section h={140} bg={GeoPattern.generate(application.companyName).toDataUrl()}>
-          {dayjs(application.history[application.history.length - 1].date).isSame(dayjs(), 'day') && (
-            <Group m="xs">
-              <Badge radius="sm" ml="auto" style={{ border: '1px solid var(--mantine-color-white)' }}>
+          <Stack m="xs" gap="xs" align="flex-end">
+            {dayjs(application.history[application.history.length - 1].date).isSame(dayjs(), 'day') && (
+              <Badge radius="sm" autoContrast color="yellow" leftSection={<IconFileSpark size={14} stroke={1.5} />}>
                 {application.history.length === 1 ? 'New' : 'Recently updated'}
               </Badge>
-            </Group>
-          )}
+            )}
+
+            {application.link && (
+              <Badge radius="sm" autoContrast color="blue" leftSection={<IconRoute size={14} stroke={1.5} />}>
+                Tracking available
+              </Badge>
+            )}
+          </Stack>
         </Card.Section>
 
         <Stack gap="xs" mt="md">
