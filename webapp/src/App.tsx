@@ -47,9 +47,7 @@ import '@mantine/notifications/styles.css';
 
 import './App.css';
 
-const NavItems = ({ isDesktop }: { isDesktop: boolean }) => {
-  const [_, { close }] = useDisclosure();
-
+const NavItems = ({ close, isDesktop }: { close: () => void; isDesktop: boolean }) => {
   const location = useLocation();
 
   const navItems = [
@@ -92,7 +90,7 @@ const AppContent = () => {
   const { order, page, pageSize, sort, dispatch: applicationDispatch } = useApplicationContext();
   const { ready, dispatch: authDispatch } = useAuthContext();
 
-  const [opened, { toggle }] = useDisclosure();
+  const [opened, { toggle, close }] = useDisclosure();
   const [signedOutOpened, { open: openSignedOut, close: closeSignedOut }] = useDisclosure(false);
 
   const [signedOutMessage, setSignedOutMessage] = useState('');
@@ -229,7 +227,7 @@ const AppContent = () => {
 
           <Group ml="auto" gap="xs" wrap="nowrap">
             <Group gap={0} visibleFrom="sm" wrap="nowrap">
-              <NavItems isDesktop={true} />
+              <NavItems close={close} isDesktop={true} />
             </Group>
 
             <Tooltip label="Source code">
@@ -261,7 +259,7 @@ const AppContent = () => {
       </AppShell.Header>
 
       <AppShell.Navbar p="xs">
-        <NavItems isDesktop={false} />
+        <NavItems close={close} isDesktop={false} />
       </AppShell.Navbar>
 
       <AppShell.Main pb={ready ? 74 : undefined}>
