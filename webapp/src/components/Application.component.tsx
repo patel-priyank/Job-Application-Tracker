@@ -56,6 +56,7 @@ const Application = ({ application }: { application: JobApplication }) => {
         w="100%"
         size={16}
         withBorder
+        zIndex={90}
         color={Object.values(APPLICATION_STATUS).find(status => status.label === application.status)?.color}
         disabled={!dayjs(application.history[application.history.length - 1].date).isSame(dayjs(), 'day')}
       >
