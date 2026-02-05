@@ -219,10 +219,12 @@ const Applications = () => {
           <Group justify="center">
             <Pagination
               mb="lg"
+              gap={4}
               radius="md"
               total={Math.ceil((searchResultsCount ?? user.applicationsCount) / pageSize)}
               value={page}
               siblings={0}
+              hideWithOnePage
               onChange={async pageVal => {
                 applicationDispatch({
                   type: 'SET_PAGE',
