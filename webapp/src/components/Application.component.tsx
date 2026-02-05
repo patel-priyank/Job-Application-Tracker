@@ -68,12 +68,6 @@ const Application = ({ application }: { application: JobApplication }) => {
                   Recently updated
                 </Badge>
               )}
-
-            {application.link && (
-              <Badge radius="sm" autoContrast color="blue" leftSection={<IconRoute size={14} stroke={1.5} />}>
-                Tracking available
-              </Badge>
-            )}
           </Stack>
         </Card.Section>
 
