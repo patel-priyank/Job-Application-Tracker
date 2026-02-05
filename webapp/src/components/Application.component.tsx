@@ -1,4 +1,4 @@
-import { ActionIcon, Badge, Card, Group, Menu, Stack, Text } from '@mantine/core';
+import { ActionIcon, Badge, Card, Group, Highlight, Menu, Stack, Text } from '@mantine/core';
 
 import { useDisclosure } from '@mantine/hooks';
 
@@ -26,7 +26,7 @@ import EditApplication from './EditApplication.component';
 import { APPLICATION_STATUS } from '../utils/constants';
 import { formatDate } from '../utils/functions';
 
-const Application = ({ application }: { application: JobApplication }) => {
+const Application = ({ application, highlight }: { application: JobApplication; highlight: string }) => {
   const [applicationDetailsOpened, { open: openApplicationDetails, close: closeApplicationDetails }] =
     useDisclosure(false);
   const [createApplicationStatusOpened, { open: openCreateApplicationStatus, close: closeCreateApplicationStatus }] =
@@ -74,7 +74,9 @@ const Application = ({ application }: { application: JobApplication }) => {
         <Stack gap="xs" mt="md">
           <Group justify="space-between" wrap="nowrap">
             <Text truncate="end" title={application.companyName}>
+              <Highlight color="blue" highlight={highlight}>
               {application.companyName}
+              </Highlight>
             </Text>
 
             <Menu withinPortal position="bottom-end" shadow="xl">
@@ -137,7 +139,9 @@ const Application = ({ application }: { application: JobApplication }) => {
           <Text c="dimmed" w="max-content" maw="100%" className="text-with-icon">
             <IconBriefcase2 size={16} stroke={1.5} />
             <Text span truncate="end" title={application?.jobTitle} flex={1}>
+              <Highlight color="blue" highlight={highlight}>
               {application.jobTitle}
+              </Highlight>
             </Text>
           </Text>
 

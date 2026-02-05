@@ -280,7 +280,7 @@ const Applications = () => {
                 <Grid>
                   {applications.map(application => (
                     <Grid.Col span={{ base: 12, sm: 6, lg: 4, xl: 3 }} key={application._id}>
-                      <Application application={application} />
+                      <Application application={application} highlight={searchQuery} />
                     </Grid.Col>
                   ))}
                 </Grid>
