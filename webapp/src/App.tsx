@@ -10,6 +10,7 @@ import {
   Button,
   Center,
   Container,
+  createTheme,
   FocusTrap,
   Group,
   Loader,
@@ -47,6 +48,10 @@ import '@mantine/dates/styles.css';
 import '@mantine/notifications/styles.css';
 
 import './App.css';
+
+const theme = createTheme({
+  cursorType: 'pointer'
+});
 
 const NavItems = ({ opened, close, isDesktop }: { opened: boolean; close: () => void; isDesktop: boolean }) => {
   const location = useLocation();
@@ -303,7 +308,7 @@ const AppContent = () => {
 
 const App = () => {
   return (
-    <MantineProvider>
+    <MantineProvider theme={theme}>
       <Notifications limit={1} />
 
       <AuthContextProvider>
