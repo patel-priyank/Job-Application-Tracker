@@ -54,13 +54,20 @@ const Application = ({ application }: { application: JobApplication }) => {
       <EditApplication opened={editApplicationOpened} onClose={closeEditApplication} application={application} />
 
       <Card padding="md" shadow="md" radius="md" withBorder h="100%">
-        <Card.Section h={140} bg={GeoPattern.generate(application.companyName).toDataUrl()}>
+        <Card.Section h={130} bg={GeoPattern.generate(application.companyName).toDataUrl()}>
           <Stack m="xs" gap="xs" align="flex-end">
-            {dayjs(application.history[application.history.length - 1].date).isSame(dayjs(), 'day') && (
+            {dayjs(application.history[0].date).isSame(dayjs(), 'day') && (
               <Badge radius="sm" autoContrast color="yellow" leftSection={<IconFileSpark size={14} stroke={1.5} />}>
-                {application.history.length === 1 ? 'New' : 'Recently updated'}
+                New
               </Badge>
             )}
+
+            {application.history.length > 1 &&
+              dayjs(application.history[application.history.length - 1].date).isSame(dayjs(), 'day') && (
+                <Badge radius="sm" autoContrast color="yellow" leftSection={<IconFileSpark size={14} stroke={1.5} />}>
+                  Recently updated
+                </Badge>
+              )}
 
             {application.link && (
               <Badge radius="sm" autoContrast color="blue" leftSection={<IconRoute size={14} stroke={1.5} />}>
