@@ -74,7 +74,7 @@ const Application = ({ application, highlight }: { application: JobApplication; 
         <Stack gap="xs" mt="md">
           <Group justify="space-between" wrap="nowrap">
             <Text truncate="end" title={application.companyName}>
-              <Highlight color="blue" highlight={highlight}>
+              <Highlight span color="blue" highlight={highlight}>
                 {application.companyName}
               </Highlight>
             </Text>
@@ -139,7 +139,7 @@ const Application = ({ application, highlight }: { application: JobApplication; 
           <Text c="dimmed" w="max-content" maw="100%" className="text-with-icon">
             <IconBriefcase2 size={16} stroke={1.5} />
             <Text span truncate="end" title={application?.jobTitle} flex={1}>
-              <Highlight color="blue" highlight={highlight}>
+              <Highlight span color="blue" highlight={highlight}>
                 {application.jobTitle}
               </Highlight>
             </Text>
