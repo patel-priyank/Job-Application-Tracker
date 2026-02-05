@@ -290,11 +290,7 @@ const ApplicationDetails = ({
         <Stack gap="sm">
           <Text size="sm">
             Are you sure you want to delete the{' '}
-            <Text
-              component="span"
-              c={Object.values(APPLICATION_STATUS).find(s => s.label === status?.status)?.color}
-              fw="500"
-            >
+            <Text span c={Object.values(APPLICATION_STATUS).find(s => s.label === status?.status)?.color} fw="500">
               {status?.status}
             </Text>{' '}
             update on{' '}
