@@ -106,7 +106,7 @@ const SignIn = ({ opened, onClose }: { opened: boolean; onClose: () => void }) =
   };
 
   return (
-    <Modal opened={opened} onClose={onClose} title="Sign In" overlayProps={{ blur: 2 }} centered>
+    <Modal opened={opened} onClose={onClose} title="Sign In" overlayProps={{ blur: 2 }} centered zIndex={500}>
       <form onSubmit={form.onSubmit(values => handleSubmit(values))}>
         <Stack gap="sm">
           <TextInput

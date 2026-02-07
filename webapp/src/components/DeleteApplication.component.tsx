@@ -93,7 +93,14 @@ const DeleteApplication = ({
   };
 
   return (
-    <Modal opened={opened} onClose={onClose} title="Delete Application" overlayProps={{ blur: 2 }} centered>
+    <Modal
+      opened={opened}
+      onClose={onClose}
+      title="Delete Application"
+      overlayProps={{ blur: 2 }}
+      centered
+      zIndex={500}
+    >
       <Stack gap="sm">
         <Text size="sm">
           Are you sure you want to delete this application for {application.companyName}? This action cannot be undone.

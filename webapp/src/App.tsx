@@ -326,7 +326,14 @@ const AppContent = () => {
           )}
         </Transition>
 
-        <Modal opened={signedOutOpened} onClose={closeSignedOut} title="Signed Out" overlayProps={{ blur: 2 }} centered>
+        <Modal
+          opened={signedOutOpened}
+          onClose={closeSignedOut}
+          title="Signed Out"
+          overlayProps={{ blur: 2 }}
+          centered
+          zIndex={500}
+        >
           <Stack gap="sm">
             <Text size="sm">{signedOutMessage}</Text>
 

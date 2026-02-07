@@ -160,7 +160,7 @@ const EditApplication = ({
   };
 
   return (
-    <Modal opened={opened} onClose={onClose} title="Edit Application" overlayProps={{ blur: 2 }} centered>
+    <Modal opened={opened} onClose={onClose} title="Edit Application" overlayProps={{ blur: 2 }} centered zIndex={500}>
       <form onSubmit={form.onSubmit(values => handleSubmit(values))}>
         <Stack gap="sm">
           <TextInput

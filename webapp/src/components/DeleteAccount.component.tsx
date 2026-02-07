@@ -102,6 +102,7 @@ const DeleteAccount = ({ opened, onClose }: { opened: boolean; onClose: () => vo
         title="Delete Account"
         overlayProps={{ blur: 2 }}
         centered
+        zIndex={500}
       >
         <Stack gap="sm">
           <Text size="sm">
@@ -130,6 +131,7 @@ const DeleteAccount = ({ opened, onClose }: { opened: boolean; onClose: () => vo
         title="Delete Account"
         overlayProps={{ blur: 2 }}
         centered
+        zIndex={500}
       >
         <form onSubmit={form.onSubmit(values => handleDelete(values))}>
           <Stack gap="sm">

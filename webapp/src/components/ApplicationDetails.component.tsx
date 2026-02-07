@@ -168,6 +168,7 @@ const ApplicationDetails = ({
         title={application?.companyName}
         overlayProps={{ blur: 2 }}
         centered
+        zIndex={500}
       >
         <Stack gap="md" align="flex-start">
           <Text c="dimmed" w="max-content" maw="100%" className="text-with-icon">
@@ -261,6 +262,7 @@ const ApplicationDetails = ({
         title={application?.companyName}
         overlayProps={{ blur: 2 }}
         centered
+        zIndex={500}
       >
         <form onSubmit={form.onSubmit(values => handleEdit(values))}>
           <Stack gap="sm">
@@ -315,6 +317,7 @@ const ApplicationDetails = ({
         title={application?.companyName}
         overlayProps={{ blur: 2 }}
         centered
+        zIndex={500}
       >
         <Stack gap="sm">
           <Text size="sm">
