@@ -58,16 +58,7 @@ const Applications = () => {
   const [createApplicationOpened, { open: openCreateApplication, close: closeCreateApplication }] =
     useDisclosure(false);
 
-  const handleSearch = (query: string) => {
-    applicationDispatch({
-      type: 'SET_SEARCH_QUERY',
-      payload: query
-    });
-
-    search(query.trim());
-  };
-
-  const search = useDebouncedCallback(async (query: string) => {
+  const search = async (query: string) => {
     if (!user) {
       return;
     }
@@ -92,7 +83,23 @@ const Applications = () => {
     });
 
     setLoading(false);
-  }, 500);
+  };
+
+  const debouncedSearch = useDebouncedCallback(search, 500);
+
+  const handleSearch = (query: string, immediate = false) => {
+    applicationDispatch({
+      type: 'SET_SEARCH_QUERY',
+      payload: query
+    });
+
+    if (immediate) {
+      debouncedSearch.cancel();
+      search(query.trim());
+    } else {
+      debouncedSearch(query.trim());
+    }
+  };
 
   return (
     <>
@@ -204,7 +211,9 @@ const Applications = () => {
               flex={1}
               placeholder="Company name or job title"
               leftSection={<IconSearch size={16} stroke={1.5} />}
-              rightSection={searchQuery !== '' ? <Input.ClearButton onClick={() => handleSearch('')} /> : undefined}
+              rightSection={
+                searchQuery !== '' ? <Input.ClearButton onClick={() => handleSearch('', true)} /> : undefined
+              }
               rightSectionPointerEvents="auto"
               value={searchQuery}
               onChange={e => handleSearch(e.currentTarget.value)}
