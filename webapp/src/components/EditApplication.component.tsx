@@ -128,6 +128,10 @@ const EditApplication = ({
       return;
     }
 
+    if (!user.suggestedEmails.includes(values.emailUsed)) {
+      user.suggestedEmails.push(values.emailUsed);
+    }
+
     await fetchApplications(
       user.token,
       applicationDispatch,
@@ -139,10 +143,6 @@ const EditApplication = ({
       page,
       searchQuery
     );
-
-    if (!user.suggestedEmails.includes(values.emailUsed)) {
-      user.suggestedEmails.push(values.emailUsed);
-    }
 
     showNotification('Polished up', 'Your changes have been saved successfully.', false);
 

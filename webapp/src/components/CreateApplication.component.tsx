@@ -118,15 +118,13 @@ const CreateApplication = ({ opened, onClose }: { opened: boolean; onClose: () =
 
     setLoading(true);
 
-    const date = getNormalizedDate(values.date);
-
     const response = await fetch('/api/applications', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${user.token}`
       },
-      body: JSON.stringify({ ...values, date })
+      body: JSON.stringify({ ...values, date: getNormalizedDate(values.date) })
     });
 
     const data = await response.json();
@@ -139,6 +137,12 @@ const CreateApplication = ({ opened, onClose }: { opened: boolean; onClose: () =
       return;
     }
 
+    if (!user.suggestedEmails.includes(values.emailUsed)) {
+      user.suggestedEmails.push(values.emailUsed);
+    }
+
+    user.applicationsCount++;
+
     await fetchApplications(
       user.token,
       applicationDispatch,
@@ -150,12 +154,6 @@ const CreateApplication = ({ opened, onClose }: { opened: boolean; onClose: () =
       page,
       searchQuery
     );
-
-    if (!user.suggestedEmails.includes(values.emailUsed)) {
-      user.suggestedEmails.push(values.emailUsed);
-    }
-
-    user.applicationsCount++;
 
     showNotification('On the list', 'The application has been added successfully.', false);
 

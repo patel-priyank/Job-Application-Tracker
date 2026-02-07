@@ -74,15 +74,13 @@ const CreateApplicationStatus = ({
 
     setLoading(true);
 
-    const date = getNormalizedDate(values.date);
-
     const response = await fetch(`/api/applications/${application?._id}/status`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${user.token}`
       },
-      body: JSON.stringify({ ...values, date })
+      body: JSON.stringify({ ...values, date: getNormalizedDate(values.date) })
     });
 
     const data = await response.json();
