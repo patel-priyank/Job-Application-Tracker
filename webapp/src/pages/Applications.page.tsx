@@ -331,7 +331,7 @@ const Applications = () => {
             <>
               {applications.length === 0 ? (
                 <Text c="dimmed" ta="center">
-                  No applications match your search
+                  No applications found matching your filters or search
                 </Text>
               ) : (
                 <Grid>
