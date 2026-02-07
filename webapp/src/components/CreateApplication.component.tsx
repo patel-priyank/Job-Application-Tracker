@@ -143,11 +143,19 @@ const CreateApplication = ({ opened, onClose }: { opened: boolean; onClose: () =
 
     user.applicationsCount++;
 
+    applicationDispatch({
+      type: 'SET_FILTERS',
+      payload: {
+        statusFilter,
+        emailUsedFilter: Array.from(new Set([...emailUsedFilter, values.emailUsed]))
+      }
+    });
+
     await fetchApplications(
       user.token,
       applicationDispatch,
       statusFilter,
-      emailUsedFilter,
+      Array.from(new Set([...emailUsedFilter, values.emailUsed])),
       sort,
       order,
       pageSize,

@@ -132,11 +132,19 @@ const EditApplication = ({
       user.suggestedEmails.push(values.emailUsed);
     }
 
+    applicationDispatch({
+      type: 'SET_FILTERS',
+      payload: {
+        statusFilter,
+        emailUsedFilter: Array.from(new Set([...emailUsedFilter, values.emailUsed]))
+      }
+    });
+
     await fetchApplications(
       user.token,
       applicationDispatch,
       statusFilter,
-      emailUsedFilter,
+      Array.from(new Set([...emailUsedFilter, values.emailUsed])),
       sort,
       order,
       pageSize,
