@@ -26,9 +26,9 @@ import { useAuthContext } from '../hooks/useAuthContext';
 
 import Application from '../components/Application.component';
 import CreateApplication from '../components/CreateApplication.component';
-import FilterModal from '../components/FilterModal.component';
+import Filter from '../components/Filter.component';
 import FloatingActionButton from '../components/FloatingActionButton.component';
-import SortModal from '../components/SortModal.component';
+import Sort from '../components/Sort.component';
 
 import { APPLICATION_STATUS } from '../utils/constants';
 import { fetchApplications } from '../utils/functions';
@@ -151,7 +151,7 @@ const Applications = () => {
 
       {user && user.applicationsCount > 0 && (
         <>
-          <FilterModal
+          <Filter
             opened={filterOpened}
             onClose={closeFilter}
             onSave={async (newEmailUsedFilter: string[], newStatusFilter: string[]) => {
@@ -175,7 +175,7 @@ const Applications = () => {
             }}
           />
 
-          <SortModal
+          <Sort
             opened={sortOpened}
             onClose={closeSort}
             onSave={async (newSort: string, newOrder: string, newPageSize: number) => {

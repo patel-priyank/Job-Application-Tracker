@@ -23,7 +23,7 @@ const ITEMS_PER_PAGE = [
   { label: '96', value: '96' }
 ];
 
-const SortModal = ({
+const Sort = ({
   opened,
   onClose,
   onSave
@@ -128,4 +128,4 @@ const SortModal = ({
   );
 };
 
-export default SortModal;
+export default Sort;

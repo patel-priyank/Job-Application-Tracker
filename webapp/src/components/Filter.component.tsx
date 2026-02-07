@@ -9,7 +9,7 @@ import { useAuthContext } from '../hooks/useAuthContext';
 
 import { APPLICATION_STATUS } from '../utils/constants';
 
-const FilterModal = ({
+const Filter = ({
   opened,
   onClose,
   onSave
@@ -242,4 +242,4 @@ const FilterModal = ({
   );
 };
 
-export default FilterModal;
+export default Filter;
