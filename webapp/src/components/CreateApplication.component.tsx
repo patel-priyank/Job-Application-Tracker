@@ -20,7 +20,16 @@ import {
 } from '../utils/functions';
 
 const CreateApplication = ({ opened, onClose }: { opened: boolean; onClose: () => void }) => {
-  const { order, page, pageSize, searchQuery, sort, dispatch: applicationDispatch } = useApplicationContext();
+  const {
+    emailUsedFilter,
+    order,
+    page,
+    pageSize,
+    searchQuery,
+    sort,
+    statusFilter,
+    dispatch: applicationDispatch
+  } = useApplicationContext();
   const { user } = useAuthContext();
 
   const [loading, setLoading] = useState(false);
@@ -36,7 +45,7 @@ const CreateApplication = ({ opened, onClose }: { opened: boolean; onClose: () =
       companyName: '',
       jobTitle: '',
       emailUsed: '',
-      link: '',
+      trackingLink: '',
       status: Object.values(APPLICATION_STATUS).find(status => status.default)?.label || '',
       date: new Date()
     },
@@ -78,9 +87,9 @@ const CreateApplication = ({ opened, onClose }: { opened: boolean; onClose: () =
 
         return null;
       },
-      link: value => {
+      trackingLink: value => {
         if (value && !value.trim().startsWith('https://') && !value.trim().startsWith('http://')) {
-          return 'If provided, link must start with http:// or https://.';
+          return 'If provided, Tracking link must start with http:// or https://.';
         }
 
         return null;
@@ -130,7 +139,17 @@ const CreateApplication = ({ opened, onClose }: { opened: boolean; onClose: () =
       return;
     }
 
-    await fetchApplications(sort, order, page, pageSize, user.token, applicationDispatch, searchQuery);
+    await fetchApplications(
+      user.token,
+      applicationDispatch,
+      statusFilter,
+      emailUsedFilter,
+      sort,
+      order,
+      pageSize,
+      page,
+      searchQuery
+    );
 
     if (!user.suggestedEmails.includes(values.emailUsed)) {
       user.suggestedEmails.push(values.emailUsed);
@@ -178,11 +197,11 @@ const CreateApplication = ({ opened, onClose }: { opened: boolean; onClose: () =
           />
 
           <TextInput
-            label="Link"
+            label="Tracking link"
             description="Link to track the job application."
             placeholder="https://careers.google.com/jobs/I1roBwQfiBLbOizI"
-            key={form.key('link')}
-            {...form.getInputProps('link')}
+            key={form.key('trackingLink')}
+            {...form.getInputProps('trackingLink')}
           />
 
           <Select

@@ -73,7 +73,10 @@ const DeleteAccount = ({ opened, onClose }: { opened: boolean; onClose: () => vo
 
     applicationDispatch({
       type: 'SET_APPLICATIONS',
-      payload: []
+      payload: {
+        applications: [],
+        totalPages: 0
+      }
     });
 
     authDispatch({

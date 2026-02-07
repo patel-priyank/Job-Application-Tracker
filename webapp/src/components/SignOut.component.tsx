@@ -14,7 +14,10 @@ const SignOut = ({ opened, onClose }: { opened: boolean; onClose: () => void }) 
 
     applicationDispatch({
       type: 'SET_APPLICATIONS',
-      payload: []
+      payload: {
+        applications: [],
+        totalPages: 0
+      }
     });
 
     authDispatch({

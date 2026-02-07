@@ -38,7 +38,7 @@ import Account from './pages/Account.page';
 import Applications from './pages/Applications.page';
 import Statistics from './pages/Statistics.page';
 
-import { HEADER_HEIGHT } from './utils/constants';
+import { APPLICATION_STATUS, HEADER_HEIGHT } from './utils/constants';
 import { fetchApplications } from './utils/functions';
 
 import '@mantine/core/styles.css';
@@ -123,7 +123,10 @@ const AppContent = () => {
 
       applicationDispatch({
         type: 'SET_APPLICATIONS',
-        payload: []
+        payload: {
+          applications: [],
+          totalPages: 0
+        }
       });
 
       authDispatch({
@@ -205,13 +208,30 @@ const AppContent = () => {
         return;
       }
 
-      await fetchApplications(sort, order, page, pageSize, JSON.parse(user).token, applicationDispatch);
+      await fetchApplications(
+        JSON.parse(user).token,
+        applicationDispatch,
+        Object.values(APPLICATION_STATUS).map(status => status.label),
+        data.suggestedEmails,
+        sort,
+        order,
+        pageSize,
+        page
+      );
 
       localStorage.setItem('user', JSON.stringify(data));
 
       authDispatch({
         type: 'SET_USER',
         payload: data
+      });
+
+      applicationDispatch({
+        type: 'SET_FILTERS',
+        payload: {
+          statusFilter: Object.values(APPLICATION_STATUS).map(status => status.label),
+          emailUsedFilter: data.suggestedEmails
+        }
       });
     }, 1500);
   }, [authDispatch]);

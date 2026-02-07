@@ -9,12 +9,14 @@ import notificationClasses from '../styles/Notification.module.css';
 let abortController: AbortController | null = null;
 
 export const fetchApplications = async (
-  sort: string,
-  order: string,
-  page: number,
-  pageSize: number,
   token: string,
   applicationDispatch: React.Dispatch<ApplicationAction>,
+  status: string[],
+  emailUsed: string[],
+  sort: string,
+  order: string,
+  pageSize: number,
+  page: number,
   query?: string
 ) => {
   if (abortController) {
@@ -25,11 +27,15 @@ export const fetchApplications = async (
 
   const { signal } = abortController;
 
-  let fetchApplicationsUrl = `/api/applications?sort=${sort}&order=${order}&page=${page}&pageSize=${pageSize}`;
-
-  if (query) {
-    fetchApplicationsUrl += `&query=${query}`;
-  }
+  const fetchApplicationsUrl =
+    `/api/applications` +
+    `?status=${status.join(',')}` +
+    `&emailUsed=${emailUsed.join(',')}` +
+    `&sort=${sort}` +
+    `&order=${order}` +
+    `&pageSize=${pageSize}` +
+    `&page=${page}` +
+    `${query ? `&query=${query}` : ''}`;
 
   try {
     const response = await fetch(fetchApplicationsUrl, {
@@ -47,10 +53,8 @@ export const fetchApplications = async (
 
     applicationDispatch({
       type: 'SET_APPLICATIONS',
-      payload: data.applications
+      payload: { applications: data.applications, totalPages: Math.ceil(data.count / pageSize) }
     });
-
-    return data.count;
   } catch (error: any) {
     if (error.name === 'AbortError') {
       return;

@@ -1,16 +1,16 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import {
+  ActionIcon,
   Button,
   Card,
-  Flex,
   Grid,
   Group,
   Image,
+  Indicator,
   Input,
   Pagination,
-  Select,
   Skeleton,
   Stack,
   Text,
@@ -19,72 +19,43 @@ import {
 
 import { useDisclosure, useDebouncedCallback } from '@mantine/hooks';
 
-import { IconFile, IconSearch } from '@tabler/icons-react';
+import { IconArrowsDownUp, IconFile, IconFilter, IconSearch } from '@tabler/icons-react';
 
 import { useApplicationContext } from '../hooks/useApplicationContext';
 import { useAuthContext } from '../hooks/useAuthContext';
 
 import Application from '../components/Application.component';
 import CreateApplication from '../components/CreateApplication.component';
+import FilterModal from '../components/FilterModal.component';
 import FloatingActionButton from '../components/FloatingActionButton.component';
+import SortModal from '../components/SortModal.component';
 
+import { APPLICATION_STATUS } from '../utils/constants';
 import { fetchApplications } from '../utils/functions';
 
 import authenticationImage from '../assets/authentication.png';
 import createApplicationImage from '../assets/create-application.png';
 
-const SORT_OPTIONS = [
-  { label: 'Date added (newest first)', sort: 'added', order: 'desc' },
-  { label: 'Date added (oldest first)', sort: 'added', order: 'asc' },
-  { label: 'Last updated (newest first)', sort: 'updated', order: 'desc' },
-  { label: 'Last updated (oldest first)', sort: 'updated', order: 'asc' },
-  { label: 'Company name (A-Z)', sort: 'company', order: 'asc' },
-  { label: 'Company name (Z-A)', sort: 'company', order: 'desc' },
-  { label: 'Application status (A-Z)', sort: 'status', order: 'asc' },
-  { label: 'Application status (Z-A)', sort: 'status', order: 'desc' }
-];
-
 const Applications = () => {
   const {
     applications,
+    emailUsedFilter,
     order,
     page,
     pageSize,
     searchQuery,
     sort,
+    statusFilter,
+    totalPages,
     dispatch: applicationDispatch
   } = useApplicationContext();
   const { user } = useAuthContext();
 
+  const [filterOpened, { open: openFilter, close: closeFilter }] = useDisclosure(false);
+  const [sortOpened, { open: openSort, close: closeSort }] = useDisclosure(false);
+
   const [loading, setLoading] = useState(false);
-  const [searchResultsCount, setSearchResultsCount] = useState<number | null>(null);
   const [createAppOpened, { open: openCreateApp, close: closeCreateApp }] = useDisclosure(false);
-
-  const paramsRef = useRef({ order, sort });
-
-  useEffect(() => {
-    paramsRef.current = { order, sort };
-  }, [order, sort]);
-
-  useEffect(() => {
-    return () => {
-      if (!user) {
-        return;
-      }
-
-      applicationDispatch({
-        type: 'SET_PAGE',
-        payload: 1
-      });
-
-      applicationDispatch({
-        type: 'SET_SEARCH_QUERY',
-        payload: ''
-      });
-
-      fetchApplications(paramsRef.current.sort, paramsRef.current.order, 1, pageSize, user.token, applicationDispatch);
-    };
-  }, []);
 
   const handleSearch = (query: string) => {
     applicationDispatch({
@@ -101,31 +72,26 @@ const Applications = () => {
     }
 
     setLoading(true);
-    const count = await fetchApplications(sort, order, 1, pageSize, user.token, applicationDispatch, query);
-    setLoading(false);
+
+    await fetchApplications(
+      user.token,
+      applicationDispatch,
+      statusFilter,
+      emailUsedFilter,
+      sort,
+      order,
+      pageSize,
+      1,
+      query
+    );
 
     applicationDispatch({
       type: 'SET_PAGE',
       payload: 1
     });
 
-    setSearchResultsCount(query ? count : null);
-  }, 500);
-
-  const handleSort = async (sort: string, order: string) => {
-    if (!user) {
-      return;
-    }
-
-    applicationDispatch({
-      type: 'SET_SORT',
-      payload: { sort, order }
-    });
-
-    setLoading(true);
-    await fetchApplications(sort, order, page, pageSize, user.token, applicationDispatch, searchQuery);
     setLoading(false);
-  };
+  }, 500);
 
   return (
     <>
@@ -184,11 +150,58 @@ const Applications = () => {
 
       {user && user.applicationsCount > 0 && (
         <>
-          <Flex direction={{ base: 'column', md: 'row' }} gap="xs" mb="lg">
+          <FilterModal
+            opened={filterOpened}
+            onClose={closeFilter}
+            onSave={async (newEmailUsedFilter: string[], newStatusFilter: string[]) => {
+              closeFilter();
+
+              setLoading(true);
+
+              await fetchApplications(
+                user.token,
+                applicationDispatch,
+                newStatusFilter,
+                newEmailUsedFilter,
+                sort,
+                order,
+                pageSize,
+                1,
+                searchQuery
+              );
+
+              setLoading(false);
+            }}
+          />
+
+          <SortModal
+            opened={sortOpened}
+            onClose={closeSort}
+            onSave={async (newSort: string, newOrder: string, newPageSize: number) => {
+              closeSort();
+
+              setLoading(true);
+
+              await fetchApplications(
+                user.token,
+                applicationDispatch,
+                statusFilter,
+                emailUsedFilter,
+                newSort,
+                newOrder,
+                newPageSize,
+                1,
+                searchQuery
+              );
+
+              setLoading(false);
+            }}
+          />
+
+          <Group gap="sm" mb="lg">
             <TextInput
               flex={1}
-              label="Search"
-              placeholder="Company name, job title, or email used"
+              placeholder="Company name or job title"
               leftSection={<IconSearch size={16} stroke={1.5} />}
               rightSection={searchQuery !== '' ? <Input.ClearButton onClick={() => handleSearch('')} /> : undefined}
               rightSectionPointerEvents="auto"
@@ -196,32 +209,53 @@ const Applications = () => {
               onChange={e => handleSearch(e.currentTarget.value)}
             />
 
-            <Select
-              w={{ base: '100%', md: '15rem' }}
-              label="Sort by"
-              withAlignedLabels
-              allowDeselect={false}
-              comboboxProps={{ shadow: 'xl', offset: 0 }}
-              data={SORT_OPTIONS.map(option => ({
-                value: `${option.sort}-${option.order}`,
-                label: option.label
-              }))}
-              value={`${sort}-${order}`}
-              onChange={value => {
-                if (value) {
-                  const [newSort, newOrder] = value.split('-');
-                  handleSort(newSort, newOrder);
+            <Group gap="sm" hiddenFrom="sm">
+              <Indicator
+                color="yellow"
+                size={14}
+                withBorder
+                disabled={
+                  statusFilter.length === Object.values(APPLICATION_STATUS).length &&
+                  emailUsedFilter.length === user.suggestedEmails.length
                 }
-              }}
-            />
-          </Flex>
+              >
+                <ActionIcon size="input-sm" onClick={openFilter}>
+                  <IconFilter size={16} stroke={1.5} />
+                </ActionIcon>
+              </Indicator>
+
+              <ActionIcon size="input-sm" onClick={openSort}>
+                <IconArrowsDownUp size={16} stroke={1.5} />
+              </ActionIcon>
+            </Group>
+
+            <Group gap="sm" visibleFrom="sm">
+              <Indicator
+                color="yellow"
+                size={14}
+                withBorder
+                disabled={
+                  statusFilter.length === Object.values(APPLICATION_STATUS).length &&
+                  emailUsedFilter.length === user.suggestedEmails.length
+                }
+              >
+                <Button leftSection={<IconFilter size={16} stroke={1.5} />} onClick={openFilter}>
+                  Filter
+                </Button>
+              </Indicator>
+
+              <Button leftSection={<IconArrowsDownUp size={16} stroke={1.5} />} onClick={openSort}>
+                Sort
+              </Button>
+            </Group>
+          </Group>
 
           <Group justify="center">
             <Pagination
               mb="lg"
               gap={4}
               radius="md"
-              total={Math.ceil((searchResultsCount ?? user.applicationsCount) / pageSize)}
+              total={totalPages}
               value={page}
               siblings={0}
               hideWithOnePage
@@ -232,9 +266,20 @@ const Applications = () => {
                 });
 
                 setLoading(true);
-                await fetchApplications(sort, order, pageVal, pageSize, user.token, applicationDispatch, searchQuery);
+                await fetchApplications(
+                  user.token,
+                  applicationDispatch,
+                  statusFilter,
+                  emailUsedFilter,
+                  sort,
+                  order,
+                  pageSize,
+                  pageVal,
+                  searchQuery
+                );
                 setLoading(false);
               }}
+              style={{ fontFamily: 'var(--mantine-font-family-monospace)' }}
             />
           </Group>
 

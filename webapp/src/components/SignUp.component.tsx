@@ -6,12 +6,14 @@ import { useForm } from '@mantine/form';
 
 import { IconCheck, IconX } from '@tabler/icons-react';
 
+import { useApplicationContext } from '../hooks/useApplicationContext';
 import { useAuthContext } from '../hooks/useAuthContext';
 
-import { EMAIL_REGEX, PASSWORD_REGEX, PASSWORD_REQUIREMENTS } from '../utils/constants';
+import { APPLICATION_STATUS, EMAIL_REGEX, PASSWORD_REGEX, PASSWORD_REQUIREMENTS } from '../utils/constants';
 import { showNotification } from '../utils/functions';
 
 const SignUp = ({ opened, onClose }: { opened: boolean; onClose: () => void }) => {
+  const { dispatch: applicationDispatch } = useApplicationContext();
   const { dispatch: authDispatch } = useAuthContext();
 
   const [loading, setLoading] = useState(false);
@@ -115,6 +117,14 @@ const SignUp = ({ opened, onClose }: { opened: boolean; onClose: () => void }) =
     authDispatch({
       type: 'SET_USER',
       payload: data
+    });
+
+    applicationDispatch({
+      type: 'SET_FILTERS',
+      payload: {
+        statusFilter: Object.values(APPLICATION_STATUS).map(status => status.label),
+        emailUsedFilter: data.suggestedEmails
+      }
     });
 
     showNotification("You're in!", 'Your account has been created successfully.', false);

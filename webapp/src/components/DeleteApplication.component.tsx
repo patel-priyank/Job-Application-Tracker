@@ -18,7 +18,16 @@ const DeleteApplication = ({
   onClose: () => void;
   application: JobApplication;
 }) => {
-  const { order, page, pageSize, searchQuery, sort, dispatch: applicationDispatch } = useApplicationContext();
+  const {
+    emailUsedFilter,
+    order,
+    page,
+    pageSize,
+    searchQuery,
+    sort,
+    statusFilter,
+    dispatch: applicationDispatch
+  } = useApplicationContext();
   const { user } = useAuthContext();
 
   const [loading, setLoading] = useState(false);
@@ -62,7 +71,17 @@ const DeleteApplication = ({
       });
     }
 
-    await fetchApplications(sort, order, newPage, pageSize, user.token, applicationDispatch, searchQuery);
+    await fetchApplications(
+      user.token,
+      applicationDispatch,
+      statusFilter,
+      emailUsedFilter,
+      sort,
+      order,
+      pageSize,
+      newPage,
+      searchQuery
+    );
 
     user.applicationsCount--;
 

@@ -113,11 +113,11 @@ const Application = ({ application, highlight }: { application: JobApplication; 
 
                 <Menu.Item
                   component="a"
-                  href={application.link || undefined}
+                  href={application.trackingLink || undefined}
                   target="_blank"
                   rel="noopener noreferrer"
                   leftSection={<IconRoute size={16} stroke={1.5} />}
-                  disabled={!application.link}
+                  disabled={!application.trackingLink}
                 >
                   Track application
                 </Menu.Item>

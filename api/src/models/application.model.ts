@@ -21,7 +21,7 @@ const applicationSchema = new mongoose.Schema({
     required: true,
     trim: true
   },
-  link: {
+  trackingLink: {
     type: String,
     trim: true
   },

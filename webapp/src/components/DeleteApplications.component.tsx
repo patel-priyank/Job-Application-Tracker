@@ -71,7 +71,10 @@ const DeleteApplications = ({ opened, onClose }: { opened: boolean; onClose: () 
 
     applicationDispatch({
       type: 'SET_APPLICATIONS',
-      payload: []
+      payload: {
+        applications: [],
+        totalPages: 0
+      }
     });
 
     showNotification(

@@ -21,7 +21,16 @@ const EditApplication = ({
   onClose: () => void;
   application: JobApplication | null;
 }) => {
-  const { order, page, pageSize, searchQuery, sort, dispatch: applicationDispatch } = useApplicationContext();
+  const {
+    emailUsedFilter,
+    order,
+    page,
+    pageSize,
+    searchQuery,
+    sort,
+    statusFilter,
+    dispatch: applicationDispatch
+  } = useApplicationContext();
   const { user } = useAuthContext();
 
   const [loading, setLoading] = useState(false);
@@ -33,7 +42,7 @@ const EditApplication = ({
         companyName: application?.companyName || '',
         jobTitle: application?.jobTitle || '',
         emailUsed: application?.emailUsed || '',
-        link: application?.link || ''
+        trackingLink: application?.trackingLink || ''
       });
     }
   }, [opened]);
@@ -43,7 +52,7 @@ const EditApplication = ({
       companyName: '',
       jobTitle: '',
       emailUsed: '',
-      link: ''
+      trackingLink: ''
     },
     validate: {
       companyName: value => {
@@ -83,9 +92,9 @@ const EditApplication = ({
 
         return null;
       },
-      link: value => {
+      trackingLink: value => {
         if (value && !value.trim().startsWith('https://') && !value.trim().startsWith('http://')) {
-          return 'If provided, link must start with http:// or https://.';
+          return 'If provided, Tracking link must start with http:// or https://.';
         }
 
         return null;
@@ -119,7 +128,17 @@ const EditApplication = ({
       return;
     }
 
-    await fetchApplications(sort, order, page, pageSize, user.token, applicationDispatch, searchQuery);
+    await fetchApplications(
+      user.token,
+      applicationDispatch,
+      statusFilter,
+      emailUsedFilter,
+      sort,
+      order,
+      pageSize,
+      page,
+      searchQuery
+    );
 
     if (!user.suggestedEmails.includes(values.emailUsed)) {
       user.suggestedEmails.push(values.emailUsed);
@@ -165,11 +184,11 @@ const EditApplication = ({
           />
 
           <TextInput
-            label="Link"
+            label="Tracking link"
             description="Link to track the job application."
-            placeholder={application?.link || 'https://careers.google.com/jobs/I1roBwQfiBLbOizI'}
-            key={form.key('link')}
-            {...form.getInputProps('link')}
+            placeholder={application?.trackingLink || 'https://careers.google.com/jobs/I1roBwQfiBLbOizI'}
+            key={form.key('trackingLink')}
+            {...form.getInputProps('trackingLink')}
           />
 
           <Group mt="sm">

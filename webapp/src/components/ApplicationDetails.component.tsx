@@ -26,7 +26,16 @@ const ApplicationDetails = ({
   onClose: () => void;
   application: JobApplication | null;
 }) => {
-  const { order, page, pageSize, searchQuery, sort, dispatch: applicationDispatch } = useApplicationContext();
+  const {
+    emailUsedFilter,
+    order,
+    page,
+    pageSize,
+    searchQuery,
+    sort,
+    statusFilter,
+    dispatch: applicationDispatch
+  } = useApplicationContext();
   const { user } = useAuthContext();
 
   const [loading, setLoading] = useState(false);
@@ -81,7 +90,17 @@ const ApplicationDetails = ({
       return;
     }
 
-    await fetchApplications(sort, order, page, pageSize, user.token, applicationDispatch, searchQuery);
+    await fetchApplications(
+      user.token,
+      applicationDispatch,
+      statusFilter,
+      emailUsedFilter,
+      sort,
+      order,
+      pageSize,
+      page,
+      searchQuery
+    );
 
     showNotification('Polished up', 'Your changes have been saved successfully.', false);
 
@@ -117,7 +136,17 @@ const ApplicationDetails = ({
       return;
     }
 
-    await fetchApplications(sort, order, page, pageSize, user.token, applicationDispatch, searchQuery);
+    await fetchApplications(
+      user.token,
+      applicationDispatch,
+      statusFilter,
+      emailUsedFilter,
+      sort,
+      order,
+      pageSize,
+      page,
+      searchQuery
+    );
 
     showNotification('Polished up', 'Your changes have been saved successfully.', false);
 
@@ -157,11 +186,11 @@ const ApplicationDetails = ({
 
           <Button
             component="a"
-            href={application?.link || undefined}
+            href={application?.trackingLink || undefined}
             target="_blank"
             rel="noopener noreferrer"
             leftSection={<IconRoute size={16} stroke={1.5} />}
-            disabled={!application?.link}
+            disabled={!application?.trackingLink}
             variant="light"
             size="xs"
           >

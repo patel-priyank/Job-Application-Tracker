@@ -7,7 +7,7 @@ import { useForm } from '@mantine/form';
 import { useApplicationContext } from '../hooks/useApplicationContext';
 import { useAuthContext } from '../hooks/useAuthContext';
 
-import { EMAIL_REGEX } from '../utils/constants';
+import { APPLICATION_STATUS, EMAIL_REGEX } from '../utils/constants';
 import { fetchApplications, showNotification } from '../utils/functions';
 
 const SignIn = ({ opened, onClose }: { opened: boolean; onClose: () => void }) => {
@@ -79,7 +79,24 @@ const SignIn = ({ opened, onClose }: { opened: boolean; onClose: () => void }) =
       payload: data
     });
 
-    await fetchApplications(sort, order, page, pageSize, JSON.parse(user).token, applicationDispatch);
+    applicationDispatch({
+      type: 'SET_FILTERS',
+      payload: {
+        statusFilter: Object.values(APPLICATION_STATUS).map(status => status.label),
+        emailUsedFilter: data.suggestedEmails
+      }
+    });
+
+    await fetchApplications(
+      JSON.parse(user).token,
+      applicationDispatch,
+      Object.values(APPLICATION_STATUS).map(status => status.label),
+      data.suggestedEmails,
+      sort,
+      order,
+      pageSize,
+      page
+    );
 
     showNotification('Welcome back!', 'You have signed in successfully.', false);
 

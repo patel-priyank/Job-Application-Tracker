@@ -4,11 +4,13 @@ import { ActionIcon, Button, Group, Modal, Popover, Skeleton, Stack, Text } from
 
 import { IconArrowBackUp, IconInfoCircle, IconTrash } from '@tabler/icons-react';
 
+import { useApplicationContext } from '../hooks/useApplicationContext';
 import { useAuthContext } from '../hooks/useAuthContext';
 
 import { getSortedSuggestedEmails, showNotification } from '../utils/functions';
 
 const EditSuggestedEmails = ({ opened, onClose }: { opened: boolean; onClose: () => void }) => {
+  const { emailUsedFilter, statusFilter, dispatch: applicationDispatch } = useApplicationContext();
   const { user, dispatch: authDispatch } = useAuthContext();
 
   const [ready, setReady] = useState(true);
@@ -110,6 +112,14 @@ const EditSuggestedEmails = ({ opened, onClose }: { opened: boolean; onClose: ()
     authDispatch({
       type: 'SET_USER',
       payload: data
+    });
+
+    applicationDispatch({
+      type: 'SET_FILTERS',
+      payload: {
+        statusFilter,
+        emailUsedFilter: emailUsedFilter.filter(email => data.suggestedEmails.includes(email))
+      }
     });
 
     showNotification('Tidied up', 'Your suggested emails have been updated successfully.', false);

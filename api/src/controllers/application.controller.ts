@@ -7,17 +7,19 @@ import Application from '../models/application.model';
 import User from '../models/user.model';
 
 const getApplications = async (req: Request, res: Response) => {
-  const { query, sort, order, page, pageSize } = req.query as {
-    query: string;
+  const { status, emailUsed, sort, order, pageSize, page, query } = req.query as {
+    status: string;
+    emailUsed: string;
     sort: string;
     order: string;
-    page: string;
     pageSize: string;
+    page: string;
+    query: string;
   };
 
   try {
-    if (!sort || !order || !page || !pageSize) {
-      return res.status(400).json({ error: 'Sort, order, page, and pageSize are required.' });
+    if (!status || !emailUsed || !sort || !order || !pageSize || !page) {
+      return res.status(400).json({ error: 'Status, emailUsed, sort, order, pageSize, and page are required.' });
     }
 
     if (!['added', 'updated', 'company', 'status'].includes(sort)) {
@@ -28,12 +30,12 @@ const getApplications = async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'Invalid order.' });
     }
 
-    if (!Number(page) || Number(page) < 1) {
-      return res.status(400).json({ error: 'Invalid page.' });
+    if (!Number(pageSize) || !Number.isInteger(Number(pageSize)) || Number(pageSize) < 1) {
+      return res.status(400).json({ error: 'Invalid pageSize.' });
     }
 
-    if (!Number(pageSize) || Number(pageSize) < 1) {
-      return res.status(400).json({ error: 'Invalid pageSize.' });
+    if (!Number(page) || !Number.isInteger(Number(page)) || Number(page) < 1) {
+      return res.status(400).json({ error: 'Invalid page.' });
     }
 
     let sortObj: any = {};
@@ -75,7 +77,10 @@ const getApplications = async (req: Request, res: Response) => {
         break;
     }
 
-    const filter: any = { user: req.user?._id };
+    const statusArray = status.split(',');
+    const emailUsedArray = emailUsed.split(',');
+
+    const filter: any = { user: req.user?._id, status: { $in: statusArray }, emailUsed: { $in: emailUsedArray } };
 
     if (query) {
       const escapeRegex = (text: string) => text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
@@ -104,7 +109,7 @@ const getApplications = async (req: Request, res: Response) => {
 };
 
 const createApplication = async (req: Request, res: Response) => {
-  const { companyName, jobTitle, emailUsed, link, status, date } = req.body;
+  const { companyName, jobTitle, emailUsed, trackingLink, status, date } = req.body;
 
   try {
     if (!companyName || !jobTitle || !emailUsed || !status || !date) {
@@ -120,7 +125,7 @@ const createApplication = async (req: Request, res: Response) => {
       companyName,
       jobTitle,
       emailUsed,
-      link,
+      trackingLink,
       status,
       date,
       history: [{ status, date }]
@@ -134,7 +139,7 @@ const createApplication = async (req: Request, res: Response) => {
 
 const updateApplication = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { companyName, jobTitle, emailUsed, link } = req.body;
+  const { companyName, jobTitle, emailUsed, trackingLink } = req.body;
 
   try {
     if (!mongoose.Types.ObjectId.isValid(id as string)) {
@@ -161,7 +166,7 @@ const updateApplication = async (req: Request, res: Response) => {
 
     const updatedApplication = await Application.findByIdAndUpdate(
       id,
-      { companyName, jobTitle, emailUsed, link },
+      { companyName, jobTitle, emailUsed, trackingLink },
       { new: true }
     );
 
