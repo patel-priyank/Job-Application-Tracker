@@ -268,7 +268,6 @@ const Applications = () => {
               total={totalPages}
               value={page}
               siblings={0}
-              hideWithOnePage
               onChange={async pageVal => {
                 applicationDispatch({
                   type: 'SET_PAGE',
