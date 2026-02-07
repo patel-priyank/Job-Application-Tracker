@@ -8,7 +8,6 @@ import GeoPattern from 'geopattern';
 import {
   IconBriefcase2,
   IconDots,
-  IconFileSpark,
   IconFileText,
   IconPencil,
   IconRoute,
@@ -57,15 +56,15 @@ const Application = ({ application, highlight }: { application: JobApplication; 
         <Card.Section h={130} bg={GeoPattern.generate(application.companyName).toDataUrl()}>
           <Stack m="xs" gap="xs" align="flex-end">
             {dayjs(application.history[0].date).isSame(dayjs(), 'day') && (
-              <Badge radius="sm" autoContrast color="yellow" leftSection={<IconFileSpark size={14} stroke={1.5} />}>
-                New
+              <Badge radius="sm" autoContrast color="yellow">
+                Added today
               </Badge>
             )}
 
             {application.history.length > 1 &&
               dayjs(application.history[application.history.length - 1].date).isSame(dayjs(), 'day') && (
-                <Badge radius="sm" autoContrast color="yellow" leftSection={<IconFileSpark size={14} stroke={1.5} />}>
-                  Recently updated
+                <Badge radius="sm" autoContrast color="yellow">
+                  Updated today
                 </Badge>
               )}
           </Stack>
