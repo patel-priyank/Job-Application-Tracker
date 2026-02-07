@@ -148,7 +148,7 @@ const Statistics = () => {
       )}
 
       {user && user.applicationsCount > 0 && loading && (
-        <Center h={`calc(100dvh - ${HEADER_HEIGHT}px - 151.8px)`}>
+        <Center h={`calc(100dvh - ${HEADER_HEIGHT}px - 90px)`}>
           <Loader />
         </Center>
       )}

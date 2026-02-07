@@ -298,25 +298,25 @@ const Applications = () => {
               {Array.from({ length: pageSize }).map((_, index) => (
                 <Grid.Col span={{ base: 12, sm: 6, lg: 4, xl: 3 }} key={index}>
                   <Card padding="md" shadow="md" radius="md" withBorder h="100%">
-                    <Card.Section h={140}>
-                      <Skeleton height={140} radius={0} animate={false} />
+                    <Card.Section>
+                      <Skeleton height={130} radius={0} animate={false} />
                     </Card.Section>
 
                     <Stack gap="xs" mt="md">
-                      <Skeleton animate={false}>
+                      <Skeleton>
                         <Text>Company name</Text>
                       </Skeleton>
 
-                      <Skeleton animate={false}>
+                      <Skeleton>
                         <Text>Job title</Text>
                       </Skeleton>
 
                       <Stack gap="xs">
-                        <Skeleton w="75%" animate={false}>
+                        <Skeleton w="75%">
                           <Text size="xs">Status</Text>
                         </Skeleton>
 
-                        <Skeleton w="50%" animate={false}>
+                        <Skeleton w="50%">
                           <Text size="xs">Date</Text>
                         </Skeleton>
                       </Stack>
