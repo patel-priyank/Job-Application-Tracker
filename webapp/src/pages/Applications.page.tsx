@@ -55,7 +55,8 @@ const Applications = () => {
   const [sortOpened, { open: openSort, close: closeSort }] = useDisclosure(false);
 
   const [loading, setLoading] = useState(false);
-  const [createAppOpened, { open: openCreateApp, close: closeCreateApp }] = useDisclosure(false);
+  const [createApplicationOpened, { open: openCreateApplication, close: closeCreateApplication }] =
+    useDisclosure(false);
 
   const handleSearch = (query: string) => {
     applicationDispatch({
@@ -95,7 +96,7 @@ const Applications = () => {
 
   return (
     <>
-      <CreateApplication opened={createAppOpened} onClose={closeCreateApp} />
+      <CreateApplication opened={createApplicationOpened} onClose={closeCreateApplication} />
 
       {!user && (
         <Grid justify="center">
@@ -141,7 +142,7 @@ const Applications = () => {
               </Text>
 
               <Group>
-                <Button onClick={openCreateApp}>Create application</Button>
+                <Button onClick={openCreateApplication}>Create application</Button>
               </Group>
             </Card>
           </Grid.Col>
@@ -333,7 +334,7 @@ const Applications = () => {
                 </Grid>
               )}
 
-              <FloatingActionButton icon={IconFile} label="Create application" onClick={openCreateApp} />
+              <FloatingActionButton icon={IconFile} label="Create application" onClick={openCreateApplication} />
             </>
           )}
         </>
