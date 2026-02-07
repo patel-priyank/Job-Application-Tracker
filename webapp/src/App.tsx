@@ -5,6 +5,7 @@ import { jwtDecode } from 'jwt-decode';
 
 import {
   ActionIcon,
+  Affix,
   AppShell,
   Burger,
   Button,
@@ -20,13 +21,22 @@ import {
   Stack,
   Text,
   Tooltip,
+  Transition,
   useComputedColorScheme,
   useMantineColorScheme
 } from '@mantine/core';
-import { useDisclosure, useWindowEvent } from '@mantine/hooks';
+import { useDisclosure, useViewportSize, useWindowEvent, useWindowScroll } from '@mantine/hooks';
 import { Notifications } from '@mantine/notifications';
 
-import { IconBrandGithub, IconChartBar, IconFiles, IconMoon, IconSun, IconUser } from '@tabler/icons-react';
+import {
+  IconBrandGithub,
+  IconChartBar,
+  IconCircleArrowUp,
+  IconFiles,
+  IconMoon,
+  IconSun,
+  IconUser
+} from '@tabler/icons-react';
 
 import { ApplicationContextProvider } from './contexts/ApplicationContext';
 import { AuthContextProvider } from './contexts/AuthContext';
@@ -103,6 +113,9 @@ const AppContent = () => {
   const [signedOutMessage, setSignedOutMessage] = useState('');
 
   const location = useLocation();
+
+  const [scroll, scrollTo] = useWindowScroll();
+  const { height } = useViewportSize();
 
   const checkSessionValidity = async () => {
     const user = localStorage.getItem('user');
@@ -246,7 +259,7 @@ const AppContent = () => {
         collapsed: { desktop: true, mobile: !opened }
       }}
     >
-      <AppShell.Header>
+      <AppShell.Header zIndex={450}>
         <Group h="100%" px="md" wrap="nowrap">
           <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
 
@@ -290,11 +303,29 @@ const AppContent = () => {
       </AppShell.Header>
 
       <FocusTrap active={opened}>
-        <AppShell.Navbar p="xs" hiddenFrom="sm">
+        <AppShell.Navbar p="xs" hiddenFrom="sm" zIndex={400}>
           <NavItems opened={opened} close={close} isDesktop={false} />
         </AppShell.Navbar>
       </FocusTrap>
+
       <AppShell.Main pb={ready ? 74 : undefined}>
+        <Transition transition="fade-down" mounted={scroll.y > height * 0.25}>
+          {transitionStyles => (
+            <Affix position={{ top: HEADER_HEIGHT + 16, left: 0, right: 0 }} zIndex={350} w="fit-content" mx="auto">
+              <Button
+                variant="default"
+                radius="md"
+                style={transitionStyles}
+                onClick={() => scrollTo({ y: 0 })}
+                className="floating-button"
+                leftSection={<IconCircleArrowUp size={16} stroke={1.5} />}
+              >
+                Scroll to top
+              </Button>
+            </Affix>
+          )}
+        </Transition>
+
         <Modal opened={signedOutOpened} onClose={closeSignedOut} title="Signed Out" overlayProps={{ blur: 2 }} centered>
           <Stack gap="sm">
             <Text size="sm">{signedOutMessage}</Text>
