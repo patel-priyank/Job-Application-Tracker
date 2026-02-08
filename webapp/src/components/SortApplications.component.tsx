@@ -23,7 +23,7 @@ const ITEMS_PER_PAGE = [
   { label: '96', value: '96' }
 ];
 
-const Sort = ({
+const SortApplications = ({
   opened,
   onClose,
   onSave
@@ -128,4 +128,4 @@ const Sort = ({
   );
 };
 
-export default Sort;
+export default SortApplications;

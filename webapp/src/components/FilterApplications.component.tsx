@@ -9,7 +9,7 @@ import { useAuthContext } from '../hooks/useAuthContext';
 
 import { APPLICATION_STATUS } from '../utils/constants';
 
-const Filter = ({
+const FilterApplications = ({
   opened,
   onClose,
   onSave
@@ -73,6 +73,7 @@ const Filter = ({
             <Accordion.Control>
               <Group mr="md">
                 <Text>Application status</Text>
+
                 {statusFilter.length !== Object.values(APPLICATION_STATUS).length && (
                   <Badge variant="default" size="sm" ml="auto">
                     Applied
@@ -142,6 +143,7 @@ const Filter = ({
             <Accordion.Control>
               <Group mr="md">
                 <Text>Email used</Text>
+
                 {emailUsedFilter.length !== user.suggestedEmails.length && (
                   <Badge variant="default" size="sm" ml="auto">
                     Applied
@@ -242,4 +244,4 @@ const Filter = ({
   );
 };
 
-export default Filter;
+export default FilterApplications;
