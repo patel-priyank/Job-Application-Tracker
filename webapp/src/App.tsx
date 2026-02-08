@@ -259,7 +259,7 @@ const AppContent = () => {
         collapsed: { desktop: true, mobile: !opened }
       }}
     >
-      <AppShell.Header zIndex={450}>
+      <AppShell.Header>
         <Group h="100%" px="md" wrap="nowrap">
           <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
 
