@@ -235,7 +235,7 @@ const Statistics = () => {
 
           <Grid>
             <Grid.Col span={{ base: 12, md: 6 }}>
-              <Card padding="md" shadow="md" radius="lg" withBorder h="100%">
+              <Card padding="md" shadow="md" radius="md" withBorder h="100%">
                 <Stack gap="xl">
                   <Group justify="space-between">
                     <Stack gap={0}>
@@ -288,7 +288,7 @@ const Statistics = () => {
             </Grid.Col>
 
             <Grid.Col span={{ base: 12, md: 6 }}>
-              <Card padding="md" shadow="md" radius="lg" withBorder h="100%">
+              <Card padding="md" shadow="md" radius="md" withBorder h="100%">
                 <Stack gap="xl">
                   <Group justify="space-between">
                     <Stack gap={0}>
