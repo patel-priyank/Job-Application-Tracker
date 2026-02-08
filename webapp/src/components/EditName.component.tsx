@@ -82,7 +82,7 @@ const EditName = ({ opened, onClose }: { opened: boolean; onClose: () => void })
   };
 
   return (
-    <Modal opened={opened} onClose={onClose} title="Edit Name" overlayProps={{ blur: 2 }} centered zIndex={500}>
+    <Modal opened={opened} onClose={onClose} title="Edit Name" overlayProps={{ blur: 2 }} centered>
       <form onSubmit={form.onSubmit(values => handleSubmit(values))}>
         <Stack gap="sm">
           <TextInput

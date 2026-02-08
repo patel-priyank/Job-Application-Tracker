@@ -48,7 +48,7 @@ const FilterApplications = ({
   }
 
   return (
-    <Modal opened={opened} onClose={onClose} title="Filter" overlayProps={{ blur: 2 }} centered zIndex={500}>
+    <Modal opened={opened} onClose={onClose} title="Filter" overlayProps={{ blur: 2 }} centered>
       <Stack gap="sm">
         <Group gap="sm">
           <Button

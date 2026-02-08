@@ -78,7 +78,7 @@ const Application = ({ application, highlight }: { application: JobApplication; 
               </Highlight>
             </Text>
 
-            <Menu withinPortal position="bottom-end" shadow="xl">
+            <Menu withinPortal position="bottom-end" shadow="xl" zIndex={90}>
               <Menu.Target>
                 <ActionIcon variant="light" color="gray">
                   <IconDots size={16} stroke={1.5} />

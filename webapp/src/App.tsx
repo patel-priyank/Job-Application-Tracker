@@ -303,7 +303,7 @@ const AppContent = () => {
       </AppShell.Header>
 
       <FocusTrap active={opened}>
-        <AppShell.Navbar p="xs" hiddenFrom="sm" zIndex={400}>
+        <AppShell.Navbar p="xs" hiddenFrom="sm">
           <NavItems opened={opened} close={close} isDesktop={false} />
         </AppShell.Navbar>
       </FocusTrap>
@@ -311,7 +311,7 @@ const AppContent = () => {
       <AppShell.Main pb={ready ? 74 : undefined}>
         <Transition transition="fade-down" mounted={scroll.y > height * 0.25}>
           {transitionStyles => (
-            <Affix position={{ top: HEADER_HEIGHT + 16, left: 0, right: 0 }} zIndex={350} w="fit-content" mx="auto">
+            <Affix position={{ top: HEADER_HEIGHT + 16, left: 0, right: 0 }} zIndex={95} w="fit-content" mx="auto">
               <Button
                 variant="default"
                 radius="md"
@@ -326,14 +326,7 @@ const AppContent = () => {
           )}
         </Transition>
 
-        <Modal
-          opened={signedOutOpened}
-          onClose={closeSignedOut}
-          title="Signed Out"
-          overlayProps={{ blur: 2 }}
-          centered
-          zIndex={500}
-        >
+        <Modal opened={signedOutOpened} onClose={closeSignedOut} title="Signed Out" overlayProps={{ blur: 2 }} centered>
           <Stack gap="sm">
             <Text size="sm">{signedOutMessage}</Text>
 

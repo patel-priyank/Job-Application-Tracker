@@ -130,14 +130,7 @@ const EditSuggestedEmails = ({ opened, onClose }: { opened: boolean; onClose: ()
   };
 
   return (
-    <Modal
-      opened={opened}
-      onClose={onClose}
-      title="Edit Suggested Emails"
-      overlayProps={{ blur: 2 }}
-      centered
-      zIndex={500}
-    >
+    <Modal opened={opened} onClose={onClose} title="Edit Suggested Emails" overlayProps={{ blur: 2 }} centered>
       <Text c="dimmed" mb="md">
         These emails were previously used to create job applications, and are suggested when creating or editing a job
         application.

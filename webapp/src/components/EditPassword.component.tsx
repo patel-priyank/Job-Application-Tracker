@@ -110,7 +110,7 @@ const EditPassword = ({ opened, onClose }: { opened: boolean; onClose: () => voi
   };
 
   return (
-    <Modal opened={opened} onClose={onClose} title="Edit Password" overlayProps={{ blur: 2 }} centered zIndex={500}>
+    <Modal opened={opened} onClose={onClose} title="Edit Password" overlayProps={{ blur: 2 }} centered>
       <form onSubmit={form.onSubmit(values => handleSubmit(values))}>
         <Stack gap="sm">
           <PasswordInput

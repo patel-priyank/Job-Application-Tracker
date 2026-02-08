@@ -10,7 +10,7 @@ const FloatingActionButton = ({
   onClick: () => void;
 }) => {
   return (
-    <Affix position={{ bottom: 16, right: 16 }} zIndex={100}>
+    <Affix position={{ bottom: 16, right: 16 }} zIndex={95}>
       <Button
         leftSection={<Icon size={20} stroke={1.5} />}
         radius="xl"

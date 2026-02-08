@@ -31,7 +31,7 @@ const SignOut = ({ opened, onClose }: { opened: boolean; onClose: () => void }) 
   };
 
   return (
-    <Modal opened={opened} onClose={onClose} title="Sign Out" overlayProps={{ blur: 2 }} centered zIndex={500}>
+    <Modal opened={opened} onClose={onClose} title="Sign Out" overlayProps={{ blur: 2 }} centered>
       <Stack gap="sm">
         <Text size="sm">Are you sure you want to sign out? You'll need to sign in again to access your account.</Text>
 
