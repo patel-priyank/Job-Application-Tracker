@@ -228,6 +228,7 @@ const Applications = () => {
                   statusFilter.length === Object.values(APPLICATION_STATUS).length &&
                   emailUsedFilter.length === user.suggestedEmails.length
                 }
+                zIndex={85}
               >
                 <ActionIcon size="input-sm" onClick={openFilter}>
                   <IconFilter size={16} stroke={1.5} />
@@ -248,6 +249,7 @@ const Applications = () => {
                   statusFilter.length === Object.values(APPLICATION_STATUS).length &&
                   emailUsedFilter.length === user.suggestedEmails.length
                 }
+                zIndex={85}
               >
                 <Button leftSection={<IconFilter size={16} stroke={1.5} />} onClick={openFilter}>
                   Filter
