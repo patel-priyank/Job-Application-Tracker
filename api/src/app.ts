@@ -44,7 +44,8 @@ app.use((req, res, next) => {
 });
 
 app.use((req: Request, res: Response, next: NextFunction): void => {
-  console.log(req.method, req.path, Object.keys(req.query).length ? Object.values(req.query) : '');
+  console.log(req.method, req.path);
+
   next();
 });
 
