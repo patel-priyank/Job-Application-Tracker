@@ -60,7 +60,15 @@ import '@mantine/notifications/styles.css';
 import './App.css';
 
 const theme = createTheme({
-  cursorType: 'pointer'
+  cursorType: 'pointer',
+  fontFamily:
+    'IBM Plex Sans, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji',
+  fontFamilyMonospace:
+    'IBM Plex Mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace',
+  headings: {
+    fontFamily:
+      'IBM Plex Sans, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji'
+  }
 });
 
 const NavItems = ({ opened, close, isDesktop }: { opened: boolean; close: () => void; isDesktop: boolean }) => {
