@@ -14,6 +14,7 @@ import {
   Image,
   Loader,
   Progress,
+  SegmentedControl,
   Stack,
   Tabs,
   Text
@@ -21,7 +22,7 @@ import {
 
 import { LineChart } from '@mantine/charts';
 
-import { IconNumber123 } from '@tabler/icons-react';
+import { IconCircles } from '@tabler/icons-react';
 
 import { useAuthContext } from '../hooks/useAuthContext';
 
@@ -53,6 +54,8 @@ const Statistics = () => {
     weeklyActivity: [],
     monthlyActivity: []
   });
+
+  const [activeTab, setActiveTab] = useState<string>('daily');
 
   useEffect(() => {
     getStatistics();
@@ -216,7 +219,7 @@ const Statistics = () => {
               <Accordion.Control>
                 <Group wrap="nowrap">
                   <Avatar color="green" radius="xl" size="md">
-                    <IconNumber123 size={20} stroke={1.5} />
+                    <IconCircles size={20} stroke={1.5} />
                   </Avatar>
                   <Box>
                     <Text>Overview</Text>
@@ -277,20 +280,18 @@ const Statistics = () => {
                     </Text>
                   </Box>
 
-                  <Tabs variant="default" defaultValue="daily">
-                    <Tabs.List style={{ flexWrap: 'nowrap', overflowX: 'auto' }}>
-                      <Tabs.Tab px="lg" value="daily">
-                        This week
-                      </Tabs.Tab>
-
-                      <Tabs.Tab px="lg" value="weekly">
-                        Last 4 weeks
-                      </Tabs.Tab>
-
-                      <Tabs.Tab px="lg" value="monthly">
-                        Last 6 months
-                      </Tabs.Tab>
-                    </Tabs.List>
+                  <Tabs variant="default" value={activeTab}>
+                    <Box style={{ overflowX: 'auto' }}>
+                      <SegmentedControl
+                        value={activeTab}
+                        onChange={setActiveTab}
+                        data={[
+                          { label: 'This week', value: 'daily' },
+                          { label: 'Last 4 weeks', value: 'weekly' },
+                          { label: 'Last 6 months', value: 'monthly' }
+                        ]}
+                      />
+                    </Box>
 
                     <Tabs.Panel value="daily" pt="xl">
                       <LineChart
