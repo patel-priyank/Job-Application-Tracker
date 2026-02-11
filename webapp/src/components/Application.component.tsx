@@ -1,4 +1,4 @@
-import { ActionIcon, Badge, Card, Group, Highlight, Menu, Stack, Text } from '@mantine/core';
+import { ActionIcon, Badge, Box, Card, Group, Highlight, Menu, Stack, Text } from '@mantine/core';
 
 import { useDisclosure } from '@mantine/hooks';
 
@@ -144,7 +144,7 @@ const Application = ({ application, highlight }: { application: JobApplication; 
             </Text>
           </Text>
 
-          <Stack gap={0}>
+          <Box>
             <Text
               c={Object.values(APPLICATION_STATUS).find(status => status.label === application.status)?.color}
               size="sm"
@@ -156,7 +156,7 @@ const Application = ({ application, highlight }: { application: JobApplication; 
             <Text c="dimmed" size="sm">
               {formatDate(application.date)}
             </Text>
-          </Stack>
+          </Box>
         </Stack>
       </Card>
     </>

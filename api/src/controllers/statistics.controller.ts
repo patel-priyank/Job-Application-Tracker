@@ -11,7 +11,8 @@ const getStatistics = async (req: Request, res: Response) => {
       value: applications.filter(application => application.status === status).length
     }));
 
-    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
     const allStatuses = applications
       .map(application => application.history)
@@ -29,6 +30,49 @@ const getStatistics = async (req: Request, res: Response) => {
     currentWeekStart.setDate(diff);
     currentWeekStart.setHours(0, 0, 0, 0);
 
+    const dailyActivity: any[] = [];
+
+    for (let i = 0; i < 7; i++) {
+      const dayDate = new Date(currentWeekStart);
+      dayDate.setDate(dayDate.getDate() + i);
+      dayDate.setHours(0, 0, 0, 0);
+
+      const dayEnd = new Date(dayDate);
+      dayEnd.setHours(23, 59, 59, 999);
+
+      const dayName = days[dayDate.getDay()];
+      const dayNumber = dayDate.getDate().toString().padStart(2, '0');
+      const monthName = months[dayDate.getMonth()];
+      const label = `${dayName}, ${dayNumber} ${monthName}`;
+
+      const dayData: any = { label, _start: dayDate, _end: dayEnd };
+      uniqueStatuses.forEach(status => (dayData[status] = 0));
+
+      dailyActivity.push(dayData);
+    }
+
+    applications.forEach(application => {
+      application.history.forEach(historyItem => {
+        const itemDate = new Date(historyItem.date);
+        const day = dailyActivity.find(d => itemDate >= d._start && itemDate <= d._end);
+
+        if (day) {
+          day[historyItem.status] += 1;
+        }
+      });
+    });
+
+    dailyActivity.forEach(day => {
+      delete day._start;
+      delete day._end;
+
+      Object.keys(day).forEach(key => {
+        if (day[key] === 0) {
+          delete day[key];
+        }
+      });
+    });
+
     const weeklyActivity: any[] = [];
 
     let weekNumber = 4;
@@ -41,8 +85,8 @@ const getStatistics = async (req: Request, res: Response) => {
       end.setDate(end.getDate() + 6);
       end.setHours(23, 59, 59, 999);
 
-      const startDate = `${start.getDate().toString().padStart(2, '0')} ${monthNames[start.getMonth()]}`;
-      const endDate = `${end.getDate().toString().padStart(2, '0')} ${monthNames[end.getMonth()]}`;
+      const startDate = `${start.getDate().toString().padStart(2, '0')} ${months[start.getMonth()]}`;
+      const endDate = `${end.getDate().toString().padStart(2, '0')} ${months[end.getMonth()]}`;
       const label = `${startDate} - ${endDate}`;
 
       const weekData: any = { label, _start: start, _end: end };
@@ -88,7 +132,7 @@ const getStatistics = async (req: Request, res: Response) => {
       const end = new Date(targetDate.getFullYear(), targetDate.getMonth() + 1, 0);
       end.setHours(23, 59, 59, 999);
 
-      const label = `${monthNames[start.getMonth()]} ${start.getFullYear()}`;
+      const label = `${months[start.getMonth()]} ${start.getFullYear()}`;
 
       const monthData: any = { label, _start: start, _end: end };
       uniqueStatuses.forEach(status => (monthData[status] = 0));
@@ -120,6 +164,7 @@ const getStatistics = async (req: Request, res: Response) => {
 
     return res.status(200).json({
       statusCounts,
+      dailyActivity,
       weeklyActivity,
       monthlyActivity
     });

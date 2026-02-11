@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 
 import {
   Accordion,
-  ActionIcon,
   Avatar,
   Box,
   Button,
@@ -14,15 +13,15 @@ import {
   Group,
   Image,
   Loader,
-  Popover,
   Progress,
   Stack,
+  Tabs,
   Text
 } from '@mantine/core';
 
-import { BarChart } from '@mantine/charts';
+import { LineChart } from '@mantine/charts';
 
-import { IconInfoCircle, IconNumber123 } from '@tabler/icons-react';
+import { IconNumber123 } from '@tabler/icons-react';
 
 import { useAuthContext } from '../hooks/useAuthContext';
 
@@ -42,12 +41,15 @@ const Statistics = () => {
   const { user } = useAuthContext();
 
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
   const [statistics, setStatistics] = useState<{
     statusCounts: StatisticItem[];
+    dailyActivity: StatisticItem[];
     weeklyActivity: StatisticItem[];
     monthlyActivity: StatisticItem[];
   }>({
     statusCounts: [],
+    dailyActivity: [],
     weeklyActivity: [],
     monthlyActivity: []
   });
@@ -62,6 +64,7 @@ const Statistics = () => {
     }
 
     setLoading(true);
+    setError(false);
 
     const response = await fetch('/api/statistics', {
       headers: {
@@ -75,6 +78,7 @@ const Statistics = () => {
       showNotification('Something went wrong', data.error, true);
 
       setLoading(false);
+      setError(true);
 
       return;
     }
@@ -85,18 +89,46 @@ const Statistics = () => {
       statusCounts: data.statusCounts.sort((a: { label: string }, b: { label: string }) => {
         return orderedStatuses.indexOf(a.label) - orderedStatuses.indexOf(b.label);
       }),
-      weeklyActivity: data.weeklyActivity,
-      monthlyActivity: data.monthlyActivity
+      dailyActivity: data.dailyActivity.map((item: Record<string, string | number>) => {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        const itemDateStr = item.label as string;
+        const itemDate = new Date(itemDateStr + ' ' + today.getFullYear());
+        itemDate.setHours(0, 0, 0, 0);
+
+        if (itemDate <= today) {
+          orderedStatuses.forEach(status => {
+            if (!item[status]) {
+              item[status] = 0;
+            }
+          });
+        }
+
+        return item;
+      }),
+      weeklyActivity: data.weeklyActivity.map((item: Record<string, string | number>) => {
+        orderedStatuses.forEach(status => {
+          if (!item[status]) {
+            item[status] = 0;
+          }
+        });
+
+        return item;
+      }),
+      monthlyActivity: data.monthlyActivity.map((item: Record<string, string | number>) => {
+        orderedStatuses.forEach(status => {
+          if (!item[status]) {
+            item[status] = 0;
+          }
+        });
+
+        return item;
+      })
     });
 
     setLoading(false);
   };
-
-  const isError =
-    user && user.applicationsCount > 0 && !loading && Object.values(statistics).every(value => value.length === 0);
-
-  const isValid =
-    user && user.applicationsCount > 0 && !loading && Object.values(statistics).every(value => value.length !== 0);
 
   return (
     <>
@@ -153,7 +185,7 @@ const Statistics = () => {
         </Center>
       )}
 
-      {isError && (
+      {user && user.applicationsCount > 0 && !loading && error && (
         <Grid justify="center">
           <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
             <Card padding="md" shadow="md" radius="md" withBorder h="100%">
@@ -177,7 +209,7 @@ const Statistics = () => {
         </Grid>
       )}
 
-      {isValid && (
+      {user && user.applicationsCount > 0 && !loading && !error && (
         <>
           <Accordion variant="separated" radius="lg" mb="lg" defaultValue="overview">
             <Accordion.Item value="overview">
@@ -234,108 +266,107 @@ const Statistics = () => {
           </Accordion>
 
           <Grid>
-            <Grid.Col span={{ base: 12, md: 6 }}>
+            <Grid.Col span={12}>
               <Card padding="md" shadow="md" radius="md" withBorder h="100%">
-                <Stack gap="xl">
-                  <Group justify="space-between">
-                    <Stack gap={0}>
-                      <Text>Weekly Activity</Text>
-                      <Text size="sm" c="dimmed">
+                <Stack>
+                  <Box>
+                    <Text>Status Activity</Text>
+                    <Text size="sm" c="dimmed">
+                      Number of status updates per time period, includes both new applications and existing ones that
+                      moved to a different status.
+                    </Text>
+                  </Box>
+
+                  <Tabs variant="default" defaultValue="daily">
+                    <Tabs.List style={{ flexWrap: 'nowrap', overflowX: 'auto' }}>
+                      <Tabs.Tab px="lg" value="daily">
+                        This week
+                      </Tabs.Tab>
+
+                      <Tabs.Tab px="lg" value="weekly">
                         Last 4 weeks
-                      </Text>
-                    </Stack>
+                      </Tabs.Tab>
 
-                    <Popover width={240} shadow="xs" withArrow offset={0}>
-                      <Popover.Target>
-                        <ActionIcon variant="subtle">
-                          <IconInfoCircle size={16} stroke={1.5} />
-                        </ActionIcon>
-                      </Popover.Target>
-
-                      <Popover.Dropdown>
-                        <Text size="sm">
-                          Number of status updates per week, includes both new applications and existing ones that moved
-                          to a different status during the week.
-                        </Text>
-                      </Popover.Dropdown>
-                    </Popover>
-                  </Group>
-
-                  <BarChart
-                    h={480}
-                    data={statistics.weeklyActivity}
-                    dataKey="label"
-                    type="stacked"
-                    series={Object.values(APPLICATION_STATUS).map(status => ({
-                      name: status.label,
-                      color: status.color
-                    }))}
-                    tooltipAnimationDuration={250}
-                    tickLine="y"
-                    gridAxis="x"
-                    xAxisProps={{
-                      angle: -90,
-                      height: 100,
-                      tick: {
-                        textAnchor: 'end',
-                        fill: 'var(--mantine-color-dimmed)',
-                        fontSize: 'var(--mantine-font-size-xs)'
-                      }
-                    }}
-                  />
-                </Stack>
-              </Card>
-            </Grid.Col>
-
-            <Grid.Col span={{ base: 12, md: 6 }}>
-              <Card padding="md" shadow="md" radius="md" withBorder h="100%">
-                <Stack gap="xl">
-                  <Group justify="space-between">
-                    <Stack gap={0}>
-                      <Text>Monthly Activity</Text>
-                      <Text size="sm" c="dimmed">
+                      <Tabs.Tab px="lg" value="monthly">
                         Last 6 months
-                      </Text>
-                    </Stack>
+                      </Tabs.Tab>
+                    </Tabs.List>
 
-                    <Popover width={240} shadow="xs" withArrow offset={0}>
-                      <Popover.Target>
-                        <ActionIcon variant="subtle">
-                          <IconInfoCircle size={16} stroke={1.5} />
-                        </ActionIcon>
-                      </Popover.Target>
+                    <Tabs.Panel value="daily" pt="xl">
+                      <LineChart
+                        h={480}
+                        data={statistics.dailyActivity}
+                        dataKey="label"
+                        curveType="linear"
+                        series={Object.values(APPLICATION_STATUS).map(status => ({
+                          name: status.label,
+                          color: status.color
+                        }))}
+                        tooltipAnimationDuration={250}
+                        tickLine="y"
+                        gridAxis="x"
+                        xAxisProps={{
+                          angle: -90,
+                          height: 100,
+                          tick: {
+                            textAnchor: 'end',
+                            fill: 'var(--mantine-color-dimmed)',
+                            fontSize: 'var(--mantine-font-size-xs)'
+                          }
+                        }}
+                      />
+                    </Tabs.Panel>
 
-                      <Popover.Dropdown>
-                        <Text size="sm">
-                          Number of status updates per month, includes both new applications and existing ones that
-                          moved to a different status during the month.
-                        </Text>
-                      </Popover.Dropdown>
-                    </Popover>
-                  </Group>
+                    <Tabs.Panel value="weekly" pt="xl">
+                      <LineChart
+                        h={480}
+                        data={statistics.weeklyActivity}
+                        dataKey="label"
+                        curveType="linear"
+                        series={Object.values(APPLICATION_STATUS).map(status => ({
+                          name: status.label,
+                          color: status.color
+                        }))}
+                        tooltipAnimationDuration={250}
+                        tickLine="y"
+                        gridAxis="x"
+                        xAxisProps={{
+                          angle: -90,
+                          height: 100,
+                          tick: {
+                            textAnchor: 'end',
+                            fill: 'var(--mantine-color-dimmed)',
+                            fontSize: 'var(--mantine-font-size-xs)'
+                          }
+                        }}
+                      />
+                    </Tabs.Panel>
 
-                  <BarChart
-                    h={480}
-                    data={statistics.monthlyActivity}
-                    dataKey="label"
-                    type="stacked"
-                    series={Object.values(APPLICATION_STATUS).map(status => ({
-                      name: status.label,
-                      color: status.color
-                    }))}
-                    tooltipAnimationDuration={250}
-                    tickLine="y"
-                    gridAxis="x"
-                    xAxisProps={{
-                      angle: -90,
-                      height: 100,
-                      tick: {
-                        textAnchor: 'end',
-                        fill: 'var(--mantine-color-dimmed)',
-                        fontSize: 'var(--mantine-font-size-xs)'
-                      }
-                    }}
-                  />
+                    <Tabs.Panel value="monthly" pt="xl">
+                      <LineChart
+                        h={480}
+                        data={statistics.monthlyActivity}
+                        dataKey="label"
+                        curveType="linear"
+                        series={Object.values(APPLICATION_STATUS).map(status => ({
+                          name: status.label,
+                          color: status.color
+                        }))}
+                        tooltipAnimationDuration={250}
+                        tickLine="y"
+                        gridAxis="x"
+                        xAxisProps={{
+                          angle: -90,
+                          height: 100,
+                          tick: {
+                            textAnchor: 'end',
+                            fill: 'var(--mantine-color-dimmed)',
+                            fontSize: 'var(--mantine-font-size-xs)'
+                          }
+                        }}
+                      />
+                    </Tabs.Panel>
+                  </Tabs>
                 </Stack>
               </Card>
             </Grid.Col>
