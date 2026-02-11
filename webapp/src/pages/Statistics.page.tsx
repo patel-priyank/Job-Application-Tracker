@@ -218,13 +218,13 @@ const Statistics = () => {
             <Accordion.Item value="overview">
               <Accordion.Control>
                 <Group wrap="nowrap">
-                  <Avatar color="green" radius="xl" size="md">
+                  <Avatar color="blue" radius="xl" size="md">
                     <IconCircles size={20} stroke={1.5} />
                   </Avatar>
                   <Box>
                     <Text>Overview</Text>
                     <Text size="sm" c="dimmed">
-                      Tracking {user.applicationsCount} applications
+                      Current status of {user.applicationsCount} application{user.applicationsCount !== 1 && 's'}
                     </Text>
                   </Box>
                 </Group>
