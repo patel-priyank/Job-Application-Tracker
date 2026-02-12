@@ -238,7 +238,7 @@ const Statistics = () => {
           <Accordion variant="separated" radius="lg" mb="lg" defaultValue="overview">
             <Accordion.Item value="overview">
               <Accordion.Control>
-                <Group wrap="nowrap">
+                <Group mr="md" wrap="nowrap">
                   <Avatar color="blue" radius="xl" size="md">
                     <IconCircles size={20} stroke={1.5} />
                   </Avatar>

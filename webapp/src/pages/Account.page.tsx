@@ -160,7 +160,7 @@ const Account = () => {
           <Accordion variant="separated" radius="lg" mt="lg">
             <Accordion.Item value="danger">
               <Accordion.Control>
-                <Group wrap="nowrap">
+                <Group mr="md" wrap="nowrap">
                   <Avatar color="red" radius="xl" size="md">
                     <IconAlertTriangle size={20} stroke={1.5} />
                   </Avatar>
