@@ -75,7 +75,7 @@ const getStatistics = async (req: Request, res: Response) => {
 
     const weeklyActivity: any[] = [];
 
-    let weekNumber = 4;
+    let weekNumber = 6;
 
     while (weekNumber--) {
       const start = new Date(currentWeekStart);

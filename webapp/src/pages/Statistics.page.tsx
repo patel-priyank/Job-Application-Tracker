@@ -22,7 +22,7 @@ import {
 
 import { LineChart } from '@mantine/charts';
 
-import { IconCircles } from '@tabler/icons-react';
+import { IconCalendarEvent, IconCalendarMonth, IconCalendarWeek, IconCircles } from '@tabler/icons-react';
 
 import { useAuthContext } from '../hooks/useAuthContext';
 
@@ -56,6 +56,30 @@ const Statistics = () => {
   });
 
   const [activeTab, setActiveTab] = useState<string>('daily');
+
+  const STATUS_ACTIVITY_TIME_PERIODS = [
+    {
+      value: 'daily',
+      label: 'Daily',
+      subLabel: 'This week',
+      icon: IconCalendarEvent,
+      data: statistics.dailyActivity
+    },
+    {
+      value: 'weekly',
+      label: 'Weekly',
+      subLabel: 'Last 6 weeks',
+      icon: IconCalendarWeek,
+      data: statistics.weeklyActivity
+    },
+    {
+      value: 'monthly',
+      label: 'Monthly',
+      subLabel: 'Last 6 months',
+      icon: IconCalendarMonth,
+      data: statistics.monthlyActivity
+    }
+  ];
 
   useEffect(() => {
     getStatistics();
@@ -280,93 +304,56 @@ const Statistics = () => {
                     </Text>
                   </Box>
 
-                  <Tabs variant="default" value={activeTab}>
+                  <Tabs variant="default" value={activeTab} keepMounted={false}>
                     <Box style={{ overflowX: 'auto' }}>
                       <SegmentedControl
                         value={activeTab}
                         onChange={setActiveTab}
-                        data={[
-                          { label: 'This week', value: 'daily' },
-                          { label: 'Last 4 weeks', value: 'weekly' },
-                          { label: 'Last 6 months', value: 'monthly' }
-                        ]}
+                        data={STATUS_ACTIVITY_TIME_PERIODS.map(timePeriod => ({
+                          value: timePeriod.value,
+                          label: (
+                            <Group gap="sm" wrap="nowrap">
+                              <Avatar radius="xl" size="sm">
+                                <timePeriod.icon size={16} stroke={1.5} />
+                              </Avatar>
+                              <Box style={{ textAlign: 'start' }}>
+                                <Text size="sm">{timePeriod.label}</Text>
+                                <Text size="xs" c="dimmed">
+                                  {timePeriod.subLabel}
+                                </Text>
+                              </Box>
+                            </Group>
+                          )
+                        }))}
                       />
                     </Box>
 
-                    <Tabs.Panel value="daily" pt="xl">
-                      <LineChart
-                        h={480}
-                        data={statistics.dailyActivity}
-                        dataKey="label"
-                        curveType="linear"
-                        series={Object.values(APPLICATION_STATUS).map(status => ({
-                          name: status.label,
-                          color: status.color
-                        }))}
-                        tooltipAnimationDuration={250}
-                        tickLine="y"
-                        gridAxis="x"
-                        xAxisProps={{
-                          angle: -90,
-                          height: 100,
-                          tick: {
-                            textAnchor: 'end',
-                            fill: 'var(--mantine-color-dimmed)',
-                            fontSize: 'var(--mantine-font-size-xs)'
-                          }
-                        }}
-                      />
-                    </Tabs.Panel>
-
-                    <Tabs.Panel value="weekly" pt="xl">
-                      <LineChart
-                        h={480}
-                        data={statistics.weeklyActivity}
-                        dataKey="label"
-                        curveType="linear"
-                        series={Object.values(APPLICATION_STATUS).map(status => ({
-                          name: status.label,
-                          color: status.color
-                        }))}
-                        tooltipAnimationDuration={250}
-                        tickLine="y"
-                        gridAxis="x"
-                        xAxisProps={{
-                          angle: -90,
-                          height: 100,
-                          tick: {
-                            textAnchor: 'end',
-                            fill: 'var(--mantine-color-dimmed)',
-                            fontSize: 'var(--mantine-font-size-xs)'
-                          }
-                        }}
-                      />
-                    </Tabs.Panel>
-
-                    <Tabs.Panel value="monthly" pt="xl">
-                      <LineChart
-                        h={480}
-                        data={statistics.monthlyActivity}
-                        dataKey="label"
-                        curveType="linear"
-                        series={Object.values(APPLICATION_STATUS).map(status => ({
-                          name: status.label,
-                          color: status.color
-                        }))}
-                        tooltipAnimationDuration={250}
-                        tickLine="y"
-                        gridAxis="x"
-                        xAxisProps={{
-                          angle: -90,
-                          height: 100,
-                          tick: {
-                            textAnchor: 'end',
-                            fill: 'var(--mantine-color-dimmed)',
-                            fontSize: 'var(--mantine-font-size-xs)'
-                          }
-                        }}
-                      />
-                    </Tabs.Panel>
+                    {STATUS_ACTIVITY_TIME_PERIODS.map(timePeriod => (
+                      <Tabs.Panel value={timePeriod.value} pt="xl" key={timePeriod.value}>
+                        <LineChart
+                          h={480}
+                          data={timePeriod.data}
+                          dataKey="label"
+                          curveType="linear"
+                          series={Object.values(APPLICATION_STATUS).map(status => ({
+                            name: status.label,
+                            color: status.color
+                          }))}
+                          tooltipAnimationDuration={250}
+                          tickLine="y"
+                          gridAxis="x"
+                          xAxisProps={{
+                            angle: -90,
+                            height: 100,
+                            tick: {
+                              textAnchor: 'end',
+                              fill: 'var(--mantine-color-dimmed)',
+                              fontSize: 'var(--mantine-font-size-xs)'
+                            }
+                          }}
+                        />
+                      </Tabs.Panel>
+                    ))}
                   </Tabs>
                 </Stack>
               </Card>
