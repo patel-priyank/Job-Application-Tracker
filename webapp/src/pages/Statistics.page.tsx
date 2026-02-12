@@ -22,7 +22,7 @@ import {
 
 import { LineChart } from '@mantine/charts';
 
-import { IconCalendarEvent, IconCalendarMonth, IconCalendarWeek, IconCircles } from '@tabler/icons-react';
+import { IconCircles } from '@tabler/icons-react';
 
 import { useAuthContext } from '../hooks/useAuthContext';
 
@@ -55,31 +55,28 @@ const Statistics = () => {
     monthlyActivity: []
   });
 
-  const [activeTab, setActiveTab] = useState<string>('daily');
-
   const STATUS_ACTIVITY_TIME_PERIODS = [
     {
       value: 'daily',
       label: 'Daily',
       subLabel: 'This week',
-      icon: IconCalendarEvent,
       data: statistics.dailyActivity
     },
     {
       value: 'weekly',
       label: 'Weekly',
       subLabel: 'Last 6 weeks',
-      icon: IconCalendarWeek,
       data: statistics.weeklyActivity
     },
     {
       value: 'monthly',
       label: 'Monthly',
       subLabel: 'Last 6 months',
-      icon: IconCalendarMonth,
       data: statistics.monthlyActivity
     }
   ];
+
+  const [activeTab, setActiveTab] = useState(STATUS_ACTIVITY_TIME_PERIODS[0].value);
 
   useEffect(() => {
     getStatistics();
@@ -312,17 +309,12 @@ const Statistics = () => {
                         data={STATUS_ACTIVITY_TIME_PERIODS.map(timePeriod => ({
                           value: timePeriod.value,
                           label: (
-                            <Group gap="sm" wrap="nowrap">
-                              <Avatar radius="xl" size="sm">
-                                <timePeriod.icon size={16} stroke={1.5} />
-                              </Avatar>
-                              <Box style={{ textAlign: 'start' }}>
-                                <Text size="sm">{timePeriod.label}</Text>
-                                <Text size="xs" c="dimmed">
-                                  {timePeriod.subLabel}
-                                </Text>
-                              </Box>
-                            </Group>
+                            <Box style={{ textAlign: 'start' }}>
+                              <Text size="sm">{timePeriod.label}</Text>
+                              <Text size="xs" c="dimmed">
+                                {timePeriod.subLabel}
+                              </Text>
+                            </Box>
                           )
                         }))}
                       />
