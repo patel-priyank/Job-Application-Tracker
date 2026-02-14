@@ -181,7 +181,7 @@ const EditPassword = ({ opened, onClose }: { opened: boolean; onClose: () => voi
 
           <Group mt="sm">
             <Button type="submit" loading={loading}>
-              Save
+              Save password
             </Button>
 
             <Button variant="outline" onClick={onClose}>

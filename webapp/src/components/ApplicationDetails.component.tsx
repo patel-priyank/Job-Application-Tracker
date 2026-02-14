@@ -289,7 +289,7 @@ const ApplicationDetails = ({
 
             <Group mt="sm">
               <Button type="submit" loading={loading}>
-                Save
+                Save status
               </Button>
 
               <Button

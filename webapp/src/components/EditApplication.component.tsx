@@ -201,7 +201,7 @@ const EditApplication = ({
 
           <Group mt="sm">
             <Button type="submit" loading={loading}>
-              Save
+              Save application
             </Button>
 
             <Button variant="outline" onClick={onClose}>

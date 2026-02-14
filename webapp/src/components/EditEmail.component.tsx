@@ -101,7 +101,7 @@ const EditEmail = ({ opened, onClose }: { opened: boolean; onClose: () => void }
 
           <Group mt="sm">
             <Button type="submit" loading={loading}>
-              Save
+              Save email
             </Button>
 
             <Button variant="outline" onClick={onClose}>

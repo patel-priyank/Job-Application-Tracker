@@ -141,7 +141,7 @@ const CreateApplicationStatus = ({
 
           <Group mt="sm">
             <Button type="submit" loading={loading}>
-              Save
+              Update status
             </Button>
 
             <Button variant="outline" onClick={onClose}>

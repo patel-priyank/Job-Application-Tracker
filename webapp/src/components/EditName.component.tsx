@@ -96,7 +96,7 @@ const EditName = ({ opened, onClose }: { opened: boolean; onClose: () => void })
 
           <Group mt="sm">
             <Button type="submit" loading={loading}>
-              Save
+              Save name
             </Button>
 
             <Button variant="outline" onClick={onClose}>

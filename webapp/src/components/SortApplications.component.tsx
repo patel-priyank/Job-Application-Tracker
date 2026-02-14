@@ -60,7 +60,7 @@ const SortApplications = ({
   };
 
   return (
-    <Modal opened={opened} onClose={onClose} title="Sort" overlayProps={{ blur: 2 }} centered>
+    <Modal opened={opened} onClose={onClose} title="Sort Applications" overlayProps={{ blur: 2 }} centered>
       <Stack gap="sm">
         <Paper withBorder p="md">
           <Stack>

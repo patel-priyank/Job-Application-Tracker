@@ -193,7 +193,7 @@ const EditSuggestedEmails = ({ opened, onClose }: { opened: boolean; onClose: ()
 
         <Group mt="sm">
           <Button data-autofocus disabled={!ready} loading={loading} onClick={handleSubmit}>
-            Save
+            Save suggested emails
           </Button>
 
           <Button variant="outline" onClick={onClose}>
