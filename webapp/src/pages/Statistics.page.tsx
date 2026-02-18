@@ -343,6 +343,9 @@ const Statistics = () => {
                               fontSize: 'var(--mantine-font-size-xs)'
                             }
                           }}
+                          yAxisProps={{
+                            allowDecimals: false
+                          }}
                         />
                       </Tabs.Panel>
                     ))}
