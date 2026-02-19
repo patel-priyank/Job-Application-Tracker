@@ -89,8 +89,7 @@ const getApplications = async (req: Request, res: Response) => {
 
       filter.$or = [
         { companyName: { $regex: escapedQuery, $options: 'i' } },
-        { jobTitle: { $regex: escapedQuery, $options: 'i' } },
-        { emailUsed: { $regex: escapedQuery, $options: 'i' } }
+        { jobTitle: { $regex: escapedQuery, $options: 'i' } }
       ];
     }
 
