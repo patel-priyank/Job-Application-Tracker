@@ -111,7 +111,7 @@ const DeleteApplications = ({ opened, onClose }: { opened: boolean; onClose: () 
 
           <Group mt="sm">
             <Button data-autofocus color="red" onClick={() => modalStack.open('delete-applications-confirmation')}>
-              Continue
+              Continue…
             </Button>
 
             <Button variant="outline" onClick={handleClose}>

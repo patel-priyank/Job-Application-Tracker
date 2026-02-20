@@ -114,7 +114,7 @@ const DeleteAccount = ({ opened, onClose }: { opened: boolean; onClose: () => vo
 
           <Group mt="sm">
             <Button data-autofocus color="red" onClick={() => modalStack.open('delete-account-confirmation')}>
-              Continue
+              Continue…
             </Button>
 
             <Button variant="outline" onClick={handleClose}>
