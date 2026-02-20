@@ -13,6 +13,7 @@ import {
   Group,
   Image,
   Loader,
+  Paper,
   Progress,
   SegmentedControl,
   Stack,
@@ -37,6 +38,27 @@ interface StatisticItem {
   label: string;
   [key: string]: string | number;
 }
+
+const ChartTooltip = ({ label, payload }: any) => {
+  if (!payload) return null;
+
+  return (
+    <Paper px="md" py="sm" withBorder shadow="md" radius="md">
+      <Text fw={500} mb={5}>
+        {label}
+      </Text>
+
+      {payload.map((item: any) => (
+        <Text key={item.name} c={item.color}>
+          <Group justify="space-between">
+            <Text span>{item.name}</Text>
+            <Text span>{item.value}</Text>
+          </Group>
+        </Text>
+      ))}
+    </Paper>
+  );
+};
 
 const Statistics = () => {
   const { user } = useAuthContext();
@@ -327,9 +349,12 @@ const Statistics = () => {
                           data={timePeriod.data}
                           dataKey="label"
                           curveType="linear"
+                          tooltipProps={{
+                            content: ({ label, payload }: any) => <ChartTooltip label={label} payload={payload} />
+                          }}
                           series={Object.values(APPLICATION_STATUS).map(status => ({
                             name: status.label,
-                            color: status.color
+                            color: timePeriod.data.every(s => !s[status.label]) ? 'dimmed' : status.color
                           }))}
                           tooltipAnimationDuration={250}
                           tickLine="y"
