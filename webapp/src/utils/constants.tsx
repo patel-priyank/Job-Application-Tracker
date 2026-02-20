@@ -10,12 +10,12 @@ export const APPLICATION_STATUS: Record<string, { label: string; color: string; 
     color: 'violet',
     default: true
   },
-  INTERVIEW_PHONE: {
-    label: 'Phone Interview',
+  SCREENED: {
+    label: 'Screened',
     color: 'indigo'
   },
-  INTERVIEW_IN_PERSON: {
-    label: 'In Person Interview',
+  INTERVIEWED: {
+    label: 'Interviewed',
     color: 'cyan'
   },
   OFFER_RECEIVED: {
