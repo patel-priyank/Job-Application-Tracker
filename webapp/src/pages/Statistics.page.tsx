@@ -50,9 +50,11 @@ const ChartTooltip = ({ label, payload }: any) => {
 
       {payload.map((item: any) => (
         <Text key={item.name} c={item.color}>
-          <Group justify="space-between">
+          <Group gap="xl" justify="space-between">
             <Text span>{item.name}</Text>
-            <Text span>{item.value}</Text>
+            <Text span className="monospace">
+              {item.value}
+            </Text>
           </Group>
         </Text>
       ))}
@@ -290,7 +292,7 @@ const Statistics = () => {
                               <Text>{status.label}</Text>
                             </Group>
 
-                            <Text c="dimmed" size="xl" fw="500">
+                            <Text c="dimmed" size="xl" fw="500" className="monospace">
                               {count}
                             </Text>
 

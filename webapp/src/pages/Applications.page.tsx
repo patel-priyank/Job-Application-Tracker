@@ -270,6 +270,7 @@ const Applications = () => {
               total={totalPages}
               value={page}
               siblings={0}
+              className="monospace"
               onChange={async pageVal => {
                 applicationDispatch({
                   type: 'SET_PAGE',
@@ -290,7 +291,6 @@ const Applications = () => {
                 );
                 setLoading(false);
               }}
-              style={{ fontFamily: 'var(--mantine-font-family-monospace)' }}
             />
           </Group>
 
