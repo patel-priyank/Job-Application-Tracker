@@ -1,5 +1,6 @@
 import express, { NextFunction, Request, Response } from 'express';
 
+import cors from 'cors';
 import dotenv from 'dotenv';
 
 import applicationRoutes from './routes/application.route';
@@ -16,6 +17,8 @@ if (!process.env.JWT_SECRET || !process.env.MONGO_URI) {
   throw new Error('Environment variables are not defined.');
 }
 
+app.use(cors());
+
 app.use(express.json());
 
 app.use(async (req, res, next) => {
@@ -26,21 +29,6 @@ app.use(async (req, res, next) => {
     console.error('Database connection failed: ', err);
     res.status(500).json({ error: 'Database connection failed.' });
   }
-});
-
-app.use((req, res, next) => {
-  const allowedOrigin = 'https://track-your-jobs.vercel.app';
-
-  res.setHeader('Access-Control-Allow-Origin', allowedOrigin);
-  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE,OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
-
-  if (req.method === 'OPTIONS') {
-    return res.sendStatus(204);
-  }
-
-  next();
 });
 
 app.use((req: Request, res: Response, next: NextFunction): void => {
