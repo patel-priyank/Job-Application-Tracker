@@ -53,7 +53,7 @@ const Account = () => {
         <Grid justify="center">
           <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
             <Card padding="md" shadow="md" radius="md" withBorder h="100%">
-              <Image src={signUpImage} alt="" h={{ base: 240, md: 360 }} p="md" style={{ objectFit: 'contain' }} />
+              <Image src={signUpImage} alt="" h={{ base: 240, md: 360 }} p="md" fit="contain" />
 
               <Text my="md" c="dimmed" flex={1}>
                 New here? Create an account and start tracking your job applications. It's free and takes only a minute.
@@ -67,7 +67,7 @@ const Account = () => {
 
           <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
             <Card padding="md" shadow="md" radius="md" withBorder h="100%">
-              <Image src={signInImage} alt="" h={{ base: 240, md: 360 }} p="md" style={{ objectFit: 'contain' }} />
+              <Image src={signInImage} alt="" h={{ base: 240, md: 360 }} p="md" fit="contain" />
 
               <Text my="md" c="dimmed" flex={1}>
                 Already have an account? Sign in to access your account. All your job applications are stored in one

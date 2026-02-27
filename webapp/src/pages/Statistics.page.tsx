@@ -184,7 +184,7 @@ const Statistics = () => {
         <Grid justify="center">
           <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
             <Card padding="md" shadow="md" radius="md" withBorder h="100%">
-              <Image src={statisticsImage} alt="" h={{ base: 240, md: 360 }} p="md" style={{ objectFit: 'contain' }} />
+              <Image src={statisticsImage} alt="" h={{ base: 240, md: 360 }} p="md" fit="contain" />
 
               <Text my="md" c="dimmed" flex={1}>
                 Sign up or sign in now to access your dashboard and view your statistics. It only takes a minute!
@@ -204,13 +204,7 @@ const Statistics = () => {
         <Grid justify="center">
           <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
             <Card padding="md" shadow="md" radius="md" withBorder h="100%">
-              <Image
-                src={createStatisticsImage}
-                alt=""
-                h={{ base: 240, md: 360 }}
-                p="md"
-                style={{ objectFit: 'contain' }}
-              />
+              <Image src={createStatisticsImage} alt="" h={{ base: 240, md: 360 }} p="md" fit="contain" />
 
               <Text my="md" c="dimmed" flex={1}>
                 Start by creating your first job application to unlock and view your statistics. It's just a few clicks
@@ -237,13 +231,7 @@ const Statistics = () => {
         <Grid justify="center">
           <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
             <Card padding="md" shadow="md" radius="md" withBorder h="100%">
-              <Image
-                src={statisticsErrorImage}
-                alt=""
-                h={{ base: 240, md: 360 }}
-                p="md"
-                style={{ objectFit: 'contain' }}
-              />
+              <Image src={statisticsErrorImage} alt="" h={{ base: 240, md: 360 }} p="md" fit="contain" />
 
               <Text my="md" c="dimmed" flex={1}>
                 Something went wrong while fetching your statistics.

@@ -109,13 +109,7 @@ const Applications = () => {
         <Grid justify="center">
           <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
             <Card padding="md" shadow="md" radius="md" withBorder h="100%">
-              <Image
-                src={authenticationImage}
-                alt=""
-                h={{ base: 240, md: 360 }}
-                p="md"
-                style={{ objectFit: 'contain' }}
-              />
+              <Image src={authenticationImage} alt="" h={{ base: 240, md: 360 }} p="md" fit="contain" />
 
               <Text my="md" c="dimmed" flex={1}>
                 Get started tracking your job applications by creating an account or signing in. It only takes a minute!
@@ -135,13 +129,7 @@ const Applications = () => {
         <Grid justify="center">
           <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
             <Card padding="md" shadow="md" radius="md" withBorder h="100%">
-              <Image
-                src={createApplicationImage}
-                alt=""
-                h={{ base: 240, md: 360 }}
-                p="md"
-                style={{ objectFit: 'contain' }}
-              />
+              <Image src={createApplicationImage} alt="" h={{ base: 240, md: 360 }} p="md" fit="contain" />
 
               <Text my="md" c="dimmed" flex={1}>
                 No applications yet? Let's kick things off by adding your first job application to start tracking your
