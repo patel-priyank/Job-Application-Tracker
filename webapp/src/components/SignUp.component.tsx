@@ -170,7 +170,8 @@ const SignUp = ({ opened, onClose }: { opened: boolean; onClose: () => void }) =
                 <Box key={index}>
                   <Text
                     c={req.re.test(form.values.password) ? 'green' : 'red'}
-                    style={{ display: 'flex', alignItems: 'center' }}
+                    display="flex"
+                    style={{ alignItems: 'center' }}
                     size="sm"
                   >
                     {req.re.test(form.values.password) ? (
@@ -198,7 +199,8 @@ const SignUp = ({ opened, onClose }: { opened: boolean; onClose: () => void }) =
           <Paper withBorder px="md" py="sm">
             <Text
               c={form.values.password === form.values.pwConfirmation ? 'green' : 'red'}
-              style={{ display: 'flex', alignItems: 'center' }}
+              display="flex"
+              style={{ alignItems: 'center' }}
               size="sm"
             >
               {form.values.password === form.values.pwConfirmation ? (

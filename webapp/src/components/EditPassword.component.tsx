@@ -137,7 +137,8 @@ const EditPassword = ({ opened, onClose }: { opened: boolean; onClose: () => voi
                 <Box key={index}>
                   <Text
                     c={req.re.test(form.values.newPassword) ? 'green' : 'red'}
-                    style={{ display: 'flex', alignItems: 'center' }}
+                    display="flex"
+                    style={{ alignItems: 'center' }}
                     size="sm"
                   >
                     {req.re.test(form.values.newPassword) ? (
@@ -165,7 +166,8 @@ const EditPassword = ({ opened, onClose }: { opened: boolean; onClose: () => voi
           <Paper withBorder px="md" py="sm">
             <Text
               c={form.values.newPassword === form.values.pwConfirmation ? 'green' : 'red'}
-              style={{ display: 'flex', alignItems: 'center' }}
+              display="flex"
+              style={{ alignItems: 'center' }}
               size="sm"
             >
               {form.values.newPassword === form.values.pwConfirmation ? (

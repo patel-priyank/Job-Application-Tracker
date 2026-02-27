@@ -49,13 +49,16 @@ const ChartTooltip = ({ label, payload }: any) => {
       </Text>
 
       {payload.map((item: any) => (
-        <Text key={item.name} c={item.color}>
-          <Group gap="xl" justify="space-between">
-            <Text span>{item.name}</Text>
-            <Text span className="monospace">
-              {item.value}
-            </Text>
-          </Group>
+        <Text
+          key={item.name}
+          c={item.color}
+          display="flex"
+          style={{ gap: 'var(--mantine-spacing-xl)', justifyContent: 'space-between' }}
+        >
+          <Text span>{item.name}</Text>
+          <Text span className="monospace">
+            {item.value}
+          </Text>
         </Text>
       ))}
     </Paper>
