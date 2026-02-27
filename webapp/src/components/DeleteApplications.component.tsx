@@ -77,6 +77,8 @@ const DeleteApplications = ({ opened, onClose }: { opened: boolean; onClose: () 
       }
     });
 
+    user.applicationsCount = 0;
+
     showNotification(
       'Cleanup complete',
       'All job applications have been permanently deleted from your account.',

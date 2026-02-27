@@ -57,31 +57,41 @@ const DeleteApplication = ({
       return;
     }
 
-    const isLastApplication = user.applicationsCount % pageSize === 1;
-    const isLastPage = Math.ceil(user.applicationsCount / pageSize) === page;
+    if (user.applicationsCount > 1) {
+      const isLastApplication = user.applicationsCount % pageSize === 1;
+      const isLastPage = Math.ceil(user.applicationsCount / pageSize) === page;
 
-    let newPage = page;
+      let newPage = page;
 
-    if (isLastApplication && isLastPage) {
-      newPage = page - 1;
+      if (isLastApplication && isLastPage) {
+        newPage = page - 1;
 
+        applicationDispatch({
+          type: 'SET_PAGE',
+          payload: newPage
+        });
+      }
+
+      await fetchApplications(
+        user.token,
+        applicationDispatch,
+        statusFilter,
+        emailUsedFilter,
+        sort,
+        order,
+        pageSize,
+        newPage,
+        searchQuery
+      );
+    } else {
       applicationDispatch({
-        type: 'SET_PAGE',
-        payload: newPage
+        type: 'SET_APPLICATIONS',
+        payload: {
+          applications: [],
+          totalPages: 0
+        }
       });
     }
-
-    await fetchApplications(
-      user.token,
-      applicationDispatch,
-      statusFilter,
-      emailUsedFilter,
-      sort,
-      order,
-      pageSize,
-      newPage,
-      searchQuery
-    );
 
     user.applicationsCount--;
 
