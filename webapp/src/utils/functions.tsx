@@ -81,6 +81,7 @@ export const showNotification = (title: string, message: string, error: boolean)
       title,
       message,
       color: error ? 'red' : 'green',
+      position: 'bottom-left',
       classNames: notificationClasses
     });
   }, 250);
