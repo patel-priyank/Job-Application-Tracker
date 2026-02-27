@@ -7,8 +7,8 @@ import {
   Box,
   Button,
   Card,
-  Center,
   ColorSwatch,
+  Flex,
   Grid,
   Group,
   Image,
@@ -27,12 +27,10 @@ import { IconCircles } from '@tabler/icons-react';
 
 import { useAuthContext } from '../hooks/useAuthContext';
 
-import { APPLICATION_STATUS, HEADER_HEIGHT } from '../utils/constants';
-import { showNotification } from '../utils/functions';
+import PageCenter from '../components/PageCenter.component';
 
-import createStatisticsImage from '../assets/create-statistics.png';
-import statisticsErrorImage from '../assets/statistics-error.png';
-import statisticsImage from '../assets/statistics.png';
+import { APPLICATION_STATUS } from '../utils/constants';
+import { showNotification } from '../utils/functions';
 
 interface StatisticItem {
   label: string;
@@ -110,7 +108,7 @@ const Statistics = () => {
   }, []);
 
   const getStatistics = async () => {
-    if (!user) {
+    if (!user || user.applicationsCount === 0) {
       return;
     }
 
@@ -181,74 +179,67 @@ const Statistics = () => {
     setLoading(false);
   };
 
+  if (!user) {
+    return null;
+  }
+
   return (
     <>
-      {!user && (
-        <Grid justify="center">
-          <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
-            <Card padding="md" shadow="md" radius="md" withBorder h="100%">
-              <Image src={statisticsImage} alt="" h={{ base: 240, md: 360 }} p="md" fit="contain" />
+      {user.applicationsCount === 0 && (
+        <PageCenter pageReady={true}>
+          <Stack align="center" gap="xl">
+            <Image
+              src="./create-statistics.png"
+              alt=""
+              h={{ base: 240, md: 360 }}
+              w={{ base: 240, md: 360 }}
+              fit="contain"
+            />
 
-              <Text my="md" c="dimmed" flex={1}>
-                Sign up or sign in now to access your dashboard and view your statistics. It only takes a minute!
-              </Text>
+            <Text ta="center" style={{ textWrap: 'balance' }}>
+              Start by creating your first application in the Applications page to view your statistics. It's just a few
+              clicks away!
+            </Text>
 
-              <Group>
-                <Button component={Link} to="/account">
-                  Go to Account
-                </Button>
-              </Group>
-            </Card>
-          </Grid.Col>
-        </Grid>
+            <Button size="md" component={Link} to="/applications">
+              Go to Applications
+            </Button>
+          </Stack>
+        </PageCenter>
       )}
 
-      {user && user.applicationsCount === 0 && (
-        <Grid justify="center">
-          <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
-            <Card padding="md" shadow="md" radius="md" withBorder h="100%">
-              <Image src={createStatisticsImage} alt="" h={{ base: 240, md: 360 }} p="md" fit="contain" />
-
-              <Text my="md" c="dimmed" flex={1}>
-                Start by creating your first job application to unlock and view your statistics. It's just a few clicks
-                away!
-              </Text>
-
-              <Group>
-                <Button component={Link} to="/applications">
-                  Go to Applications
-                </Button>
-              </Group>
-            </Card>
-          </Grid.Col>
-        </Grid>
+      {user.applicationsCount > 0 && loading && (
+        <PageCenter pageReady={true}>
+          <Flex>
+            <Loader />
+          </Flex>
+        </PageCenter>
       )}
 
-      {user && user.applicationsCount > 0 && loading && (
-        <Center h={`calc(100dvh - ${HEADER_HEIGHT}px - 90px)`}>
-          <Loader />
-        </Center>
+      {user.applicationsCount > 0 && !loading && error && (
+        <PageCenter pageReady={true}>
+          <Stack align="center" gap="xl">
+            <Image
+              src="./statistics-error.png"
+              alt=""
+              h={{ base: 240, md: 360 }}
+              w={{ base: 240, md: 360 }}
+              fit="contain"
+            />
+
+            <Text ta="center" style={{ textWrap: 'balance' }}>
+              Something went wrong while fetching your statistics. You can retry using the button below, or refresh the
+              page.
+            </Text>
+
+            <Button size="md" onClick={getStatistics}>
+              Retry
+            </Button>
+          </Stack>
+        </PageCenter>
       )}
 
-      {user && user.applicationsCount > 0 && !loading && error && (
-        <Grid justify="center">
-          <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
-            <Card padding="md" shadow="md" radius="md" withBorder h="100%">
-              <Image src={statisticsErrorImage} alt="" h={{ base: 240, md: 360 }} p="md" fit="contain" />
-
-              <Text my="md" c="dimmed" flex={1}>
-                Something went wrong while fetching your statistics.
-              </Text>
-
-              <Group>
-                <Button onClick={getStatistics}>Retry</Button>
-              </Group>
-            </Card>
-          </Grid.Col>
-        </Grid>
-      )}
-
-      {user && user.applicationsCount > 0 && !loading && !error && (
+      {user.applicationsCount > 0 && !loading && !error && (
         <>
           <Accordion variant="separated" radius="lg" mb="lg" defaultValue="overview">
             <Accordion.Item value="overview">

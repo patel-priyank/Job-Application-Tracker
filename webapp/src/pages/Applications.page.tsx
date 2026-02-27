@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 
 import {
   ActionIcon,
@@ -28,13 +27,11 @@ import Application from '../components/Application.component';
 import CreateApplication from '../components/CreateApplication.component';
 import FilterApplications from '../components/FilterApplications.component';
 import FloatingActionButton from '../components/FloatingActionButton.component';
+import PageCenter from '../components/PageCenter.component';
 import SortApplications from '../components/SortApplications.component';
 
 import { APPLICATION_STATUS } from '../utils/constants';
 import { fetchApplications } from '../utils/functions';
-
-import authenticationImage from '../assets/authentication.png';
-import createApplicationImage from '../assets/create-application.png';
 
 const Applications = () => {
   const {
@@ -101,50 +98,38 @@ const Applications = () => {
     }
   };
 
+  if (!user) {
+    return null;
+  }
+
   return (
     <>
       <CreateApplication opened={createApplicationOpened} onClose={closeCreateApplication} />
 
-      {!user && (
-        <Grid justify="center">
-          <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
-            <Card padding="md" shadow="md" radius="md" withBorder h="100%">
-              <Image src={authenticationImage} alt="" h={{ base: 240, md: 360 }} p="md" fit="contain" />
+      {user.applicationsCount === 0 && (
+        <PageCenter pageReady={true}>
+          <Stack align="center" gap="xl">
+            <Image
+              src="./create-application.png"
+              alt=""
+              h={{ base: 240, md: 360 }}
+              w={{ base: 240, md: 360 }}
+              fit="contain"
+            />
 
-              <Text my="md" c="dimmed" flex={1}>
-                Get started tracking your job applications by creating an account or signing in. It only takes a minute!
-              </Text>
+            <Text ta="center" style={{ textWrap: 'balance' }}>
+              No applications yet? Let's kick things off by adding your first job application to start tracking your
+              progress.
+            </Text>
 
-              <Group>
-                <Button component={Link} to="/account">
-                  Go to Account
-                </Button>
-              </Group>
-            </Card>
-          </Grid.Col>
-        </Grid>
+            <Button size="md" onClick={openCreateApplication}>
+              Create application
+            </Button>
+          </Stack>
+        </PageCenter>
       )}
 
-      {user && user.applicationsCount === 0 && (
-        <Grid justify="center">
-          <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
-            <Card padding="md" shadow="md" radius="md" withBorder h="100%">
-              <Image src={createApplicationImage} alt="" h={{ base: 240, md: 360 }} p="md" fit="contain" />
-
-              <Text my="md" c="dimmed" flex={1}>
-                No applications yet? Let's kick things off by adding your first job application to start tracking your
-                progress.
-              </Text>
-
-              <Group>
-                <Button onClick={openCreateApplication}>Create application</Button>
-              </Group>
-            </Card>
-          </Grid.Col>
-        </Grid>
-      )}
-
-      {user && user.applicationsCount > 0 && (
+      {user.applicationsCount > 0 && (
         <>
           <FilterApplications
             opened={filterOpened}

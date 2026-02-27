@@ -1,4 +1,4 @@
-import { Accordion, ActionIcon, Avatar, Box, Button, Card, Grid, Group, Image, Stack, Text } from '@mantine/core';
+import { Accordion, ActionIcon, Avatar, Box, Button, Card, Grid, Group, Stack, Text } from '@mantine/core';
 
 import { useDisclosure } from '@mantine/hooks';
 
@@ -13,14 +13,9 @@ import EditName from '../components/EditName.component';
 import EditPassword from '../components/EditPassword.component';
 import EditSuggestedEmails from '../components/EditSuggestedEmails.component';
 import FloatingActionButton from '../components/FloatingActionButton.component';
-import SignIn from '../components/SignIn.component';
 import SignOut from '../components/SignOut.component';
-import SignUp from '../components/SignUp.component';
 
 import { formatDate, getSortedSuggestedEmails } from '../utils/functions';
-
-import signInImage from '../assets/sign-in.png';
-import signUpImage from '../assets/sign-up.png';
 
 const Account = () => {
   const { user } = useAuthContext();
@@ -33,9 +28,11 @@ const Account = () => {
   const [editPasswordOpened, { open: openEditPassword, close: closeEditPassword }] = useDisclosure(false);
   const [editSuggestedEmailsOpened, { open: openEditSuggestedEmails, close: closeEditSuggestedEmails }] =
     useDisclosure(false);
-  const [signInOpened, { open: openSignIn, close: closeSignIn }] = useDisclosure(false);
   const [signOutOpened, { open: openSignOut, close: closeSignOut }] = useDisclosure(false);
-  const [signUpOpened, { open: openSignUp, close: closeSignUp }] = useDisclosure(false);
+
+  if (!user) {
+    return null;
+  }
 
   return (
     <>
@@ -45,179 +42,140 @@ const Account = () => {
       <EditName opened={editNameOpened} onClose={closeEditName} />
       <EditPassword opened={editPasswordOpened} onClose={closeEditPassword} />
       <EditSuggestedEmails opened={editSuggestedEmailsOpened} onClose={closeEditSuggestedEmails} />
-      <SignIn opened={signInOpened} onClose={closeSignIn} />
       <SignOut opened={signOutOpened} onClose={closeSignOut} />
-      <SignUp opened={signUpOpened} onClose={closeSignUp} />
 
-      {!user && (
-        <Grid justify="center">
-          <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
-            <Card padding="md" shadow="md" radius="md" withBorder h="100%">
-              <Image src={signUpImage} alt="" h={{ base: 240, md: 360 }} p="md" fit="contain" />
+      <Grid>
+        <Grid.Col span={{ base: 12, sm: 6, lg: 4, xl: 3 }}>
+          <Card padding="md" shadow="md" radius="md" withBorder h="100%">
+            <Stack gap="md">
+              <Group justify="space-between">
+                <Text>Name</Text>
 
-              <Text my="md" c="dimmed" flex={1}>
-                New here? Create an account and start tracking your job applications. It's free and takes only a minute.
-              </Text>
-
-              <Group>
-                <Button onClick={openSignUp}>Sign up</Button>
+                <ActionIcon variant="light" onClick={openEditName}>
+                  <IconPencil size={20} stroke={1.5} />
+                </ActionIcon>
               </Group>
-            </Card>
-          </Grid.Col>
 
-          <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
-            <Card padding="md" shadow="md" radius="md" withBorder h="100%">
-              <Image src={signInImage} alt="" h={{ base: 240, md: 360 }} p="md" fit="contain" />
-
-              <Text my="md" c="dimmed" flex={1}>
-                Already have an account? Sign in to access your account. All your job applications are stored in one
-                place.
+              <Text c="dimmed" w="max-content" maw="100%" truncate="end" title={user.name}>
+                {user.name}
               </Text>
+            </Stack>
+          </Card>
+        </Grid.Col>
 
-              <Group>
-                <Button onClick={openSignIn}>Sign in</Button>
+        <Grid.Col span={{ base: 12, sm: 6, lg: 4, xl: 3 }}>
+          <Card padding="md" shadow="md" radius="md" withBorder h="100%">
+            <Stack gap="md">
+              <Group justify="space-between">
+                <Text>Email</Text>
+
+                <ActionIcon variant="light" onClick={openEditEmail}>
+                  <IconPencil size={20} stroke={1.5} />
+                </ActionIcon>
               </Group>
-            </Card>
-          </Grid.Col>
-        </Grid>
-      )}
 
-      {user && (
-        <>
-          <Grid>
-            <Grid.Col span={{ base: 12, sm: 6, lg: 4, xl: 3 }}>
-              <Card padding="md" shadow="md" radius="md" withBorder h="100%">
-                <Stack gap="md">
-                  <Group justify="space-between">
-                    <Text>Name</Text>
+              <Text c="dimmed" w="max-content" maw="100%" truncate="end" title={user.email}>
+                {user.email}
+              </Text>
+            </Stack>
+          </Card>
+        </Grid.Col>
 
-                    <ActionIcon variant="light" onClick={openEditName}>
-                      <IconPencil size={20} stroke={1.5} />
-                    </ActionIcon>
-                  </Group>
+        <Grid.Col span={{ base: 12, sm: 6, lg: 4, xl: 3 }}>
+          <Card padding="md" shadow="md" radius="md" withBorder h="100%">
+            <Stack gap="md">
+              <Group justify="space-between">
+                <Text>Password</Text>
 
-                  <Text c="dimmed" w="max-content" maw="100%" truncate="end" title={user.name}>
-                    {user.name}
-                  </Text>
-                </Stack>
-              </Card>
-            </Grid.Col>
+                <ActionIcon variant="light" onClick={openEditPassword}>
+                  <IconPencil size={20} stroke={1.5} />
+                </ActionIcon>
+              </Group>
 
-            <Grid.Col span={{ base: 12, sm: 6, lg: 4, xl: 3 }}>
-              <Card padding="md" shadow="md" radius="md" withBorder h="100%">
-                <Stack gap="md">
-                  <Group justify="space-between">
-                    <Text>Email</Text>
+              <Text c="dimmed">Updated on {formatDate(user.passwordUpdatedAt)}</Text>
+            </Stack>
+          </Card>
+        </Grid.Col>
 
-                    <ActionIcon variant="light" onClick={openEditEmail}>
-                      <IconPencil size={20} stroke={1.5} />
-                    </ActionIcon>
-                  </Group>
+        <Grid.Col span={{ base: 12, sm: 6, lg: 4, xl: 3 }}>
+          <Card padding="md" shadow="md" radius="md" withBorder h="100%">
+            <Stack gap="md">
+              <Group justify="space-between">
+                <Text>Suggested Emails</Text>
 
-                  <Text c="dimmed" w="max-content" maw="100%" truncate="end" title={user.email}>
-                    {user.email}
-                  </Text>
-                </Stack>
-              </Card>
-            </Grid.Col>
+                <ActionIcon variant="light" onClick={openEditSuggestedEmails}>
+                  <IconPencil size={20} stroke={1.5} />
+                </ActionIcon>
+              </Group>
 
-            <Grid.Col span={{ base: 12, sm: 6, lg: 4, xl: 3 }}>
-              <Card padding="md" shadow="md" radius="md" withBorder h="100%">
-                <Stack gap="md">
-                  <Group justify="space-between">
-                    <Text>Password</Text>
+              <Text c="dimmed">
+                {getSortedSuggestedEmails(user.suggestedEmails, user.email).length} email
+                {getSortedSuggestedEmails(user.suggestedEmails, user.email).length !== 1 && 's'}
+              </Text>
+            </Stack>
+          </Card>
+        </Grid.Col>
+      </Grid>
 
-                    <ActionIcon variant="light" onClick={openEditPassword}>
-                      <IconPencil size={20} stroke={1.5} />
-                    </ActionIcon>
-                  </Group>
+      <Accordion variant="separated" radius="lg" mt="lg">
+        <Accordion.Item value="danger">
+          <Accordion.Control>
+            <Group mr="md" wrap="nowrap">
+              <Avatar color="red" radius="xl" size="md">
+                <IconAlertTriangle size={20} stroke={1.5} />
+              </Avatar>
+              <Box>
+                <Text>Danger Zone</Text>
+                <Text size="sm" c="dimmed">
+                  Irreversible actions ahead. Proceed with caution.
+                </Text>
+              </Box>
+            </Group>
+          </Accordion.Control>
 
-                  <Text c="dimmed">Updated on {formatDate(user.passwordUpdatedAt)}</Text>
-                </Stack>
-              </Card>
-            </Grid.Col>
+          <Accordion.Panel>
+            <Grid>
+              <Grid.Col span={{ base: 12, sm: 6, lg: 4, xl: 3 }}>
+                <Card padding="md" shadow="md" radius="md" withBorder h="100%">
+                  <Stack gap="md" align="flex-start">
+                    <Text>Job Applications</Text>
 
-            <Grid.Col span={{ base: 12, sm: 6, lg: 4, xl: 3 }}>
-              <Card padding="md" shadow="md" radius="md" withBorder h="100%">
-                <Stack gap="md">
-                  <Group justify="space-between">
-                    <Text>Suggested Emails</Text>
-
-                    <ActionIcon variant="light" onClick={openEditSuggestedEmails}>
-                      <IconPencil size={20} stroke={1.5} />
-                    </ActionIcon>
-                  </Group>
-
-                  <Text c="dimmed">
-                    {getSortedSuggestedEmails(user.suggestedEmails, user.email).length} email
-                    {getSortedSuggestedEmails(user.suggestedEmails, user.email).length !== 1 && 's'}
-                  </Text>
-                </Stack>
-              </Card>
-            </Grid.Col>
-          </Grid>
-
-          <Accordion variant="separated" radius="lg" mt="lg">
-            <Accordion.Item value="danger">
-              <Accordion.Control>
-                <Group mr="md" wrap="nowrap">
-                  <Avatar color="red" radius="xl" size="md">
-                    <IconAlertTriangle size={20} stroke={1.5} />
-                  </Avatar>
-                  <Box>
-                    <Text>Danger Zone</Text>
-                    <Text size="sm" c="dimmed">
-                      Irreversible actions ahead. Proceed with caution.
+                    <Text c="dimmed">
+                      Tracking {user.applicationsCount} application{user.applicationsCount !== 1 && 's'}
                     </Text>
-                  </Box>
-                </Group>
-              </Accordion.Control>
 
-              <Accordion.Panel>
-                <Grid>
-                  <Grid.Col span={{ base: 12, sm: 6, lg: 4, xl: 3 }}>
-                    <Card padding="md" shadow="md" radius="md" withBorder h="100%">
-                      <Stack gap="md" align="flex-start">
-                        <Text>Job Applications</Text>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      color="red"
+                      onClick={openDeleteApplications}
+                      disabled={user.applicationsCount === 0}
+                    >
+                      Delete applications
+                    </Button>
+                  </Stack>
+                </Card>
+              </Grid.Col>
 
-                        <Text c="dimmed">
-                          Tracking {user.applicationsCount} application{user.applicationsCount !== 1 && 's'}
-                        </Text>
+              <Grid.Col span={{ base: 12, sm: 6, lg: 4, xl: 3 }}>
+                <Card padding="md" shadow="md" radius="md" withBorder h="100%">
+                  <Stack gap="md" align="flex-start">
+                    <Text>Account</Text>
 
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          color="red"
-                          onClick={openDeleteApplications}
-                          disabled={user.applicationsCount === 0}
-                        >
-                          Delete applications
-                        </Button>
-                      </Stack>
-                    </Card>
-                  </Grid.Col>
+                    <Text c="dimmed">Member since {formatDate(user.createdAt)}</Text>
 
-                  <Grid.Col span={{ base: 12, sm: 6, lg: 4, xl: 3 }}>
-                    <Card padding="md" shadow="md" radius="md" withBorder h="100%">
-                      <Stack gap="md" align="flex-start">
-                        <Text>Account</Text>
+                    <Button variant="outline" size="sm" color="red" onClick={openDeleteAccount}>
+                      Delete account
+                    </Button>
+                  </Stack>
+                </Card>
+              </Grid.Col>
+            </Grid>
+          </Accordion.Panel>
+        </Accordion.Item>
+      </Accordion>
 
-                        <Text c="dimmed">Member since {formatDate(user.createdAt)}</Text>
-
-                        <Button variant="outline" size="sm" color="red" onClick={openDeleteAccount}>
-                          Delete account
-                        </Button>
-                      </Stack>
-                    </Card>
-                  </Grid.Col>
-                </Grid>
-              </Accordion.Panel>
-            </Accordion.Item>
-          </Accordion>
-
-          <FloatingActionButton icon={IconLogout} label="Sign out" onClick={openSignOut} />
-        </>
-      )}
+      <FloatingActionButton icon={IconLogout} label="Sign out" onClick={openSignOut} />
     </>
   );
 };

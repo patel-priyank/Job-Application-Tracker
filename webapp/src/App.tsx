@@ -9,9 +9,9 @@ import {
   AppShell,
   Burger,
   Button,
-  Center,
   Container,
   createTheme,
+  Flex,
   FocusTrap,
   Group,
   Loader,
@@ -25,6 +25,7 @@ import {
   useComputedColorScheme,
   useMantineColorScheme
 } from '@mantine/core';
+
 import { useDisclosure, useViewportSize, useWindowEvent, useWindowScroll } from '@mantine/hooks';
 import { Notifications } from '@mantine/notifications';
 
@@ -34,6 +35,7 @@ import {
   IconCircleArrowUp,
   IconFiles,
   IconMoon,
+  IconPoint,
   IconSun,
   IconUser
 } from '@tabler/icons-react';
@@ -44,8 +46,11 @@ import { AuthContextProvider } from './contexts/AuthContext';
 import { useApplicationContext } from './hooks/useApplicationContext';
 import { useAuthContext } from './hooks/useAuthContext';
 
+import PageCenter from './components/PageCenter.component';
+
 import Account from './pages/Account.page';
 import Applications from './pages/Applications.page';
+import Home from './pages/Home.page';
 import Statistics from './pages/Statistics.page';
 
 import { APPLICATION_STATUS, HEADER_HEIGHT } from './utils/constants';
@@ -77,7 +82,7 @@ const NavItems = ({ opened, close, isDesktop }: { opened: boolean; close: () => 
   const navItems = [
     {
       label: 'Applications',
-      link: '/',
+      link: '/applications',
       icon: <IconFiles size={20} stroke={1.5} />
     },
     {
@@ -103,7 +108,8 @@ const NavItems = ({ opened, close, isDesktop }: { opened: boolean; close: () => 
           leftSection={item.icon}
           active={location.pathname === item.link}
           onClick={close}
-          style={{ borderRadius: 'var(--mantine-radius-md)', width: isDesktop ? 'max-content' : '100%' }}
+          bdrs="var(--mantine-radius-md)"
+          w={isDesktop ? 'max-content' : '100%'}
           tabIndex={isDesktop || opened ? undefined : -1}
         />
       ))}
@@ -111,9 +117,46 @@ const NavItems = ({ opened, close, isDesktop }: { opened: boolean; close: () => 
   );
 };
 
+const ScrollToTopButton = () => {
+  const { height } = useViewportSize();
+
+  const [scroll, scrollTo] = useWindowScroll();
+
+  return (
+    <Transition transition="fade-down" mounted={scroll.y > height * 0.25}>
+      {transitionStyles => (
+        <Affix position={{ top: HEADER_HEIGHT + 16, left: 0, right: 0 }} zIndex={95} w="fit-content" mx="auto">
+          <Button
+            variant="default"
+            radius="md"
+            style={transitionStyles}
+            onClick={() => scrollTo({ y: 0 })}
+            className="floating-button"
+            leftSection={<IconCircleArrowUp size={16} stroke={1.5} />}
+          >
+            Scroll to top
+          </Button>
+        </Affix>
+      )}
+    </Transition>
+  );
+};
+
+const Public = ({ children }: { children: React.ReactNode }) => {
+  const { user, ready } = useAuthContext();
+  if (!ready) return null;
+  return user ? <Navigate to="/applications" replace /> : children;
+};
+
+const RequireAuth = ({ children }: { children: React.ReactNode }) => {
+  const { user, ready } = useAuthContext();
+  if (!ready) return null;
+  return user ? children : <Navigate to="/" replace />;
+};
+
 const AppContent = () => {
   const { order, page, pageSize, sort, dispatch: applicationDispatch } = useApplicationContext();
-  const { ready, dispatch: authDispatch } = useAuthContext();
+  const { ready, user, dispatch: authDispatch } = useAuthContext();
 
   const [opened, { toggle, close }] = useDisclosure();
   const [signedOutOpened, { open: openSignedOut, close: closeSignedOut }] = useDisclosure(false);
@@ -121,9 +164,6 @@ const AppContent = () => {
   const [signedOutMessage, setSignedOutMessage] = useState('');
 
   const location = useLocation();
-
-  const [scroll, scrollTo] = useWindowScroll();
-  const { height } = useViewportSize();
 
   const checkSessionValidity = async () => {
     const user = localStorage.getItem('user');
@@ -269,18 +309,27 @@ const AppContent = () => {
     >
       <AppShell.Header>
         <Group h="100%" px="md" wrap="nowrap">
-          <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
+          {user ? (
+            <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
+          ) : (
+            <Flex hiddenFrom="sm" c="dimmed">
+              <IconPoint size={28} stroke={1.5} />
+            </Flex>
+          )}
 
           <Text component="h1" size="lg" truncate="end" fw="bold">
-            {location.pathname === '/' && 'Applications'}
+            {location.pathname === '/' && 'Home'}
+            {location.pathname === '/applications' && 'Applications'}
             {location.pathname === '/statistics' && 'Statistics'}
             {location.pathname === '/account' && 'Account'}
           </Text>
 
           <Group ml="auto" gap="xs" wrap="nowrap">
-            <Group gap={0} visibleFrom="sm" wrap="nowrap">
-              <NavItems opened={opened} close={close} isDesktop={true} />
-            </Group>
+            {user && (
+              <Group gap={0} visibleFrom="sm" wrap="nowrap">
+                <NavItems opened={opened} close={close} isDesktop={true} />
+              </Group>
+            )}
 
             <Tooltip label="Source code">
               <ActionIcon
@@ -317,22 +366,7 @@ const AppContent = () => {
       </FocusTrap>
 
       <AppShell.Main pb={ready ? 74 : undefined}>
-        <Transition transition="fade-down" mounted={scroll.y > height * 0.25}>
-          {transitionStyles => (
-            <Affix position={{ top: HEADER_HEIGHT + 16, left: 0, right: 0 }} zIndex={95} w="fit-content" mx="auto">
-              <Button
-                variant="default"
-                radius="md"
-                style={transitionStyles}
-                onClick={() => scrollTo({ y: 0 })}
-                className="floating-button"
-                leftSection={<IconCircleArrowUp size={16} stroke={1.5} />}
-              >
-                Scroll to top
-              </Button>
-            </Affix>
-          )}
-        </Transition>
+        <ScrollToTopButton />
 
         <Modal opened={signedOutOpened} onClose={closeSignedOut} title="Signed Out" overlayProps={{ blur: 2 }} centered>
           <Stack gap="sm">
@@ -349,16 +383,51 @@ const AppContent = () => {
         {ready ? (
           <Container size="xl" p={0}>
             <Routes>
-              <Route path="/" element={<Applications />} />
-              <Route path="/statistics" element={<Statistics />} />
-              <Route path="/account" element={<Account />} />
+              <Route
+                path="/"
+                element={
+                  <Public>
+                    <Home />
+                  </Public>
+                }
+              />
+
+              <Route
+                path="/applications"
+                element={
+                  <RequireAuth>
+                    <Applications />
+                  </RequireAuth>
+                }
+              />
+
+              <Route
+                path="/statistics"
+                element={
+                  <RequireAuth>
+                    <Statistics />
+                  </RequireAuth>
+                }
+              />
+
+              <Route
+                path="/account"
+                element={
+                  <RequireAuth>
+                    <Account />
+                  </RequireAuth>
+                }
+              />
+
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </Container>
         ) : (
-          <Center h={`calc(100dvh - ${HEADER_HEIGHT}px - 32px)`}>
-            <Loader />
-          </Center>
+          <PageCenter pageReady={false}>
+            <Flex>
+              <Loader />
+            </Flex>
+          </PageCenter>
         )}
       </AppShell.Main>
     </AppShell>
