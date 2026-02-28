@@ -107,19 +107,19 @@ const EditSuggestedEmails = ({ opened, onClose }: { opened: boolean; onClose: ()
       return;
     }
 
-    localStorage.setItem('user', JSON.stringify(data));
-
-    authDispatch({
-      type: 'SET_USER',
-      payload: data
-    });
-
     applicationDispatch({
       type: 'SET_FILTERS',
       payload: {
         statusFilter,
         emailUsedFilter: emailUsedFilter.filter(email => data.suggestedEmails.includes(email))
       }
+    });
+
+    localStorage.setItem('user', JSON.stringify(data));
+
+    authDispatch({
+      type: 'SET_USER',
+      payload: data
     });
 
     showNotification('Tidied up', 'Your suggested emails have been updated successfully.', false);

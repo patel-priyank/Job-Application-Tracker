@@ -112,13 +112,6 @@ const SignUp = ({ opened, onClose }: { opened: boolean; onClose: () => void }) =
       return;
     }
 
-    localStorage.setItem('user', JSON.stringify(data));
-
-    authDispatch({
-      type: 'SET_USER',
-      payload: data
-    });
-
     applicationDispatch({
       type: 'SET_FILTERS',
       payload: {
@@ -126,6 +119,15 @@ const SignUp = ({ opened, onClose }: { opened: boolean; onClose: () => void }) =
         emailUsedFilter: data.suggestedEmails
       }
     });
+
+    setTimeout(() => {
+      localStorage.setItem('user', JSON.stringify(data));
+
+      authDispatch({
+        type: 'SET_USER',
+        payload: data
+      });
+    }, 300);
 
     showNotification("You're in!", 'Your account has been created successfully.', false);
 

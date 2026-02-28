@@ -269,6 +269,14 @@ const AppContent = () => {
         return;
       }
 
+      applicationDispatch({
+        type: 'SET_FILTERS',
+        payload: {
+          statusFilter: Object.values(APPLICATION_STATUS).map(status => status.label),
+          emailUsedFilter: data.suggestedEmails
+        }
+      });
+
       await fetchApplications(
         JSON.parse(user).token,
         applicationDispatch,
@@ -285,14 +293,6 @@ const AppContent = () => {
       authDispatch({
         type: 'SET_USER',
         payload: data
-      });
-
-      applicationDispatch({
-        type: 'SET_FILTERS',
-        payload: {
-          statusFilter: Object.values(APPLICATION_STATUS).map(status => status.label),
-          emailUsedFilter: data.suggestedEmails
-        }
       });
     }, 1500);
   }, [authDispatch]);

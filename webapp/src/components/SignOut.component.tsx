@@ -10,8 +10,6 @@ const SignOut = ({ opened, onClose }: { opened: boolean; onClose: () => void }) 
   const { dispatch: authDispatch } = useAuthContext();
 
   const handleSignOut = () => {
-    localStorage.removeItem('user');
-
     applicationDispatch({
       type: 'SET_APPLICATIONS',
       payload: {
@@ -20,10 +18,14 @@ const SignOut = ({ opened, onClose }: { opened: boolean; onClose: () => void }) 
       }
     });
 
-    authDispatch({
-      type: 'SET_USER',
-      payload: null
-    });
+    setTimeout(() => {
+      localStorage.removeItem('user');
+
+      authDispatch({
+        type: 'SET_USER',
+        payload: null
+      });
+    }, 300);
 
     showNotification('Until next time!', 'You have signed out of your account.', false);
 

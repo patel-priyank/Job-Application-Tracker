@@ -69,8 +69,6 @@ const DeleteAccount = ({ opened, onClose }: { opened: boolean; onClose: () => vo
       return;
     }
 
-    localStorage.removeItem('user');
-
     applicationDispatch({
       type: 'SET_APPLICATIONS',
       payload: {
@@ -78,6 +76,8 @@ const DeleteAccount = ({ opened, onClose }: { opened: boolean; onClose: () => vo
         totalPages: 0
       }
     });
+
+    localStorage.removeItem('user');
 
     authDispatch({
       type: 'SET_USER',

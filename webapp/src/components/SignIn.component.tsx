@@ -72,13 +72,6 @@ const SignIn = ({ opened, onClose }: { opened: boolean; onClose: () => void }) =
 
     const user = JSON.stringify(data);
 
-    localStorage.setItem('user', user);
-
-    authDispatch({
-      type: 'SET_USER',
-      payload: data
-    });
-
     applicationDispatch({
       type: 'SET_FILTERS',
       payload: {
@@ -97,6 +90,15 @@ const SignIn = ({ opened, onClose }: { opened: boolean; onClose: () => void }) =
       pageSize,
       page
     );
+
+    setTimeout(() => {
+      localStorage.setItem('user', user);
+
+      authDispatch({
+        type: 'SET_USER',
+        payload: data
+      });
+    }, 300);
 
     showNotification('Welcome back!', 'You have signed in successfully.', false);
 
