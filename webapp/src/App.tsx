@@ -196,9 +196,9 @@ const AppContent = () => {
       });
 
       if (response.status === 401) {
-        setSignedOutMessage("You've been signed out because your password was changed on another device.");
+        setSignedOutMessage('You have been signed out because your password was changed on another device.');
       } else {
-        setSignedOutMessage("You've been signed out because your session could not be verified.");
+        setSignedOutMessage('You have been signed out because your session could not be verified.');
       }
 
       openSignedOut();
@@ -234,7 +234,7 @@ const AppContent = () => {
           payload: null
         });
 
-        setSignedOutMessage("You've been signed out because your session expired.");
+        setSignedOutMessage('You have been signed out because your session expired.');
 
         openSignedOut();
 
@@ -259,9 +259,9 @@ const AppContent = () => {
         });
 
         if (response.status === 401) {
-          setSignedOutMessage("You've been signed out because your password was changed on another device.");
+          setSignedOutMessage('You have been signed out because your password was changed on another device.');
         } else {
-          setSignedOutMessage("You've been signed out because your session could not be verified.");
+          setSignedOutMessage('You have been signed out because your session could not be verified.');
         }
 
         openSignedOut();
