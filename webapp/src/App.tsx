@@ -11,8 +11,8 @@ import {
   Button,
   Container,
   createTheme,
+  Drawer,
   Flex,
-  FocusTrap,
   Group,
   Loader,
   MantineProvider,
@@ -158,7 +158,7 @@ const AppContent = () => {
   const { order, page, pageSize, sort, dispatch: applicationDispatch } = useApplicationContext();
   const { ready, user, dispatch: authDispatch } = useAuthContext();
 
-  const [opened, { toggle, close }] = useDisclosure();
+  const [navbarOpened, { toggle: toggleNavbar, close: closeNavbar }] = useDisclosure();
   const [signedOutOpened, { open: openSignedOut, close: closeSignedOut }] = useDisclosure(false);
 
   const [signedOutMessage, setSignedOutMessage] = useState('');
@@ -298,19 +298,17 @@ const AppContent = () => {
   }, [authDispatch]);
 
   return (
-    <AppShell
-      padding="md"
-      header={{ height: HEADER_HEIGHT }}
-      navbar={{
-        width: 300,
-        breakpoint: 'sm',
-        collapsed: { desktop: true, mobile: !opened }
-      }}
-    >
-      <AppShell.Header>
+    <AppShell padding="md" header={{ height: HEADER_HEIGHT }}>
+      <AppShell.Header className="header-border">
         <Group h="100%" px="md" wrap="nowrap">
           {user ? (
-            <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
+            <Burger
+              opened={navbarOpened}
+              onClick={toggleNavbar}
+              hiddenFrom="sm"
+              size="sm"
+              bdrs="var(--mantine-radius-default)"
+            />
           ) : (
             <Flex hiddenFrom="sm" c="dimmed">
               <IconPoint size={28} stroke={1.5} />
@@ -327,7 +325,7 @@ const AppContent = () => {
           <Group ml="auto" gap="xs" wrap="nowrap">
             {user && (
               <Group gap={0} visibleFrom="sm" wrap="nowrap">
-                <NavItems opened={opened} close={close} isDesktop={true} />
+                <NavItems opened={navbarOpened} close={closeNavbar} isDesktop={true} />
               </Group>
             )}
 
@@ -359,11 +357,18 @@ const AppContent = () => {
         </Group>
       </AppShell.Header>
 
-      <FocusTrap active={opened}>
-        <AppShell.Navbar p="xs" hiddenFrom="sm">
-          <NavItems opened={opened} close={close} isDesktop={false} />
-        </AppShell.Navbar>
-      </FocusTrap>
+      <Drawer.Root hiddenFrom="sm" opened={navbarOpened} onClose={closeNavbar}>
+        <Drawer.Overlay />
+        <Drawer.Content>
+          <Drawer.Header className="header-border">
+            <Drawer.Title>Navigate to</Drawer.Title>
+            <Drawer.CloseButton />
+          </Drawer.Header>
+          <Drawer.Body p="xs">
+            <NavItems opened={navbarOpened} close={closeNavbar} isDesktop={false} />
+          </Drawer.Body>
+        </Drawer.Content>
+      </Drawer.Root>
 
       <AppShell.Main pb={ready ? 74 : undefined}>
         <ScrollToTopButton />
