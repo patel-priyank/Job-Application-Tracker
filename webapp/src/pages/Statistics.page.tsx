@@ -338,7 +338,7 @@ const Statistics = () => {
                           }}
                           series={Object.values(APPLICATION_STATUS).map(status => ({
                             name: status.label,
-                            color: timePeriod.data.every(s => !s[status.label]) ? 'dimmed' : status.color
+                            color: status.color
                           }))}
                           tooltipAnimationDuration={250}
                           tickLine="y"
