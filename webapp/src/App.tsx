@@ -358,12 +358,14 @@ const AppContent = () => {
       </AppShell.Header>
 
       <Drawer.Root hiddenFrom="sm" opened={navbarOpened} onClose={closeNavbar}>
-        <Drawer.Overlay />
+        <Drawer.Overlay blur={2} />
+
         <Drawer.Content>
           <Drawer.Header className="header-border">
             <Drawer.Title>Navigate to</Drawer.Title>
             <Drawer.CloseButton />
           </Drawer.Header>
+
           <Drawer.Body p="xs">
             <NavItems opened={navbarOpened} close={closeNavbar} isDesktop={false} />
           </Drawer.Body>
