@@ -1,4 +1,4 @@
-import layout from './layout.json';
+const layout = require('./layout.json');
 
 module.exports = {
   plugins: {
