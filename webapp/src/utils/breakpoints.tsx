@@ -1,12 +1,14 @@
+import layout from '../../layout.json';
+
 import { useMediaQuery } from '@mantine/hooks';
 
-export const isMaxXs = () => useMediaQuery('(max-width: 35.99375em)');
-export const isMinXs = () => useMediaQuery('(min-width: 36em)');
-export const isMaxSm = () => useMediaQuery('(max-width: 47.99375em)');
-export const isMinSm = () => useMediaQuery('(min-width: 48em)');
-export const isMaxMd = () => useMediaQuery('(max-width: 61.99375em)');
-export const isMinMd = () => useMediaQuery('(min-width: 62em)');
-export const isMaxLg = () => useMediaQuery('(max-width: 74.99375em)');
-export const isMinLg = () => useMediaQuery('(min-width: 75em)');
-export const isMaxXl = () => useMediaQuery('(max-width: 87.99375em)');
-export const isMinXl = () => useMediaQuery('(min-width: 88em)');
+export const isMaxXs = () => useMediaQuery(`(max-width: ${layout.breakpoints.max.xs})`);
+export const isMinXs = () => useMediaQuery(`(min-width: ${layout.breakpoints.min.xs})`);
+export const isMaxSm = () => useMediaQuery(`(max-width: ${layout.breakpoints.max.sm})`);
+export const isMinSm = () => useMediaQuery(`(min-width: ${layout.breakpoints.min.sm})`);
+export const isMaxMd = () => useMediaQuery(`(max-width: ${layout.breakpoints.max.md})`);
+export const isMinMd = () => useMediaQuery(`(min-width: ${layout.breakpoints.min.md})`);
+export const isMaxLg = () => useMediaQuery(`(max-width: ${layout.breakpoints.max.lg})`);
+export const isMinLg = () => useMediaQuery(`(min-width: ${layout.breakpoints.min.lg})`);
+export const isMaxXl = () => useMediaQuery(`(max-width: ${layout.breakpoints.max.xl})`);
+export const isMinXl = () => useMediaQuery(`(min-width: ${layout.breakpoints.min.xl})`);

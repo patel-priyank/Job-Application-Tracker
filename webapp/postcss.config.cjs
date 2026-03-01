@@ -1,13 +1,15 @@
+import layout from './layout.json';
+
 module.exports = {
   plugins: {
     'postcss-preset-mantine': {},
     'postcss-simple-vars': {
       variables: {
-        'mantine-breakpoint-xs': '36em',
-        'mantine-breakpoint-sm': '48em',
-        'mantine-breakpoint-md': '62em',
-        'mantine-breakpoint-lg': '75em',
-        'mantine-breakpoint-xl': '88em'
+        'mantine-breakpoint-xs': layout.breakpoints.min.xs,
+        'mantine-breakpoint-sm': layout.breakpoints.min.sm,
+        'mantine-breakpoint-md': layout.breakpoints.min.md,
+        'mantine-breakpoint-lg': layout.breakpoints.min.lg,
+        'mantine-breakpoint-xl': layout.breakpoints.min.xl
       }
     }
   }
