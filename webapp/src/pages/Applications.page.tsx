@@ -107,7 +107,7 @@ const Applications = () => {
       <CreateApplication opened={createApplicationOpened} onClose={closeCreateApplication} />
 
       {user.applicationsCount === 0 && (
-        <PageCenter pageReady={true}>
+        <PageCenter>
           <Stack align="center" gap="xl">
             <Image
               src="./create-application.png"

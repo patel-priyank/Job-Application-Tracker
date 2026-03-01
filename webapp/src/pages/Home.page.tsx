@@ -15,7 +15,7 @@ const Home = () => {
       <SignIn opened={signInOpened} onClose={closeSignIn} />
       <SignUp opened={signUpOpened} onClose={closeSignUp} />
 
-      <PageCenter pageReady={true}>
+      <PageCenter>
         <Stack align="center" gap="xl">
           <Image src="./favicon.svg" alt="" h={80} w={80} fit="contain" />
 
@@ -23,7 +23,7 @@ const Home = () => {
             Job Application Tracker
           </Title>
 
-          <Text size="lg" ta="center" style={{ textWrap: 'balance' }}>
+          <Text ta="center" style={{ textWrap: 'balance' }}>
             All your job applications, synced across devices. Track your progress and view your statistics all in one
             place.
           </Text>

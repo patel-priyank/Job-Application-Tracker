@@ -1,5 +1,8 @@
 import { Affix, Button } from '@mantine/core';
 
+import { isMaxSm } from '../utils/breakpoints';
+import { FOOTER_HEIGHT } from '../utils/constants';
+
 const FloatingActionButton = ({
   icon: Icon,
   label,
@@ -9,8 +12,10 @@ const FloatingActionButton = ({
   label: string;
   onClick: () => void;
 }) => {
+  const maxSmBreakpoint = isMaxSm();
+
   return (
-    <Affix position={{ bottom: 16, right: 16 }} zIndex={95}>
+    <Affix position={{ bottom: 16 + (maxSmBreakpoint ? FOOTER_HEIGHT : 0), right: 16 }} zIndex={95}>
       <Button
         leftSection={<Icon size={20} stroke={1.5} />}
         radius="xl"

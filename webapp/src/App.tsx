@@ -7,14 +7,10 @@ import {
   ActionIcon,
   Affix,
   AppShell,
-  Burger,
   Button,
   Container,
   createTheme,
-  Drawer,
-  Flex,
   Group,
-  Loader,
   MantineProvider,
   Modal,
   NavLink,
@@ -35,7 +31,6 @@ import {
   IconCircleArrowUp,
   IconFiles,
   IconMoon,
-  IconPoint,
   IconSun,
   IconUser
 } from '@tabler/icons-react';
@@ -46,15 +41,15 @@ import { AuthContextProvider } from './contexts/AuthContext';
 import { useApplicationContext } from './hooks/useApplicationContext';
 import { useAuthContext } from './hooks/useAuthContext';
 
-import PageCenter from './components/PageCenter.component';
-
 import Account from './pages/Account.page';
 import Applications from './pages/Applications.page';
 import Home from './pages/Home.page';
 import Statistics from './pages/Statistics.page';
 
-import { APPLICATION_STATUS, HEADER_HEIGHT } from './utils/constants';
+import { APPLICATION_STATUS, FOOTER_HEIGHT, HEADER_HEIGHT } from './utils/constants';
 import { fetchApplications } from './utils/functions';
+
+import { isMaxSm } from './utils/breakpoints';
 
 import '@mantine/core/styles.css';
 
@@ -63,6 +58,8 @@ import '@mantine/dates/styles.css';
 import '@mantine/notifications/styles.css';
 
 import './App.css';
+
+import navLinkClasses from './styles/NavLink.module.css';
 
 const theme = createTheme({
   cursorType: 'pointer',
@@ -76,7 +73,7 @@ const theme = createTheme({
   }
 });
 
-const NavItems = ({ opened, close, isDesktop }: { opened: boolean; close: () => void; isDesktop: boolean }) => {
+const NavItems = ({ isDesktop }: { isDesktop: boolean }) => {
   const location = useLocation();
 
   const navItems = [
@@ -107,10 +104,9 @@ const NavItems = ({ opened, close, isDesktop }: { opened: boolean; close: () => 
           label={item.label}
           leftSection={item.icon}
           active={location.pathname === item.link}
-          onClick={close}
-          bdrs="var(--mantine-radius-md)"
+          bdrs="var(--mantine-radius-xl)"
           w={isDesktop ? 'max-content' : '100%'}
-          tabIndex={isDesktop || opened ? undefined : -1}
+          classNames={isDesktop ? undefined : navLinkClasses}
         />
       ))}
     </>
@@ -158,7 +154,8 @@ const AppContent = () => {
   const { order, page, pageSize, sort, dispatch: applicationDispatch } = useApplicationContext();
   const { ready, user, dispatch: authDispatch } = useAuthContext();
 
-  const [navbarOpened, { toggle: toggleNavbar, close: closeNavbar }] = useDisclosure();
+  const maxSmBreakpoint = isMaxSm();
+
   const [signedOutOpened, { open: openSignedOut, close: closeSignedOut }] = useDisclosure(false);
 
   const [signedOutMessage, setSignedOutMessage] = useState('');
@@ -298,25 +295,11 @@ const AppContent = () => {
   }, [authDispatch]);
 
   return (
-    <AppShell padding="md" header={{ height: HEADER_HEIGHT }}>
-      <AppShell.Header className="header-border">
+    <AppShell padding="md" header={{ height: HEADER_HEIGHT }} footer={{ height: FOOTER_HEIGHT }}>
+      <AppShell.Header>
         <Group h="100%" px="md" wrap="nowrap">
-          {user ? (
-            <Burger
-              opened={navbarOpened}
-              onClick={toggleNavbar}
-              hiddenFrom="sm"
-              size="sm"
-              bdrs="var(--mantine-radius-default)"
-            />
-          ) : (
-            <Flex hiddenFrom="sm" c="dimmed">
-              <IconPoint size={28} stroke={1.5} />
-            </Flex>
-          )}
-
           <Text component="h1" size="lg" truncate="end" fw="bold">
-            {location.pathname === '/' && 'Home'}
+            {location.pathname === '/' && 'Job Application Tracker'}
             {location.pathname === '/applications' && 'Applications'}
             {location.pathname === '/statistics' && 'Statistics'}
             {location.pathname === '/account' && 'Account'}
@@ -324,8 +307,8 @@ const AppContent = () => {
 
           <Group ml="auto" gap="xs" wrap="nowrap">
             {user && (
-              <Group gap={0} visibleFrom="sm" wrap="nowrap">
-                <NavItems opened={navbarOpened} close={closeNavbar} isDesktop={true} />
+              <Group gap={0} wrap="nowrap" visibleFrom="sm">
+                <NavItems isDesktop={true} />
               </Group>
             )}
 
@@ -357,22 +340,7 @@ const AppContent = () => {
         </Group>
       </AppShell.Header>
 
-      <Drawer.Root hiddenFrom="sm" opened={navbarOpened} onClose={closeNavbar}>
-        <Drawer.Overlay blur={2} />
-
-        <Drawer.Content>
-          <Drawer.Header className="header-border">
-            <Drawer.Title>Navigate to</Drawer.Title>
-            <Drawer.CloseButton />
-          </Drawer.Header>
-
-          <Drawer.Body p="xs">
-            <NavItems opened={navbarOpened} close={closeNavbar} isDesktop={false} />
-          </Drawer.Body>
-        </Drawer.Content>
-      </Drawer.Root>
-
-      <AppShell.Main pb={ready ? 74 : undefined}>
+      <AppShell.Main pb={ready ? 74 + (maxSmBreakpoint ? FOOTER_HEIGHT : 0) : undefined}>
         <ScrollToTopButton />
 
         <Modal opened={signedOutOpened} onClose={closeSignedOut} title="Signed Out" overlayProps={{ blur: 2 }} centered>
@@ -387,7 +355,7 @@ const AppContent = () => {
           </Stack>
         </Modal>
 
-        {ready ? (
+        {ready && (
           <Container size="xl" p={0}>
             <Routes>
               <Route
@@ -429,14 +397,16 @@ const AppContent = () => {
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </Container>
-        ) : (
-          <PageCenter pageReady={false}>
-            <Flex>
-              <Loader />
-            </Flex>
-          </PageCenter>
         )}
       </AppShell.Main>
+
+      {user && (
+        <AppShell.Footer hiddenFrom="sm">
+          <Group gap={0} wrap="nowrap" px="xs" h="100%">
+            <NavItems isDesktop={false} />
+          </Group>
+        </AppShell.Footer>
+      )}
     </AppShell>
   );
 };

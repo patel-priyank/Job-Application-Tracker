@@ -4,6 +4,8 @@ import dayjs from 'dayjs';
 
 import type { ApplicationAction } from '../contexts/ApplicationContext';
 
+import { HEADER_HEIGHT } from './constants';
+
 import notificationClasses from '../styles/Notification.module.css';
 
 let abortController: AbortController | null = null;
@@ -85,8 +87,9 @@ export const showNotification = (title: string, message: string, error: boolean)
       title,
       message,
       color: error ? 'red' : 'green',
-      position: 'bottom-left',
-      classNames: notificationClasses
+      position: 'top-right',
+      classNames: notificationClasses,
+      style: { marginTop: HEADER_HEIGHT }
     });
   }, 250);
 };

@@ -186,7 +186,7 @@ const Statistics = () => {
   return (
     <>
       {user.applicationsCount === 0 && (
-        <PageCenter pageReady={true}>
+        <PageCenter>
           <Stack align="center" gap="xl">
             <Image
               src="./create-statistics.png"
@@ -209,7 +209,7 @@ const Statistics = () => {
       )}
 
       {user.applicationsCount > 0 && loading && (
-        <PageCenter pageReady={true}>
+        <PageCenter>
           <Flex>
             <Loader />
           </Flex>
@@ -217,7 +217,7 @@ const Statistics = () => {
       )}
 
       {user.applicationsCount > 0 && !loading && error && (
-        <PageCenter pageReady={true}>
+        <PageCenter>
           <Stack align="center" gap="xl">
             <Image
               src="./statistics-error.png"

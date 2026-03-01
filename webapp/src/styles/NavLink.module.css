@@ -1,0 +1,9 @@
+:global(body) {
+  .root {
+    flex-direction: column;
+  }
+
+  .section {
+    margin: 0;
+  }
+}

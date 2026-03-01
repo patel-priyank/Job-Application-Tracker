@@ -1,10 +1,13 @@
 import { Center, Container } from '@mantine/core';
 
-import { HEADER_HEIGHT } from '../utils/constants';
+import { isMaxSm } from '../utils/breakpoints';
+import { FOOTER_HEIGHT, HEADER_HEIGHT } from '../utils/constants';
 
-const PageCenter = ({ pageReady, children }: { pageReady: boolean; children: React.ReactNode }) => {
+const PageCenter = ({ children }: { children: React.ReactNode }) => {
+  const maxSmBreakpoint = isMaxSm();
+
   return (
-    <Center h={`calc(100dvh - ${HEADER_HEIGHT}px - ${pageReady ? 90 : 32}px)`}>
+    <Center h={`calc(100dvh - ${HEADER_HEIGHT}px - 90px - ${maxSmBreakpoint ? FOOTER_HEIGHT : 0}px)`}>
       <Container size="sm" p={0}>
         {children}
       </Container>

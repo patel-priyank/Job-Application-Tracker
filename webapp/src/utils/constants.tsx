@@ -1,5 +1,7 @@
 export const HEADER_HEIGHT = 60;
 
+export const FOOTER_HEIGHT = 80;
+
 export const APPLICATION_STATUS: Record<string, { label: string; color: string; default?: boolean }> = {
   REFERRED: {
     label: 'Referred',
