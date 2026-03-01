@@ -251,6 +251,7 @@ const Applications = () => {
                 });
 
                 setLoading(true);
+
                 await fetchApplications(
                   user.token,
                   applicationDispatch,
@@ -262,6 +263,7 @@ const Applications = () => {
                   pageVal,
                   searchQuery
                 );
+
                 setLoading(false);
               }}
             />

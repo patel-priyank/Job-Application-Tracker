@@ -19,6 +19,10 @@ export const fetchApplications = async (
   page: number,
   query?: string
 ) => {
+  if (status.length === 0 || emailUsed.length === 0) {
+    return;
+  }
+
   if (abortController) {
     abortController.abort();
   }
