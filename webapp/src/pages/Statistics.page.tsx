@@ -41,7 +41,7 @@ const ChartTooltip = ({ label, payload }: any) => {
   if (!payload) return null;
 
   return (
-    <Paper px="md" py="sm" withBorder shadow="md" radius="md">
+    <Paper px="md" py="sm" withBorder shadow="xl" radius="md">
       <Text fw={500} mb={5}>
         {label}
       </Text>
@@ -264,24 +264,25 @@ const Statistics = () => {
 
                     return (
                       <Grid.Col span={{ base: 12, sm: 6, lg: 4, xl: 3 }} key={status.label}>
-                        <Card padding="md" shadow="md" radius="md" withBorder h="100%">
-                          <Stack gap="xs" align="center">
-                            <Group gap="xs">
-                              <ColorSwatch
-                                color={`var(--mantine-color-${status.color}-filled)`}
-                                size="var(--mantine-font-size-md)"
-                              />
-                              <Text>{status.label}</Text>
-                            </Group>
+                        <Card padding="md" shadow="xs" radius="md" withBorder h="100%">
+                          <Stack>
+                            <Group justify="space-between" wrap="nowrap">
+                              <Group gap="xs" wrap="nowrap" className="max-content-width">
+                                <ColorSwatch
+                                  color={`var(--mantine-color-${status.color}-filled)`}
+                                  size="var(--mantine-font-size-md)"
+                                />
 
-                            <Text c="dimmed" size="xl" fw="500" className="monospace">
-                              {count}
-                            </Text>
+                                <Text truncate>{status.label}</Text>
+                              </Group>
+
+                              <Text size="xl" fw="500" className="monospace">
+                                {count}
+                              </Text>
+                            </Group>
 
                             <Progress
                               mt="xs"
-                              w="75%"
-                              size="sm"
                               value={(Number(count) / user.applicationsCount) * 100}
                               color={status.color}
                             />
@@ -297,7 +298,7 @@ const Statistics = () => {
 
           <Grid>
             <Grid.Col span={12}>
-              <Card padding="md" shadow="md" radius="md" withBorder h="100%">
+              <Card padding="md" shadow="xs" radius="md" withBorder h="100%">
                 <Stack>
                   <Box>
                     <Text>Status Activity</Text>
@@ -327,7 +328,7 @@ const Statistics = () => {
                     </Box>
 
                     {STATUS_ACTIVITY_TIME_PERIODS.map(timePeriod => (
-                      <Tabs.Panel value={timePeriod.value} pt="xl" key={timePeriod.value}>
+                      <Tabs.Panel value={timePeriod.value} pt="xl" pr="md" key={timePeriod.value}>
                         <LineChart
                           h={480}
                           data={timePeriod.data}

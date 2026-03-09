@@ -198,8 +198,7 @@ const FilterApplications = ({
                           component="label"
                           gap="var(--mantine-spacing-sm)"
                           style={{ cursor: isLastSelected ? 'not-allowed' : 'pointer' }}
-                          w="max-content"
-                          maw="100%"
+                          className="max-content-width"
                         >
                           <Checkbox
                             checked={newEmailUsedFilter.includes(email)}
@@ -212,9 +211,10 @@ const FilterApplications = ({
                               }
                             }}
                           />
+
                           <Text
                             size="sm"
-                            truncate="end"
+                            truncate
                             flex={1}
                             c={isLastSelected ? 'var(--mantine-color-disabled-color)' : undefined}
                           >

@@ -1,19 +1,11 @@
-import { ActionIcon, Badge, Box, Card, Group, Highlight, Menu, Stack, Text } from '@mantine/core';
+import { ActionIcon, Badge, Box, Card, Group, Highlight, Menu, Skeleton, Stack, Text } from '@mantine/core';
 
 import { useDisclosure } from '@mantine/hooks';
 
 import dayjs from 'dayjs';
 import GeoPattern from 'geopattern';
 
-import {
-  IconBriefcase2,
-  IconDots,
-  IconFileText,
-  IconPencil,
-  IconRoute,
-  IconStatusChange,
-  IconTrash
-} from '@tabler/icons-react';
+import { IconDots, IconFileText, IconPencil, IconStatusChange, IconTrash } from '@tabler/icons-react';
 
 import type { JobApplication } from '../contexts/ApplicationContext';
 
@@ -25,7 +17,15 @@ import EditApplication from './EditApplication.component';
 import { APPLICATION_STATUS } from '../utils/constants';
 import { formatDate } from '../utils/functions';
 
-const Application = ({ application, highlight }: { application: JobApplication; highlight: string }) => {
+const Application = ({
+  application,
+  highlight,
+  loading = false
+}: {
+  application: JobApplication;
+  highlight: string;
+  loading?: boolean;
+}) => {
   const [applicationDetailsOpened, { open: openApplicationDetails, close: closeApplicationDetails }] =
     useDisclosure(false);
   const [createApplicationStatusOpened, { open: openCreateApplicationStatus, close: closeCreateApplicationStatus }] =
@@ -33,6 +33,12 @@ const Application = ({ application, highlight }: { application: JobApplication; 
   const [deleteApplicationOpened, { open: openDeleteApplication, close: closeDeleteApplication }] =
     useDisclosure(false);
   const [editApplicationOpened, { open: openEditApplication, close: closeEditApplication }] = useDisclosure(false);
+
+  const isUpdatedToday =
+    application.history.length > 1 &&
+    dayjs(application.history[application.history.length - 1].date).isSame(dayjs(), 'day');
+
+  const isAddedToday = dayjs(application.history[0].date).isSame(dayjs(), 'day');
 
   return (
     <>
@@ -52,111 +58,105 @@ const Application = ({ application, highlight }: { application: JobApplication; 
 
       <EditApplication opened={editApplicationOpened} onClose={closeEditApplication} application={application} />
 
-      <Card padding="md" shadow="md" radius="md" withBorder h="100%">
-        <Card.Section h={130} bg={GeoPattern.generate(application.companyName).toDataUrl()}>
-          <Stack m="xs" gap="xs" align="flex-end">
-            {dayjs(application.history[0].date).isSame(dayjs(), 'day') && (
-              <Badge radius="sm" autoContrast color="yellow">
-                Added today
-              </Badge>
+      <Card padding="md" shadow="xs" radius="md" withBorder h="100%">
+        <Stack>
+          <Group justify="space-between">
+            <Skeleton radius="xs" visible={loading} w={38}>
+              <Box w={38} h={38} bdrs="sm" bg={GeoPattern.generate(application.companyName).toDataUrl()} />
+            </Skeleton>
+
+            {!loading && (
+              <Group>
+                {(isUpdatedToday || isAddedToday) && (
+                  <Badge color="yellow" autoContrast size="sm">
+                    {isUpdatedToday ? 'Updated today' : 'Added today'}
+                  </Badge>
+                )}
+
+                <Menu withinPortal position="left-start" shadow="xl" zIndex={90}>
+                  <Menu.Target>
+                    <ActionIcon variant="light" color="gray">
+                      <IconDots size={16} stroke={1.5} />
+                    </ActionIcon>
+                  </Menu.Target>
+
+                  <Menu.Dropdown>
+                    <Menu.Item
+                      leftSection={<IconFileText size={16} stroke={1.5} />}
+                      onClick={() => setTimeout(openApplicationDetails, 0)}
+                    >
+                      View details
+                    </Menu.Item>
+
+                    <Menu.Divider />
+
+                    <Menu.Item
+                      leftSection={<IconStatusChange size={16} stroke={1.5} />}
+                      onClick={() => setTimeout(openCreateApplicationStatus, 0)}
+                    >
+                      Update status
+                    </Menu.Item>
+
+                    <Menu.Divider />
+
+                    <Menu.Item
+                      leftSection={<IconPencil size={16} stroke={1.5} />}
+                      onClick={() => setTimeout(openEditApplication, 0)}
+                    >
+                      Edit application
+                    </Menu.Item>
+
+                    <Menu.Item
+                      leftSection={<IconTrash size={16} stroke={1.5} />}
+                      color="red"
+                      onClick={() => setTimeout(openDeleteApplication, 0)}
+                    >
+                      Delete application
+                    </Menu.Item>
+                  </Menu.Dropdown>
+                </Menu>
+              </Group>
             )}
-
-            {application.history.length > 1 &&
-              dayjs(application.history[application.history.length - 1].date).isSame(dayjs(), 'day') && (
-                <Badge radius="sm" autoContrast color="yellow">
-                  Updated today
-                </Badge>
-              )}
-          </Stack>
-        </Card.Section>
-
-        <Stack gap="xs" mt="md">
-          <Group justify="space-between" wrap="nowrap">
-            <Text truncate="end" title={application.companyName}>
-              <Highlight span color="yellow" highlight={highlight}>
-                {application.companyName}
-              </Highlight>
-            </Text>
-
-            <Menu withinPortal position="bottom-end" shadow="xl" zIndex={90}>
-              <Menu.Target>
-                <ActionIcon variant="light" color="gray">
-                  <IconDots size={16} stroke={1.5} />
-                </ActionIcon>
-              </Menu.Target>
-
-              <Menu.Dropdown>
-                <Menu.Item
-                  leftSection={<IconFileText size={16} stroke={1.5} />}
-                  onClick={() => setTimeout(openApplicationDetails, 0)}
-                >
-                  View details
-                </Menu.Item>
-
-                <Menu.Divider />
-
-                <Menu.Item
-                  leftSection={<IconPencil size={16} stroke={1.5} />}
-                  onClick={() => setTimeout(openEditApplication, 0)}
-                >
-                  Edit application
-                </Menu.Item>
-
-                <Menu.Item
-                  leftSection={<IconStatusChange size={16} stroke={1.5} />}
-                  onClick={() => setTimeout(openCreateApplicationStatus, 0)}
-                >
-                  Update status
-                </Menu.Item>
-
-                <Menu.Divider />
-
-                <Menu.Item
-                  component="a"
-                  href={application.trackingLink || undefined}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  leftSection={<IconRoute size={16} stroke={1.5} />}
-                  disabled={!application.trackingLink}
-                >
-                  Track application
-                </Menu.Item>
-
-                <Menu.Divider />
-
-                <Menu.Item
-                  leftSection={<IconTrash size={16} stroke={1.5} />}
-                  color="red"
-                  onClick={() => setTimeout(openDeleteApplication, 0)}
-                >
-                  Delete application
-                </Menu.Item>
-              </Menu.Dropdown>
-            </Menu>
           </Group>
 
-          <Text c="dimmed" w="max-content" maw="100%" className="text-with-icon">
-            <IconBriefcase2 size={16} stroke={1.5} />
-            <Text span truncate="end" title={application?.jobTitle} flex={1}>
+          <Box mt="calc(var(--mantine-spacing-xs) / 2">
+            <Skeleton radius="xs" visible={loading}>
+              <Text className="max-content-width" title={application.companyName} size="sm">
+                <Highlight span color="yellow" highlight={highlight}>
+                  {application.companyName}
+                </Highlight>
+              </Text>
+            </Skeleton>
+          </Box>
+
+          <Skeleton radius="xs" visible={loading}>
+            <Text className="max-content-width" title={application.jobTitle}>
               <Highlight span color="yellow" highlight={highlight}>
                 {application.jobTitle}
               </Highlight>
             </Text>
-          </Text>
+          </Skeleton>
 
-          <Box>
-            <Text
-              c={Object.values(APPLICATION_STATUS).find(status => status.label === application.status)?.color}
-              size="sm"
-              fw="500"
-            >
-              {application.status}
-            </Text>
+          <Skeleton radius="xs" visible={loading} w="75%">
+            <Group gap="sm">
+              <Box
+                w={8}
+                h={32}
+                bdrs="xs"
+                bg={Object.values(APPLICATION_STATUS).find(status => status.label === application.status)?.color}
+              />
 
-            <Text c="dimmed" size="sm">
-              {formatDate(application.date)}
-            </Text>
-          </Box>
+              <Box>
+                <Text className="max-content-width" size="sm" title={application.status}>
+                  {application.status}
+                </Text>
+
+                <Text c="dimmed" size="xs">
+                  {formatDate(application.date)}
+                </Text>
+              </Box>
+            </Group>
+          </Skeleton>
         </Stack>
       </Card>
     </>

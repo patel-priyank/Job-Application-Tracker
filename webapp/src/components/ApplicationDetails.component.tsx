@@ -1,13 +1,13 @@
 import { useState } from 'react';
 
-import { Button, Group, Modal, Select, Stack, Text, Timeline, useModalsStack } from '@mantine/core';
+import { Box, Button, Group, Modal, Select, Stack, Text, Timeline, useModalsStack } from '@mantine/core';
 
 import { DatePickerInput } from '@mantine/dates';
 import { useForm } from '@mantine/form';
 
 import dayjs from 'dayjs';
 
-import { IconAt, IconBriefcase2, IconPencil, IconRoute, IconTrash } from '@tabler/icons-react';
+import { IconPencil, IconRoute, IconTrash } from '@tabler/icons-react';
 
 import type { JobApplication } from '../contexts/ApplicationContext';
 
@@ -169,22 +169,25 @@ const ApplicationDetails = ({
         overlayProps={{ blur: 2 }}
         centered
       >
-        <Stack gap="md" align="flex-start">
-          <Text c="dimmed" w="max-content" maw="100%" className="text-with-icon">
-            <IconBriefcase2 size={16} stroke={1.5} />
-            <Text span truncate="end" title={application?.jobTitle} flex={1}>
-              {application?.jobTitle}
+        <Stack align="flex-start">
+          <Box>
+            <Text c="dimmed" size="sm">
+              Job title
             </Text>
-          </Text>
 
-          <Text c="dimmed" w="max-content" maw="100%" className="text-with-icon">
-            <IconAt size={16} stroke={1.5} />
-            <Text span truncate="end" title={application?.emailUsed} flex={1}>
-              {application?.emailUsed}
+            <Text title={application?.jobTitle}>{application?.jobTitle}</Text>
+          </Box>
+
+          <Box>
+            <Text c="dimmed" size="sm">
+              Email used
             </Text>
-          </Text>
+
+            <Text title={application?.emailUsed}>{application?.emailUsed}</Text>
+          </Box>
 
           <Button
+            mt="calc(var(--mantine-spacing-xs) / 2)"
             component="a"
             href={application?.trackingLink || undefined}
             target="_blank"

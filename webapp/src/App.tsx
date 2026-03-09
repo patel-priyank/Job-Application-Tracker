@@ -104,7 +104,7 @@ const NavItems = ({ isDesktop }: { isDesktop: boolean }) => {
           label={item.label}
           leftSection={item.icon}
           active={location.pathname === item.link}
-          bdrs="var(--mantine-radius-xl)"
+          bdrs="xl"
           w={isDesktop ? 'max-content' : '100%'}
           classNames={isDesktop ? undefined : navLinkClasses}
         />
@@ -296,9 +296,9 @@ const AppContent = () => {
 
   return (
     <AppShell padding="md" header={{ height: HEADER_HEIGHT }} footer={{ height: FOOTER_HEIGHT }}>
-      <AppShell.Header>
+      <AppShell.Header className="glass">
         <Group h="100%" px="md" wrap="nowrap">
-          <Text component="h1" size="lg" truncate="end" fw="bold">
+          <Text component="h2" size="lg" truncate fw="bold">
             {location.pathname === '/' && 'Job Application Tracker'}
             {location.pathname === '/applications' && 'Applications'}
             {location.pathname === '/statistics' && 'Statistics'}
@@ -312,7 +312,7 @@ const AppContent = () => {
               </Group>
             )}
 
-            <Tooltip label="Source code">
+            <Tooltip position="left" label="Source code">
               <ActionIcon
                 variant="default"
                 component={Link}
@@ -324,7 +324,7 @@ const AppContent = () => {
               </ActionIcon>
             </Tooltip>
 
-            <Tooltip label={computedColorScheme === 'light' ? 'Dark mode' : 'Light mode'}>
+            <Tooltip position="left" label={computedColorScheme === 'light' ? 'Dark mode' : 'Light mode'}>
               <ActionIcon
                 variant="default"
                 onClick={() => setColorScheme(computedColorScheme === 'light' ? 'dark' : 'light')}
@@ -401,7 +401,7 @@ const AppContent = () => {
       </AppShell.Main>
 
       {user && (
-        <AppShell.Footer hiddenFrom="sm">
+        <AppShell.Footer hiddenFrom="sm" className="glass">
           <Group gap={0} wrap="nowrap" px="xs" h="100%">
             <NavItems isDesktop={false} />
           </Group>
@@ -414,7 +414,7 @@ const AppContent = () => {
 const App = () => {
   return (
     <MantineProvider theme={theme}>
-      <Notifications limit={1} />
+      <Notifications limit={1} position="top-right" style={{ marginTop: HEADER_HEIGHT }} />
 
       <AuthContextProvider>
         <ApplicationContextProvider>

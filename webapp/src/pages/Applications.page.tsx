@@ -3,14 +3,12 @@ import { useState } from 'react';
 import {
   ActionIcon,
   Button,
-  Card,
   Grid,
   Group,
   Image,
   Indicator,
   Input,
   Pagination,
-  Skeleton,
   Stack,
   Text,
   TextInput
@@ -273,31 +271,20 @@ const Applications = () => {
             <Grid>
               {Array.from({ length: pageSize }).map((_, index) => (
                 <Grid.Col span={{ base: 12, sm: 6, lg: 4, xl: 3 }} key={index}>
-                  <Card padding="md" shadow="md" radius="md" withBorder h="100%">
-                    <Card.Section>
-                      <Skeleton height={130} radius={0} animate={false} />
-                    </Card.Section>
-
-                    <Stack gap="xs" mt="md">
-                      <Skeleton>
-                        <Text>Company name</Text>
-                      </Skeleton>
-
-                      <Skeleton>
-                        <Text>Job title</Text>
-                      </Skeleton>
-
-                      <Stack gap="xs">
-                        <Skeleton w="75%">
-                          <Text size="xs">Status</Text>
-                        </Skeleton>
-
-                        <Skeleton w="50%">
-                          <Text size="xs">Date</Text>
-                        </Skeleton>
-                      </Stack>
-                    </Stack>
-                  </Card>
+                  <Application
+                    application={{
+                      _id: `dummy-${index}`,
+                      companyName: 'Company name',
+                      jobTitle: 'Job title',
+                      emailUsed: 'Email used',
+                      trackingLink: 'Tracking link',
+                      status: 'Status',
+                      date: new Date().toISOString(),
+                      history: [{ _id: `dummy-history-${index}`, status: 'Status', date: new Date().toISOString() }]
+                    }}
+                    highlight=""
+                    loading
+                  />
                 </Grid.Col>
               ))}
             </Grid>

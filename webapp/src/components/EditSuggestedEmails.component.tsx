@@ -141,17 +141,21 @@ const EditSuggestedEmails = ({ opened, onClose }: { opened: boolean; onClose: ()
           {Object.keys(suggestedEmails).map(email => (
             <Group key={email} justify="space-between" wrap="nowrap">
               {ready ? (
-                <Text truncate="end" title={email} c={emailsToDelete.includes(email) ? 'red' : undefined}>
+                <Text
+                  className="max-content-width"
+                  title={email}
+                  c={emailsToDelete.includes(email) ? 'red' : undefined}
+                >
                   {email}
                 </Text>
               ) : (
-                <Skeleton h={28} />
+                <Skeleton radius="xs" h={28} />
               )}
 
               {ready && (
                 <Group gap="xs" wrap="nowrap">
                   {(email === user?.email || !suggestedEmails[email]) && (
-                    <Popover width={240} shadow="xs" withArrow offset={0}>
+                    <Popover width={240} shadow="xl" withArrow offset={0}>
                       <Popover.Target>
                         <ActionIcon variant="subtle">
                           <IconInfoCircle size={16} stroke={1.5} />
@@ -193,7 +197,7 @@ const EditSuggestedEmails = ({ opened, onClose }: { opened: boolean; onClose: ()
 
         <Group mt="sm">
           <Button data-autofocus disabled={!ready} loading={loading} onClick={handleSubmit}>
-            Save suggested emails
+            Save emails
           </Button>
 
           <Button variant="outline" onClick={onClose}>

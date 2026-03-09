@@ -1,3 +1,8 @@
+.glass {
+  background-color: color-mix(in srgb, var(--mantine-color-body), transparent 15%);
+  backdrop-filter: blur(8px);
+}
+
 .monospace {
   font-family: var(--mantine-font-family-monospace);
 }
@@ -8,10 +13,12 @@
     0 4px 12px rgba(0, 0, 0, 0.12);
 }
 
-.text-with-icon {
-  display: flex;
-  align-items: center;
-  gap: var(--mantine-spacing-xs);
+.max-content-width {
+  width: max-content;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .mantine-LineChart-root * {
