@@ -292,7 +292,7 @@ const AppContent = () => {
 
           <Group ml="auto" gap="xs" wrap="nowrap">
             {user && (
-              <Group gap={0} wrap="nowrap" visibleFrom="sm">
+              <Group gap={4} wrap="nowrap" visibleFrom="sm">
                 <NavItems isDesktop={true} />
               </Group>
             )}
