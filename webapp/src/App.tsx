@@ -386,7 +386,7 @@ const AppContent = () => {
 
       {user && (
         <AppShell.Footer hiddenFrom="sm" className="glass">
-          <Group gap={0} wrap="nowrap" p={4} h="100%">
+          <Group gap={4} wrap="nowrap" p={4} h="100%">
             <NavItems isDesktop={false} />
           </Group>
         </AppShell.Footer>

@@ -1,9 +1,24 @@
 :global(body) {
   .root {
-    flex-direction: column;
-  }
+    height: 100%;
+    justify-content: center;
 
-  .section {
-    margin-inline-end: 0;
+    &[data-active] {
+      .body {
+        flex: unset;
+      }
+    }
+
+    &:not([data-active]) {
+      flex: 0;
+
+      .section {
+        margin-inline-end: 0;
+      }
+
+      .body {
+        display: none;
+      }
+    }
   }
 }

@@ -1,6 +1,6 @@
 export const HEADER_HEIGHT = 60;
 
-export const FOOTER_HEIGHT = 60.8 + 4 * 2;
+export const FOOTER_HEIGHT = 40.8 + 4 * 2;
 
 export const APPLICATION_STATUS: Record<string, { label: string; color: string; default?: boolean }> = {
   REFERRED: {
