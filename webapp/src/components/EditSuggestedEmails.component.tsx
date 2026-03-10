@@ -155,7 +155,7 @@ const EditSuggestedEmails = ({ opened, onClose }: { opened: boolean; onClose: ()
               {ready && (
                 <Group gap="xs" wrap="nowrap">
                   {(email === user?.email || !suggestedEmails[email]) && (
-                    <Popover width={240} shadow="xl" withArrow offset={0}>
+                    <Popover width={240} shadow="xl" withArrow offset={4}>
                       <Popover.Target>
                         <ActionIcon variant="subtle">
                           <IconInfoCircle size={16} stroke={1.5} />

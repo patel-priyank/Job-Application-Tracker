@@ -60,9 +60,9 @@ const Application = ({
 
       <Card padding="md" shadow="xs" radius="md" withBorder h="100%">
         <Stack>
-          <Group justify="space-between">
-            <Skeleton radius="xs" visible={loading} w={38}>
-              <Box w={38} h={38} bdrs="sm" bg={GeoPattern.generate(application.companyName).toDataUrl()} />
+          <Group justify="space-between" align="flex-start">
+            <Skeleton radius="xs" visible={loading} w={44}>
+              <Box w={44} h={44} bdrs="sm" bg={GeoPattern.generate(application.companyName).toDataUrl()} />
             </Skeleton>
 
             {!loading && (
@@ -73,7 +73,22 @@ const Application = ({
                   </Badge>
                 )}
 
-                <Menu withinPortal position="left-start" shadow="xl" zIndex={90}>
+                <Menu
+                  withinPortal
+                  position="left-start"
+                  shadow="xl"
+                  offset={-28}
+                  zIndex={90}
+                  transitionProps={{
+                    transition: {
+                      in: { opacity: 1, transform: 'scale(1)' },
+                      out: { opacity: 0, transform: 'scale(0)' },
+                      common: { transformOrigin: 'top right' },
+                      transitionProperty: 'opacity, transform'
+                    },
+                    duration: 200
+                  }}
+                >
                   <Menu.Target>
                     <ActionIcon variant="light" color="gray">
                       <IconDots size={16} stroke={1.5} />
