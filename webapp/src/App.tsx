@@ -11,7 +11,9 @@ import {
   Button,
   Container,
   createTheme,
+  Flex,
   Group,
+  Loader,
   MantineProvider,
   Modal,
   NavLink,
@@ -40,6 +42,8 @@ import { AuthContextProvider } from './contexts/AuthContext';
 
 import { useApplicationContext } from './hooks/useApplicationContext';
 import { useAuthContext } from './hooks/useAuthContext';
+
+import PageCenter from './components/PageCenter.component';
 
 import Account from './pages/Account.page';
 import Applications from './pages/Applications.page';
@@ -321,7 +325,7 @@ const AppContent = () => {
         </Group>
       </AppShell.Header>
 
-      <AppShell.Main pb={ready ? 74 + (maxSmBreakpoint ? FOOTER_HEIGHT : 0) : undefined}>
+      <AppShell.Main pb={74 + (maxSmBreakpoint ? FOOTER_HEIGHT : 0)}>
         <ScrollToTopButton />
 
         <Modal opened={signedOutOpened} onClose={closeSignedOut} title="Signed Out" overlayProps={{ blur: 2 }} centered>
@@ -336,7 +340,7 @@ const AppContent = () => {
           </Stack>
         </Modal>
 
-        {ready && (
+        {ready ? (
           <Container size="xl" p={0}>
             <Routes>
               <Route
@@ -378,6 +382,12 @@ const AppContent = () => {
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </Container>
+        ) : (
+          <PageCenter>
+            <Flex>
+              <Loader />
+            </Flex>
+          </PageCenter>
         )}
       </AppShell.Main>
 
