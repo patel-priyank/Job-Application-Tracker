@@ -75,8 +75,8 @@ const Application = ({
                 bdrs="sm"
                 bg={GeoPattern.generate(application.companyName).toDataUrl()}
                 className="animate__animated"
-                onClick={() => boxRef.current && boxRef.current.classList.add('animate__pulse')}
-                onAnimationEnd={() => boxRef.current && boxRef.current.classList.remove('animate__pulse')}
+                onClick={() => boxRef.current && boxRef.current.classList.add('animate__tada')}
+                onAnimationEnd={() => boxRef.current && boxRef.current.classList.remove('animate__tada')}
               />
             </Skeleton>
 
