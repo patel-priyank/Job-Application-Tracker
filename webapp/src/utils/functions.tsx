@@ -69,8 +69,7 @@ export const fetchApplications = async (
 };
 
 export const getNormalizedDate = (date: string | number | Date) => {
-  const dateObj = new Date(date);
-  return new Date(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate(), 0, 0, 0, 0);
+  return dayjs(date).startOf('day').toDate();
 };
 
 export const formatDate = (date: string | Date) => {
