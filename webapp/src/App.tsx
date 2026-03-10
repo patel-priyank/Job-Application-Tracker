@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { BrowserRouter, Link, Navigate, Route, Routes, useLocation } from 'react-router-dom';
 
+import { Analytics } from '@vercel/analytics/react';
 import { jwtDecode } from 'jwt-decode';
 
 import {
@@ -413,17 +414,21 @@ const AppContent = () => {
 
 const App = () => {
   return (
-    <MantineProvider theme={theme}>
-      <Notifications limit={1} position="top-right" style={{ marginTop: HEADER_HEIGHT }} />
+    <>
+      <Analytics />
 
-      <AuthContextProvider>
-        <ApplicationContextProvider>
-          <BrowserRouter>
-            <AppContent />
-          </BrowserRouter>
-        </ApplicationContextProvider>
-      </AuthContextProvider>
-    </MantineProvider>
+      <MantineProvider theme={theme}>
+        <Notifications limit={1} position="top-right" style={{ marginTop: HEADER_HEIGHT }} />
+
+        <AuthContextProvider>
+          <ApplicationContextProvider>
+            <BrowserRouter>
+              <AppContent />
+            </BrowserRouter>
+          </ApplicationContextProvider>
+        </AuthContextProvider>
+      </MantineProvider>
+    </>
   );
 };
 
