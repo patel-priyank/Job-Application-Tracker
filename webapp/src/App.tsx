@@ -105,7 +105,7 @@ const NavItems = ({ isDesktop }: { isDesktop: boolean }) => {
           label={item.label}
           leftSection={item.icon}
           active={location.pathname === item.link}
-          bdrs="xl"
+          bdrs="md"
           w={isDesktop ? 'max-content' : '100%'}
           classNames={isDesktop ? undefined : navLinkClasses}
         />
@@ -403,7 +403,7 @@ const AppContent = () => {
 
       {user && (
         <AppShell.Footer hiddenFrom="sm" className="glass">
-          <Group gap={0} wrap="nowrap" px="xs" h="100%">
+          <Group gap={0} wrap="nowrap" p={4} h="100%">
             <NavItems isDesktop={false} />
           </Group>
         </AppShell.Footer>
