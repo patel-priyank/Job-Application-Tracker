@@ -177,6 +177,8 @@ const AppContent = () => {
       }
     });
 
+    const data = await response.json();
+
     if (!response.ok) {
       localStorage.removeItem('user');
 
@@ -200,10 +202,13 @@ const AppContent = () => {
       }
 
       openSignedOut();
+
+      return null;
     }
+
+    return data;
   };
 
-  useWindowEvent('focus', checkSessionValidity);
   useWindowEvent('blur', checkSessionValidity);
 
   const { setColorScheme } = useMantineColorScheme();
@@ -239,31 +244,9 @@ const AppContent = () => {
         return;
       }
 
-      const response = await fetch('/api/users/renew-token', {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${JSON.parse(user).token}`
-        }
-      });
+      const validatedUser = await checkSessionValidity();
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        localStorage.removeItem('user');
-
-        authDispatch({
-          type: 'SET_USER',
-          payload: null
-        });
-
-        if (response.status === 401) {
-          setSignedOutMessage('You have been signed out because your password was changed on another device.');
-        } else {
-          setSignedOutMessage('You have been signed out because your session could not be verified.');
-        }
-
-        openSignedOut();
-
+      if (!validatedUser) {
         return;
       }
 
@@ -271,7 +254,7 @@ const AppContent = () => {
         type: 'SET_FILTERS',
         payload: {
           statusFilter: Object.values(APPLICATION_STATUS).map(status => status.label),
-          emailUsedFilter: data.suggestedEmails
+          emailUsedFilter: validatedUser.suggestedEmails
         }
       });
 
@@ -279,18 +262,18 @@ const AppContent = () => {
         JSON.parse(user).token,
         applicationDispatch,
         Object.values(APPLICATION_STATUS).map(status => status.label),
-        data.suggestedEmails,
+        validatedUser.suggestedEmails,
         sort,
         order,
         pageSize,
         page
       );
 
-      localStorage.setItem('user', JSON.stringify(data));
+      localStorage.setItem('user', JSON.stringify(validatedUser));
 
       authDispatch({
         type: 'SET_USER',
-        payload: data
+        payload: validatedUser
       });
     }, 1500);
   }, [authDispatch]);
