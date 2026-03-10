@@ -1,3 +1,5 @@
+import { useRef } from 'react';
+
 import { ActionIcon, Badge, Box, Card, Group, Highlight, Menu, Skeleton, Stack, Text } from '@mantine/core';
 
 import { useDisclosure } from '@mantine/hooks';
@@ -17,6 +19,8 @@ import EditApplication from './EditApplication.component';
 import { APPLICATION_STATUS } from '../utils/constants';
 import { formatDate } from '../utils/functions';
 
+import 'animate.css';
+
 const Application = ({
   application,
   highlight,
@@ -26,6 +30,8 @@ const Application = ({
   highlight: string;
   loading?: boolean;
 }) => {
+  const boxRef = useRef<HTMLDivElement>(null);
+
   const [applicationDetailsOpened, { open: openApplicationDetails, close: closeApplicationDetails }] =
     useDisclosure(false);
   const [createApplicationStatusOpened, { open: openCreateApplicationStatus, close: closeCreateApplicationStatus }] =
@@ -61,8 +67,17 @@ const Application = ({
       <Card padding="md" shadow="xs" radius="md" withBorder h="100%">
         <Stack>
           <Group justify="space-between" align="flex-start">
-            <Skeleton radius="xs" visible={loading} w={44}>
-              <Box w={44} h={44} bdrs="sm" bg={GeoPattern.generate(application.companyName).toDataUrl()} />
+            <Skeleton radius="sm" visible={loading} w={48}>
+              <Box
+                ref={boxRef}
+                w={48}
+                h={48}
+                bdrs="sm"
+                bg={GeoPattern.generate(application.companyName).toDataUrl()}
+                className="animate__animated"
+                onClick={() => boxRef.current && boxRef.current.classList.add('animate__pulse')}
+                onAnimationEnd={() => boxRef.current && boxRef.current.classList.remove('animate__pulse')}
+              />
             </Skeleton>
 
             {!loading && (
