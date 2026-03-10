@@ -5,18 +5,18 @@
     &::before {
       background-color: var(--mantine-color-white);
     }
-  }
 
-  .description,
-  .title {
-    color: var(--mantine-color-white);
-  }
+    .description,
+    .title {
+      color: var(--mantine-color-white);
+    }
 
-  .closeButton {
-    color: var(--mantine-color-white);
+    .closeButton {
+      color: var(--mantine-color-white);
 
-    &:hover {
-      background-color: rgba(0, 0, 0, 0.1);
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.1);
+      }
     }
   }
 }

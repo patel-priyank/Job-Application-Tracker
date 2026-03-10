@@ -17,7 +17,6 @@ import {
   NavLink,
   Stack,
   Text,
-  Tooltip,
   Transition,
   useComputedColorScheme,
   useMantineColorScheme
@@ -280,6 +279,8 @@ const AppContent = () => {
 
   return (
     <AppShell padding="md" header={{ height: HEADER_HEIGHT }} footer={{ height: FOOTER_HEIGHT }}>
+      <Notifications limit={1} position="top-right" style={{ marginTop: HEADER_HEIGHT }} />
+
       <AppShell.Header className="glass">
         <Group h="100%" px="md" wrap="nowrap">
           <Text component="h2" size="lg" truncate fw="bold">
@@ -296,30 +297,26 @@ const AppContent = () => {
               </Group>
             )}
 
-            <Tooltip position="left" label="Source code">
-              <ActionIcon
-                variant="default"
-                component={Link}
-                to="https://github.com/patel-priyank/Job-Application-Tracker"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <IconBrandGithub size={16} stroke={1.5} />
-              </ActionIcon>
-            </Tooltip>
+            <ActionIcon
+              variant="default"
+              component={Link}
+              to="https://github.com/patel-priyank/Job-Application-Tracker"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <IconBrandGithub size={16} stroke={1.5} />
+            </ActionIcon>
 
-            <Tooltip position="left" label={computedColorScheme === 'light' ? 'Dark mode' : 'Light mode'}>
-              <ActionIcon
-                variant="default"
-                onClick={() => setColorScheme(computedColorScheme === 'light' ? 'dark' : 'light')}
-              >
-                {computedColorScheme === 'light' ? (
-                  <IconMoon size={16} stroke={1.5} />
-                ) : (
-                  <IconSun size={16} stroke={1.5} />
-                )}
-              </ActionIcon>
-            </Tooltip>
+            <ActionIcon
+              variant="default"
+              onClick={() => setColorScheme(computedColorScheme === 'light' ? 'dark' : 'light')}
+            >
+              {computedColorScheme === 'light' ? (
+                <IconMoon size={16} stroke={1.5} />
+              ) : (
+                <IconSun size={16} stroke={1.5} />
+              )}
+            </ActionIcon>
           </Group>
         </Group>
       </AppShell.Header>
@@ -401,8 +398,6 @@ const App = () => {
       <Analytics />
 
       <MantineProvider theme={theme}>
-        <Notifications limit={1} position="top-right" style={{ marginTop: HEADER_HEIGHT }} />
-
         <AuthContextProvider>
           <ApplicationContextProvider>
             <BrowserRouter>
