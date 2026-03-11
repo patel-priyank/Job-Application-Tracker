@@ -49,14 +49,14 @@ const Account = () => {
           <Card padding="md" shadow="xs" radius="md" withBorder h="100%">
             <Stack>
               <Group justify="space-between">
-                <Text c="dimmed">Name</Text>
+                <Text>Name</Text>
 
                 <ActionIcon variant="light" onClick={openEditName}>
                   <IconPencil size={20} stroke={1.5} />
                 </ActionIcon>
               </Group>
 
-              <Text className="max-content-width" title={user.name}>
+              <Text c="dimmed" className="max-content-width" title={user.name}>
                 {user.name}
               </Text>
             </Stack>
@@ -67,14 +67,14 @@ const Account = () => {
           <Card padding="md" shadow="xs" radius="md" withBorder h="100%">
             <Stack>
               <Group justify="space-between">
-                <Text c="dimmed">Email</Text>
+                <Text>Email</Text>
 
                 <ActionIcon variant="light" onClick={openEditEmail}>
                   <IconPencil size={20} stroke={1.5} />
                 </ActionIcon>
               </Group>
 
-              <Text className="max-content-width" title={user.email}>
+              <Text c="dimmed" className="max-content-width" title={user.email}>
                 {user.email}
               </Text>
             </Stack>
@@ -85,14 +85,14 @@ const Account = () => {
           <Card padding="md" shadow="xs" radius="md" withBorder h="100%">
             <Stack>
               <Group justify="space-between">
-                <Text c="dimmed">Password</Text>
+                <Text>Password</Text>
 
                 <ActionIcon variant="light" onClick={openEditPassword}>
                   <IconPencil size={20} stroke={1.5} />
                 </ActionIcon>
               </Group>
 
-              <Text>Updated on {formatDate(user.passwordUpdatedAt)}</Text>
+              <Text c="dimmed">Updated on {formatDate(user.passwordUpdatedAt)}</Text>
             </Stack>
           </Card>
         </Grid.Col>
@@ -101,14 +101,14 @@ const Account = () => {
           <Card padding="md" shadow="xs" radius="md" withBorder h="100%">
             <Stack>
               <Group justify="space-between">
-                <Text c="dimmed">Suggested Emails</Text>
+                <Text>Suggested Emails</Text>
 
                 <ActionIcon variant="light" onClick={openEditSuggestedEmails}>
                   <IconPencil size={20} stroke={1.5} />
                 </ActionIcon>
               </Group>
 
-              <Text>
+              <Text c="dimmed">
                 {getSortedSuggestedEmails(user.suggestedEmails, user.email).length} email
                 {getSortedSuggestedEmails(user.suggestedEmails, user.email).length !== 1 && 's'}
               </Text>
@@ -138,9 +138,9 @@ const Account = () => {
               <Grid.Col span={{ base: 12, sm: 6, lg: 4, xl: 3 }}>
                 <Card padding="md" shadow="xs" radius="md" withBorder h="100%">
                   <Stack align="flex-start">
-                    <Text c="dimmed">Job Applications</Text>
+                    <Text>Job Applications</Text>
 
-                    <Text>
+                    <Text c="dimmed">
                       Tracking {user.applicationsCount} application{user.applicationsCount !== 1 && 's'}
                     </Text>
 
@@ -160,9 +160,9 @@ const Account = () => {
               <Grid.Col span={{ base: 12, sm: 6, lg: 4, xl: 3 }}>
                 <Card padding="md" shadow="xs" radius="md" withBorder h="100%">
                   <Stack align="flex-start">
-                    <Text c="dimmed">Account</Text>
+                    <Text>Account</Text>
 
-                    <Text>Member since {formatDate(user.createdAt)}</Text>
+                    <Text c="dimmed">Member since {formatDate(user.createdAt)}</Text>
 
                     <Button variant="outline" size="sm" color="red" onClick={openDeleteAccount}>
                       Delete account
