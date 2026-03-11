@@ -372,12 +372,18 @@ const Statistics = () => {
                             </pattern>
                           </defs>
 
-                          {activeTab === 'daily' && (
+                          {activeTab === 'daily' && dayjs().format('ddd') !== 'Sun' && (
                             <ReferenceArea
                               x1={dayjs().format('ddd, DD MMM')}
                               yAxisId="left"
                               fillOpacity={0.25}
                               fill="url(#stripes)"
+                              label={{
+                                angle: -90,
+                                fill: 'var(--mantine-color-bright)',
+                                value: 'Rest of this week',
+                                fontSize: 14
+                              }}
                             />
                           )}
                         </LineChart>
