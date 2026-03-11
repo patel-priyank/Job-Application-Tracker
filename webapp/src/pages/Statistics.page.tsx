@@ -374,7 +374,7 @@ const Statistics = () => {
 
                           {activeTab === 'daily' && (
                             <ReferenceArea
-                              x1={dayjs().add(1, 'day').format('ddd, DD MMM')}
+                              x1={dayjs().format('ddd, DD MMM')}
                               yAxisId="left"
                               fillOpacity={0.25}
                               fill="url(#stripes)"
