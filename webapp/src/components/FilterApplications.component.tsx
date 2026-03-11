@@ -117,23 +117,42 @@ const FilterApplications = ({
                 </Group>
 
                 <Grid>
-                  {Object.values(APPLICATION_STATUS).map((status, index) => (
-                    <Grid.Col span={{ base: 12, xs: 6 }} key={index}>
-                      <Checkbox
-                        color={status.color}
-                        label={status.label}
-                        checked={newStatusFilter.includes(status.label)}
-                        disabled={newStatusFilter.length === 1 && newStatusFilter.includes(status.label)}
-                        onChange={event => {
-                          if (event.currentTarget.checked) {
-                            setNewStatusFilter(prev => [...prev, status.label]);
-                          } else {
-                            setNewStatusFilter(prev => prev.filter(s => s !== status.label));
-                          }
-                        }}
-                      />
-                    </Grid.Col>
-                  ))}
+                  {Object.values(APPLICATION_STATUS).map((status, index) => {
+                    const isLastSelected = newStatusFilter.length === 1 && newStatusFilter.includes(status.label);
+
+                    return (
+                      <Grid.Col span={{ base: 12, xs: 6 }} key={index}>
+                        <Group
+                          component="label"
+                          gap="var(--mantine-spacing-sm)"
+                          style={{ cursor: isLastSelected ? 'not-allowed' : 'pointer' }}
+                          className="max-content-width"
+                        >
+                          <Checkbox
+                            color={status.color}
+                            checked={newStatusFilter.includes(status.label)}
+                            disabled={isLastSelected}
+                            onChange={event => {
+                              if (event.currentTarget.checked) {
+                                setNewStatusFilter(prev => [...prev, status.label]);
+                              } else {
+                                setNewStatusFilter(prev => prev.filter(s => s !== status.label));
+                              }
+                            }}
+                          />
+
+                          <Text
+                            size="sm"
+                            truncate
+                            flex={1}
+                            c={isLastSelected ? 'var(--mantine-color-disabled-color)' : undefined}
+                          >
+                            {status.label}
+                          </Text>
+                        </Group>
+                      </Grid.Col>
+                    );
+                  })}
                 </Grid>
               </Stack>
             </Accordion.Panel>
