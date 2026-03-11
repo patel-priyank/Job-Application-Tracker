@@ -334,13 +334,13 @@ const Applications = () => {
                 </Grid>
               )}
 
-              <Box hiddenFrom="sm">
-                <PaginationControls mt="md" setLoading={setLoading} />
-              </Box>
-
               <FloatingActionButton icon={IconFile} label="Create application" onClick={openCreateApplication} />
             </>
           )}
+
+          <Box hiddenFrom="sm">
+            <PaginationControls mt="md" setLoading={setLoading} />
+          </Box>
         </>
       )}
     </>
