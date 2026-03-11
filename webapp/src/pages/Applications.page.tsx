@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import {
   ActionIcon,
+  Box,
   Button,
   Grid,
   Group,
@@ -96,6 +97,49 @@ const Applications = () => {
     }
   };
 
+  const PaginationControls = ({ isEndOfList }: { isEndOfList: boolean }) => {
+    if (!user) {
+      return null;
+    }
+
+    return (
+      <Group justify="center">
+        <Pagination
+          mt={isEndOfList ? 'md' : undefined}
+          mb={isEndOfList ? undefined : 'md'}
+          gap={4}
+          radius="md"
+          total={totalPages}
+          value={page}
+          siblings={0}
+          className="monospace"
+          onChange={async pageVal => {
+            applicationDispatch({
+              type: 'SET_PAGE',
+              payload: pageVal
+            });
+
+            setLoading(true);
+
+            await fetchApplications(
+              user.token,
+              applicationDispatch,
+              statusFilter,
+              emailUsedFilter,
+              sort,
+              order,
+              pageSize,
+              pageVal,
+              searchQuery
+            );
+
+            setLoading(false);
+          }}
+        />
+      </Group>
+    );
+  };
+
   if (!user) {
     return null;
   }
@@ -177,7 +221,7 @@ const Applications = () => {
             }}
           />
 
-          <Group gap="sm" mb="lg">
+          <Group gap="sm" mb="md">
             <TextInput
               flex={1}
               placeholder="Company name or job title"
@@ -233,39 +277,7 @@ const Applications = () => {
             </Group>
           </Group>
 
-          <Group justify="center">
-            <Pagination
-              mb="lg"
-              gap={4}
-              radius="md"
-              total={totalPages}
-              value={page}
-              siblings={0}
-              className="monospace"
-              onChange={async pageVal => {
-                applicationDispatch({
-                  type: 'SET_PAGE',
-                  payload: pageVal
-                });
-
-                setLoading(true);
-
-                await fetchApplications(
-                  user.token,
-                  applicationDispatch,
-                  statusFilter,
-                  emailUsedFilter,
-                  sort,
-                  order,
-                  pageSize,
-                  pageVal,
-                  searchQuery
-                );
-
-                setLoading(false);
-              }}
-            />
-          </Group>
+          <PaginationControls isEndOfList={false} />
 
           {loading && (
             <Grid>
@@ -305,6 +317,10 @@ const Applications = () => {
                   ))}
                 </Grid>
               )}
+
+              <Box hiddenFrom="sm">
+                <PaginationControls isEndOfList={true} />
+              </Box>
 
               <FloatingActionButton icon={IconFile} label="Create application" onClick={openCreateApplication} />
             </>
