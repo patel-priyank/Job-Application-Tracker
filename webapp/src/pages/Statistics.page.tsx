@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import dayjs from 'dayjs';
+import { ReferenceArea } from 'recharts';
+
 import {
   Accordion,
   Avatar,
@@ -276,7 +279,7 @@ const Statistics = () => {
                                 <Text truncate>{status.label}</Text>
                               </Group>
 
-                              <Text size="xl" fw="500" className="monospace">
+                              <Text size="lg" fw="500" className="monospace">
                                 {count}
                               </Text>
                             </Group>
@@ -356,7 +359,28 @@ const Statistics = () => {
                           yAxisProps={{
                             allowDecimals: false
                           }}
-                        />
+                        >
+                          <defs>
+                            <pattern
+                              id="stripes"
+                              width="8"
+                              height="8"
+                              patternTransform="rotate(45)"
+                              patternUnits="userSpaceOnUse"
+                            >
+                              <rect width="4" height="8" fill="var(--mantine-color-dimmed)" />
+                            </pattern>
+                          </defs>
+
+                          {activeTab === 'daily' && (
+                            <ReferenceArea
+                              x1={dayjs().add(1, 'day').format('ddd, DD MMM')}
+                              yAxisId="left"
+                              fillOpacity={0.25}
+                              fill="url(#stripes)"
+                            />
+                          )}
+                        </LineChart>
                       </Tabs.Panel>
                     ))}
                   </Tabs>
