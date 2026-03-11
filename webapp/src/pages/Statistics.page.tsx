@@ -86,19 +86,19 @@ const Statistics = () => {
   const STATUS_ACTIVITY_TIME_PERIODS = [
     {
       value: 'daily',
-      label: 'Daily',
+      label: 'Daily Activity',
       subLabel: 'This week',
       data: statistics.dailyActivity
     },
     {
       value: 'weekly',
-      label: 'Weekly',
+      label: 'Weekly Activity',
       subLabel: 'Last 6 weeks',
       data: statistics.weeklyActivity
     },
     {
       value: 'monthly',
-      label: 'Monthly',
+      label: 'Monthly Activity',
       subLabel: 'Last 6 months',
       data: statistics.monthlyActivity
     }
@@ -319,7 +319,7 @@ const Statistics = () => {
                         data={STATUS_ACTIVITY_TIME_PERIODS.map(timePeriod => ({
                           value: timePeriod.value,
                           label: (
-                            <Box style={{ textAlign: 'start' }}>
+                            <Box px={4} style={{ textAlign: 'start' }}>
                               <Text size="sm">{timePeriod.label}</Text>
                               <Text size="xs" c="dimmed">
                                 {timePeriod.subLabel}
