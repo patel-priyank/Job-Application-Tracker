@@ -32,9 +32,14 @@ import SortApplications from '../components/SortApplications.component';
 import { APPLICATION_STATUS } from '../utils/constants';
 import { fetchApplications } from '../utils/functions';
 
-const Applications = () => {
+const PaginationControls = ({
+  setLoading,
+  ...props
+}: {
+  setLoading: (loading: boolean) => void;
+  [key: string]: any;
+}) => {
   const {
-    applications,
     emailUsedFilter,
     order,
     page,
@@ -43,6 +48,60 @@ const Applications = () => {
     sort,
     statusFilter,
     totalPages,
+    dispatch: applicationDispatch
+  } = useApplicationContext();
+  const { user } = useAuthContext();
+
+  if (!user) {
+    return null;
+  }
+
+  return (
+    <Group justify="center">
+      <Pagination
+        {...props}
+        gap={4}
+        radius="md"
+        total={totalPages}
+        value={page}
+        siblings={0}
+        className="monospace"
+        onChange={async pageVal => {
+          applicationDispatch({
+            type: 'SET_PAGE',
+            payload: pageVal
+          });
+
+          setLoading(true);
+
+          await fetchApplications(
+            user.token,
+            applicationDispatch,
+            statusFilter,
+            emailUsedFilter,
+            sort,
+            order,
+            pageSize,
+            pageVal,
+            searchQuery
+          );
+
+          setLoading(false);
+        }}
+      />
+    </Group>
+  );
+};
+
+const Applications = () => {
+  const {
+    applications,
+    emailUsedFilter,
+    order,
+    pageSize,
+    searchQuery,
+    sort,
+    statusFilter,
     dispatch: applicationDispatch
   } = useApplicationContext();
   const { user } = useAuthContext();
@@ -95,49 +154,6 @@ const Applications = () => {
     } else {
       debouncedSearch(query.trim());
     }
-  };
-
-  const PaginationControls = ({ isEndOfList }: { isEndOfList: boolean }) => {
-    if (!user) {
-      return null;
-    }
-
-    return (
-      <Group justify="center">
-        <Pagination
-          mt={isEndOfList ? 'md' : undefined}
-          mb={isEndOfList ? undefined : 'md'}
-          gap={4}
-          radius="md"
-          total={totalPages}
-          value={page}
-          siblings={0}
-          className="monospace"
-          onChange={async pageVal => {
-            applicationDispatch({
-              type: 'SET_PAGE',
-              payload: pageVal
-            });
-
-            setLoading(true);
-
-            await fetchApplications(
-              user.token,
-              applicationDispatch,
-              statusFilter,
-              emailUsedFilter,
-              sort,
-              order,
-              pageSize,
-              pageVal,
-              searchQuery
-            );
-
-            setLoading(false);
-          }}
-        />
-      </Group>
-    );
   };
 
   if (!user) {
@@ -277,7 +293,7 @@ const Applications = () => {
             </Group>
           </Group>
 
-          <PaginationControls isEndOfList={false} />
+          <PaginationControls mb="md" setLoading={setLoading} />
 
           {loading && (
             <Grid>
@@ -319,7 +335,7 @@ const Applications = () => {
               )}
 
               <Box hiddenFrom="sm">
-                <PaginationControls isEndOfList={true} />
+                <PaginationControls mt="md" setLoading={setLoading} />
               </Box>
 
               <FloatingActionButton icon={IconFile} label="Create application" onClick={openCreateApplication} />
