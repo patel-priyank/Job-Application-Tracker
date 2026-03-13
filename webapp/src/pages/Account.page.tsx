@@ -46,7 +46,7 @@ const Account = () => {
 
       <Grid>
         <Grid.Col span={{ base: 12, sm: 6, lg: 4, xl: 3 }}>
-          <Card p="md" shadow="xs" radius="md" withBorder h="100%">
+          <Card shadow="xs" radius="md" withBorder h="100%">
             <Stack>
               <Group justify="space-between">
                 <Text>Name</Text>
@@ -64,7 +64,7 @@ const Account = () => {
         </Grid.Col>
 
         <Grid.Col span={{ base: 12, sm: 6, lg: 4, xl: 3 }}>
-          <Card p="md" shadow="xs" radius="md" withBorder h="100%">
+          <Card shadow="xs" radius="md" withBorder h="100%">
             <Stack>
               <Group justify="space-between">
                 <Text>Email</Text>
@@ -82,7 +82,7 @@ const Account = () => {
         </Grid.Col>
 
         <Grid.Col span={{ base: 12, sm: 6, lg: 4, xl: 3 }}>
-          <Card p="md" shadow="xs" radius="md" withBorder h="100%">
+          <Card shadow="xs" radius="md" withBorder h="100%">
             <Stack>
               <Group justify="space-between">
                 <Text>Password</Text>
@@ -98,7 +98,7 @@ const Account = () => {
         </Grid.Col>
 
         <Grid.Col span={{ base: 12, sm: 6, lg: 4, xl: 3 }}>
-          <Card p="md" shadow="xs" radius="md" withBorder h="100%">
+          <Card shadow="xs" radius="md" withBorder h="100%">
             <Stack>
               <Group justify="space-between">
                 <Text>Suggested Emails</Text>
@@ -136,7 +136,7 @@ const Account = () => {
           <Accordion.Panel>
             <Grid>
               <Grid.Col span={{ base: 12, sm: 6, lg: 4, xl: 3 }}>
-                <Card p="md" shadow="xs" radius="md" withBorder h="100%">
+                <Card shadow="xs" radius="md" withBorder h="100%">
                   <Stack align="flex-start">
                     <Text>Job Applications</Text>
 
@@ -158,7 +158,7 @@ const Account = () => {
               </Grid.Col>
 
               <Grid.Col span={{ base: 12, sm: 6, lg: 4, xl: 3 }}>
-                <Card p="md" shadow="xs" radius="md" withBorder h="100%">
+                <Card shadow="xs" radius="md" withBorder h="100%">
                   <Stack align="flex-start">
                     <Text>Account</Text>
 

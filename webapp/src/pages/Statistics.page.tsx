@@ -267,7 +267,7 @@ const Statistics = () => {
 
                     return (
                       <Grid.Col span={{ base: 12, sm: 6, lg: 4, xl: 3 }} key={status.label}>
-                        <Card p="md" shadow="xs" radius="md" withBorder h="100%">
+                        <Card shadow="xs" radius="md" withBorder h="100%">
                           <Stack>
                             <Group justify="space-between" wrap="nowrap">
                               <Group gap="xs" wrap="nowrap" className="max-content-width">
@@ -301,7 +301,7 @@ const Statistics = () => {
 
           <Grid>
             <Grid.Col span={12}>
-              <Card p="md" shadow="xs" radius="md" withBorder h="100%">
+              <Card shadow="xs" radius="md" withBorder h="100%">
                 <Stack>
                   <Box>
                     <Text>Status Activity</Text>
