@@ -7,12 +7,18 @@ import { jwtDecode } from 'jwt-decode';
 import {
   ActionIcon,
   Affix,
+  Anchor,
   AppShell,
+  Avatar,
   Button,
+  Card,
   Container,
   createTheme,
+  Drawer,
   Flex,
+  Grid,
   Group,
+  Image,
   Loader,
   MantineProvider,
   Modal,
@@ -33,6 +39,7 @@ import {
   IconCircleArrowUp,
   IconFiles,
   IconMoon,
+  IconSettings,
   IconSun,
   IconUser
 } from '@tabler/icons-react';
@@ -161,6 +168,7 @@ const AppContent = () => {
   const maxSmBreakpoint = isMaxSm();
 
   const [signedOutOpened, { open: openSignedOut, close: closeSignedOut }] = useDisclosure(false);
+  const [settingsDrawerOpened, { open: openSettingsDrawer, close: closeSettingsDrawer }] = useDisclosure(false);
 
   const [signedOutMessage, setSignedOutMessage] = useState('');
 
@@ -301,26 +309,91 @@ const AppContent = () => {
               </Group>
             )}
 
-            <ActionIcon
-              variant="default"
-              component={Link}
-              to="https://github.com/patel-priyank/Job-Application-Tracker"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <IconBrandGithub size={16} stroke={1.5} />
+            <ActionIcon variant="default" onClick={openSettingsDrawer}>
+              <IconSettings size={16} stroke={1.5} />
             </ActionIcon>
 
-            <ActionIcon
-              variant="default"
-              onClick={() => setColorScheme(computedColorScheme === 'light' ? 'dark' : 'light')}
+            <Drawer
+              position={maxSmBreakpoint ? 'bottom' : 'right'}
+              opened={settingsDrawerOpened}
+              onClose={closeSettingsDrawer}
+              title="Settings"
+              overlayProps={{ blur: 2 }}
             >
-              {computedColorScheme === 'light' ? (
-                <IconMoon size={16} stroke={1.5} />
-              ) : (
-                <IconSun size={16} stroke={1.5} />
-              )}
-            </ActionIcon>
+              <Grid mt={4} mb="xl">
+                <Grid.Col span={6}>
+                  <Card
+                    shadow="xs"
+                    radius="md"
+                    withBorder
+                    h="100%"
+                    className="outline"
+                    component="button"
+                    w="100%"
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => setColorScheme(computedColorScheme === 'light' ? 'dark' : 'light')}
+                  >
+                    <Stack align="center">
+                      <Avatar color="gray" radius="xl" size="lg">
+                        {computedColorScheme === 'light' ? (
+                          <IconMoon size={28} stroke={1.5} />
+                        ) : (
+                          <IconSun size={28} stroke={1.5} />
+                        )}
+                      </Avatar>
+
+                      <Text>{computedColorScheme === 'light' ? 'Dark mode' : 'Light mode'}</Text>
+                    </Stack>
+                  </Card>
+                </Grid.Col>
+
+                <Grid.Col span={6}>
+                  <Card
+                    shadow="xs"
+                    radius="md"
+                    withBorder
+                    h="100%"
+                    className="outline"
+                    component={Link}
+                    to="https://github.com/patel-priyank/Job-Application-Tracker"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Stack align="center">
+                      <Avatar color="gray" radius="xl" size="lg">
+                        <IconBrandGithub size={28} stroke={1.5} />
+                      </Avatar>
+
+                      <Text>Source code</Text>
+                    </Stack>
+                  </Card>
+                </Grid.Col>
+
+                <Grid.Col span={12} mt="xl">
+                  <Stack align="center" gap="xs">
+                    <Image src="/favicon.svg" alt="" h={64} w={64} fit="contain" />
+
+                    <Text fw="bold" ta="center">
+                      Job Application Tracker
+                    </Text>
+
+                    <Text size="sm" ta="center" c="dimmed" style={{ textWrap: 'balance' }}>
+                      All your job applications, synced across devices. Track your progress and view your statistics all
+                      in one place.
+                    </Text>
+                  </Stack>
+                </Grid.Col>
+
+                <Grid.Col span={12} mt="xl">
+                  <Text size="xs" ta="center" c="dimmed">
+                    Made with ❤️ by{' '}
+                    <Anchor href="https://priyankpatel.me/" target="_blank" rel="noopener noreferrer" c="blue">
+                      Priyank
+                    </Anchor>
+                  </Text>
+                </Grid.Col>
+              </Grid>
+            </Drawer>
           </Group>
         </Group>
       </AppShell.Header>
