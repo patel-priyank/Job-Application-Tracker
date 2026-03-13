@@ -1,0 +1,12 @@
+:global(body) {
+  .inner {
+    max-width: 48em;
+    inset-inline: 0;
+    margin-inline: auto;
+  }
+
+  .content {
+    border-top-left-radius: var(--mantine-radius-md);
+    border-top-right-radius: var(--mantine-radius-md);
+  }
+}

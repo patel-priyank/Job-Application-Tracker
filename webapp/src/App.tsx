@@ -70,6 +70,7 @@ import '@mantine/notifications/styles.css';
 
 import './App.css';
 
+import drawerClasses from './styles/Drawer.module.css';
 import navLinkClasses from './styles/NavLink.module.css';
 
 const theme = createTheme({
@@ -314,11 +315,12 @@ const AppContent = () => {
             </ActionIcon>
 
             <Drawer
-              position={maxSmBreakpoint ? 'bottom' : 'right'}
+              position="bottom"
               opened={settingsDrawerOpened}
               onClose={closeSettingsDrawer}
               title="Settings"
               overlayProps={{ blur: 2 }}
+              classNames={drawerClasses}
             >
               <Grid mt={4} mb="xl">
                 <Grid.Col span={6}>
