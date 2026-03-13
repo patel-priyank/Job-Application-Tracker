@@ -64,7 +64,7 @@ const Application = ({
 
       <EditApplication opened={editApplicationOpened} onClose={closeEditApplication} application={application} />
 
-      <Card padding="md" shadow="xs" radius="md" withBorder h="100%">
+      <Card p="md" shadow="xs" radius="md" withBorder h="100%">
         <Stack>
           <Group justify="space-between" align="flex-start">
             <Skeleton radius="sm" visible={loading} w={48}>
