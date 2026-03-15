@@ -224,6 +224,7 @@ const AppContent = () => {
   useWindowEvent('blur', checkSessionValidity);
 
   const { setColorScheme } = useMantineColorScheme();
+
   const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
 
   useEffect(() => {
@@ -332,7 +333,23 @@ const AppContent = () => {
                     component="button"
                     w="100%"
                     style={{ cursor: 'pointer' }}
-                    onClick={() => setColorScheme(computedColorScheme === 'dark' ? 'light' : 'dark')}
+                    onClick={() => {
+                      const nextColorScheme = computedColorScheme === 'dark' ? 'light' : 'dark';
+
+                      if ('startViewTransition' in document) {
+                        document.documentElement.classList.add('theme-switch');
+
+                        const transition = (document as any).startViewTransition(() => {
+                          setColorScheme(nextColorScheme);
+                        });
+
+                        transition.finished.finally(() => {
+                          document.documentElement.classList.remove('theme-switch');
+                        });
+                      } else {
+                        setColorScheme(nextColorScheme);
+                      }
+                    }}
                   >
                     <Group>
                       <Avatar color="gray" radius="xl" size="md">
