@@ -319,7 +319,7 @@ const Statistics = () => {
                         data={STATUS_ACTIVITY_TIME_PERIODS.map(timePeriod => ({
                           value: timePeriod.value,
                           label: (
-                            <Box px={4} style={{ textAlign: 'start' }}>
+                            <Box style={{ textAlign: 'start' }}>
                               <Text size="sm">{timePeriod.label}</Text>
                               <Text size="xs" c="dimmed">
                                 {timePeriod.subLabel}

@@ -14,9 +14,9 @@ import {
   Card,
   Container,
   createTheme,
+  Divider,
   Drawer,
   Flex,
-  Grid,
   Group,
   Image,
   Loader,
@@ -24,6 +24,7 @@ import {
   Modal,
   NavLink,
   Stack,
+  Switch,
   Text,
   Transition,
   useComputedColorScheme,
@@ -37,10 +38,10 @@ import {
   IconBrandGithub,
   IconChartBar,
   IconCircleArrowUp,
+  IconExternalLink,
   IconFiles,
   IconMoon,
   IconSettings,
-  IconSun,
   IconUser
 } from '@tabler/icons-react';
 
@@ -319,80 +320,111 @@ const AppContent = () => {
               onClose={closeSettingsDrawer}
               title="Settings"
               overlayProps={{ blur: 2 }}
+              zIndex={450}
             >
-              <Grid mt={4} mb="xl">
-                <Grid.Col span={6}>
+              <Stack gap="xl" mt={4} mb="xl">
+                <Stack>
                   <Card
                     shadow="xs"
                     radius="md"
                     withBorder
-                    h="100%"
                     className="outline"
                     component="button"
                     w="100%"
                     style={{ cursor: 'pointer' }}
-                    onClick={() => setColorScheme(computedColorScheme === 'light' ? 'dark' : 'light')}
+                    onClick={() => setColorScheme(computedColorScheme === 'dark' ? 'light' : 'dark')}
                   >
-                    <Stack align="center">
-                      <Avatar color="gray" radius="xl" size="lg">
-                        {computedColorScheme === 'light' ? (
-                          <IconMoon size={28} stroke={1.5} />
-                        ) : (
-                          <IconSun size={28} stroke={1.5} />
-                        )}
+                    <Group>
+                      <Avatar color="gray" radius="xl" size="md">
+                        <IconMoon size={20} stroke={1.5} />
                       </Avatar>
 
-                      <Text>{computedColorScheme === 'light' ? 'Dark mode' : 'Light mode'}</Text>
-                    </Stack>
-                  </Card>
-                </Grid.Col>
+                      <Text flex={1} ta="start" lineClamp={1}>
+                        Dark mode
+                      </Text>
 
-                <Grid.Col span={6}>
+                      <Switch
+                        size="md"
+                        checked={computedColorScheme === 'dark'}
+                        tabIndex={-1}
+                        style={{ pointerEvents: 'none' }}
+                      />
+                    </Group>
+                  </Card>
+
                   <Card
                     shadow="xs"
                     radius="md"
                     withBorder
-                    h="100%"
                     className="outline"
                     component={Link}
                     to="https://github.com/patel-priyank/Job-Application-Tracker"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <Stack align="center">
-                      <Avatar color="gray" radius="xl" size="lg">
-                        <IconBrandGithub size={28} stroke={1.5} />
+                    <Group>
+                      <Avatar color="gray" radius="xl" size="md">
+                        <IconBrandGithub size={20} stroke={1.5} />
                       </Avatar>
 
-                      <Text>Source code</Text>
-                    </Stack>
+                      <Text flex={1} ta="start" lineClamp={1}>
+                        Source code
+                      </Text>
+
+                      <Flex c="dimmed">
+                        <IconExternalLink size={20} stroke={1.5} />
+                      </Flex>
+                    </Group>
                   </Card>
-                </Grid.Col>
+                </Stack>
 
-                <Grid.Col span={12} mt="xl">
-                  <Stack align="center" gap="xs">
-                    <Image src="/favicon.svg" alt="" h={64} w={64} fit="contain" />
-
-                    <Text fw="bold" ta="center">
-                      Job Application Tracker
-                    </Text>
-
-                    <Text size="sm" ta="center" c="dimmed" style={{ textWrap: 'balance' }}>
-                      All your job applications, synced across devices. Track your progress and view your statistics all
-                      in one place.
-                    </Text>
-                  </Stack>
-                </Grid.Col>
-
-                <Grid.Col span={12} mt="xl">
-                  <Text size="xs" ta="center" c="dimmed">
-                    Made with ❤️ by{' '}
-                    <Anchor href="https://priyankpatel.me/" target="_blank" rel="noopener noreferrer" c="blue">
-                      Priyank
-                    </Anchor>
+                <Stack align="center" mt="md">
+                  <Text ta="center" c="dimmed" style={{ textWrap: 'balance' }}>
+                    If this tracker took the chaos out of your job search, buy me a coffee — it keeps the project going
+                    and helps me build more tools like it!
                   </Text>
-                </Grid.Col>
-              </Grid>
+
+                  <Flex>
+                    <a
+                      href="https://www.buymeacoffee.com/priyankp"
+                      target="_blank"
+                      className="outline"
+                      style={{
+                        borderRadius: '7px'
+                      }}
+                    >
+                      <Image
+                        src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png"
+                        alt="Buy Me A Coffee"
+                        w={160}
+                        fit="contain"
+                      />
+                    </a>
+                  </Flex>
+                </Stack>
+
+                <Divider my="md" />
+
+                <Stack align="center" gap="xs">
+                  <Image src="/favicon.svg" alt="" h={64} w={64} fit="contain" />
+
+                  <Text fw="bold" ta="center">
+                    Job Application Tracker
+                  </Text>
+
+                  <Text size="sm" ta="center" c="dimmed" style={{ textWrap: 'balance' }}>
+                    All your job applications, synced across devices. Track your progress and view your statistics all
+                    in one place.
+                  </Text>
+                </Stack>
+
+                <Text size="xs" ta="center" c="dimmed">
+                  Made with ❤️ by{' '}
+                  <Anchor href="https://priyankpatel.me/" target="_blank" rel="noopener noreferrer" c="blue">
+                    Priyank
+                  </Anchor>
+                </Text>
+              </Stack>
             </Drawer>
           </Group>
         </Group>
