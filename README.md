@@ -125,7 +125,6 @@ To build the project for production:
 ```bash
 cd api
 npm run build
-# To start the production server:
 npm start
 ```
 
@@ -133,6 +132,5 @@ npm start
 
 ```bash
 cd webapp
-npm run build
-# The build output will be in the `dist` directory.
+npm run build # build output in `dist` directory
 ```
