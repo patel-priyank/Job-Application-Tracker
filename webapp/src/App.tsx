@@ -12,6 +12,7 @@ import {
   Avatar,
   Button,
   Card,
+  Center,
   Container,
   createTheme,
   Divider,
@@ -23,11 +24,10 @@ import {
   MantineProvider,
   Modal,
   NavLink,
+  SegmentedControl,
   Stack,
-  Switch,
   Text,
   Transition,
-  useComputedColorScheme,
   useMantineColorScheme
 } from '@mantine/core';
 
@@ -38,10 +38,12 @@ import {
   IconBrandGithub,
   IconChartBar,
   IconCircleArrowUp,
-  IconExternalLink,
+  IconDevices,
   IconFiles,
   IconMoon,
+  IconPaint,
   IconSettings,
+  IconSun,
   IconUser
 } from '@tabler/icons-react';
 
@@ -223,9 +225,7 @@ const AppContent = () => {
 
   useWindowEvent('blur', checkSessionValidity);
 
-  const { setColorScheme } = useMantineColorScheme();
-
-  const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
+  const { colorScheme, setColorScheme } = useMantineColorScheme();
 
   useEffect(() => {
     setTimeout(async () => {
@@ -323,79 +323,80 @@ const AppContent = () => {
               overlayProps={{ blur: 2 }}
               zIndex={450}
             >
-              <Stack gap="xl" mt={4} mb="xl">
-                <Stack>
-                  <Card
-                    shadow="xs"
-                    radius="md"
-                    withBorder
-                    className="outline"
-                    component="button"
-                    w="100%"
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => {
-                      const nextColorScheme = computedColorScheme === 'dark' ? 'light' : 'dark';
-
-                      if ('startViewTransition' in document) {
-                        document.documentElement.classList.add('theme-switch');
-
-                        const transition = (document as any).startViewTransition(() => {
-                          setColorScheme(nextColorScheme);
-                        });
-
-                        transition.finished.finally(() => {
-                          document.documentElement.classList.remove('theme-switch');
-                        });
-                      } else {
-                        setColorScheme(nextColorScheme);
-                      }
-                    }}
-                  >
+              <Stack gap="xl" mb="xl">
+                <Card shadow="xs" radius="md" withBorder>
+                  <Stack gap="lg">
                     <Group>
                       <Avatar color="gray" radius="xl" size="md">
-                        <IconMoon size={20} stroke={1.5} />
+                        <IconPaint size={20} stroke={1.5} />
                       </Avatar>
 
-                      <Text flex={1} ta="start" lineClamp={1}>
-                        Dark mode
+                      <Text flex={1} truncate>
+                        Theme
                       </Text>
-
-                      <Switch
-                        size="md"
-                        checked={computedColorScheme === 'dark'}
-                        tabIndex={-1}
-                        style={{ pointerEvents: 'none' }}
-                      />
                     </Group>
-                  </Card>
 
-                  <Card
-                    shadow="xs"
-                    radius="md"
-                    withBorder
-                    className="outline"
-                    component={Link}
-                    to="https://github.com/patel-priyank/Job-Application-Tracker"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <Group>
-                      <Avatar color="gray" radius="xl" size="md">
-                        <IconBrandGithub size={20} stroke={1.5} />
-                      </Avatar>
+                    <SegmentedControl
+                      size="xl"
+                      value={colorScheme}
+                      onChange={(themeValue: any) => {
+                        if ('startViewTransition' in document) {
+                          document.documentElement.classList.add('theme-switch');
 
-                      <Text flex={1} ta="start" lineClamp={1}>
-                        Source code
-                      </Text>
+                          const transition = (document as any).startViewTransition(() => {
+                            setColorScheme(themeValue);
+                          });
 
-                      <Flex c="dimmed">
-                        <IconExternalLink size={20} stroke={1.5} />
-                      </Flex>
-                    </Group>
-                  </Card>
-                </Stack>
+                          transition.finished.finally(() => {
+                            document.documentElement.classList.remove('theme-switch');
+                          });
+                        } else {
+                          setColorScheme(themeValue);
+                        }
+                      }}
+                      data={[
+                        {
+                          value: 'light',
+                          label: (
+                            <Center>
+                              <IconSun size={20} stroke={1.5} />
+                            </Center>
+                          )
+                        },
+                        {
+                          value: 'auto',
+                          label: (
+                            <Center>
+                              <IconDevices size={20} stroke={1.5} />
+                            </Center>
+                          )
+                        },
+                        {
+                          value: 'dark',
+                          label: (
+                            <Center>
+                              <IconMoon size={20} stroke={1.5} />
+                            </Center>
+                          )
+                        }
+                      ]}
+                    />
+                  </Stack>
+                </Card>
 
-                <Stack align="center" mt="md">
+                <Button
+                  variant="default"
+                  leftSection={<IconBrandGithub size={20} stroke={1.5} />}
+                  component="a"
+                  href="https://github.com/patel-priyank/Job-Application-Tracker"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ alignSelf: 'center' }}
+                >
+                  Source code
+                </Button>
+
+                <Stack align="center">
                   <Text ta="center" c="dimmed" style={{ textWrap: 'balance' }}>
                     If this tracker took the chaos out of your job search, buy me a coffee — it keeps the project going
                     and helps me build more tools like it!
@@ -529,7 +530,7 @@ const App = () => {
     <>
       <Analytics />
 
-      <MantineProvider theme={theme}>
+      <MantineProvider theme={theme} defaultColorScheme="auto">
         <AuthContextProvider>
           <ApplicationContextProvider>
             <BrowserRouter>
