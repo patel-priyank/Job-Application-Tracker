@@ -1,6 +1,18 @@
 import { useRef } from 'react';
 
-import { ActionIcon, Badge, Box, Card, Group, Highlight, Menu, Skeleton, Stack, Text } from '@mantine/core';
+import {
+  ActionIcon,
+  Badge,
+  Box,
+  Card,
+  ColorSwatch,
+  Group,
+  Highlight,
+  Menu,
+  Skeleton,
+  Stack,
+  Text
+} from '@mantine/core';
 
 import { useDisclosure } from '@mantine/hooks';
 
@@ -169,11 +181,15 @@ const Application = ({
 
           <Skeleton radius="xs" visible={loading} w="75%">
             <Group gap="sm">
-              <Box
-                w={8}
-                h={32}
-                bdrs="xs"
-                bg={Object.values(APPLICATION_STATUS).find(status => status.label === application.status)?.color}
+              <ColorSwatch
+                color={(() => {
+                  const color = Object.values(APPLICATION_STATUS).find(
+                    status => status.label === application.status
+                  )?.color;
+
+                  return `var(--mantine-color-${color}-filled)`;
+                })()}
+                size="var(--mantine-font-size-lg)"
               />
 
               <Box>

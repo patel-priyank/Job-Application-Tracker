@@ -273,7 +273,7 @@ const Statistics = () => {
                               <Group gap="xs" wrap="nowrap" className="max-content-width">
                                 <ColorSwatch
                                   color={`var(--mantine-color-${status.color}-filled)`}
-                                  size="var(--mantine-font-size-md)"
+                                  size="var(--mantine-font-size-lg)"
                                 />
 
                                 <Text truncate>{status.label}</Text>
