@@ -18,7 +18,7 @@ const EditEmail = ({ opened, onClose }: { opened: boolean; onClose: () => void }
     if (opened) {
       form.reset();
       form.setValues({
-        email: user?.email || ''
+        email: user?.email ?? ''
       });
     }
   }, [opened]);

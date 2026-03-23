@@ -11,7 +11,7 @@ const requireAuth = async (req: Request, res: Response, next: NextFunction) => {
     return res.status(401).json({ error: 'Authorization token missing or invalid.' });
   }
 
-  const jwtPayload = jwt.verify(authorization.split(' ')[1], process.env.JWT_SECRET || '');
+  const jwtPayload = jwt.verify(authorization.split(' ')[1], process.env.JWT_SECRET ?? '');
 
   if (typeof jwtPayload === 'string' || !('_id' in jwtPayload)) {
     return res.status(403).json({ error: 'Invalid or expired authorization token.' });

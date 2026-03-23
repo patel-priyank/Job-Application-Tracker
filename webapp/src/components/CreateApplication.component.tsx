@@ -46,7 +46,7 @@ const CreateApplication = ({ opened, onClose }: { opened: boolean; onClose: () =
       jobTitle: '',
       emailUsed: '',
       trackingLink: '',
-      status: Object.values(APPLICATION_STATUS).find(status => status.default)?.label || '',
+      status: Object.values(APPLICATION_STATUS).find(status => status.default)?.label ?? '',
       date: new Date()
     },
     validate: {
@@ -198,7 +198,7 @@ const CreateApplication = ({ opened, onClose }: { opened: boolean; onClose: () =
             placeholder={user?.email}
             key={form.key('emailUsed')}
             {...form.getInputProps('emailUsed')}
-            data={getSortedSuggestedEmails(user?.suggestedEmails || [], user?.email || '')}
+            data={getSortedSuggestedEmails(user?.suggestedEmails ?? [], user?.email ?? '')}
             comboboxProps={{ shadow: 'xl', offset: 0 }}
           />
 

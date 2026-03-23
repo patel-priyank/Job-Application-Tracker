@@ -17,7 +17,7 @@ const EditName = ({ opened, onClose }: { opened: boolean; onClose: () => void })
     if (opened) {
       form.reset();
       form.setValues({
-        name: user?.name || ''
+        name: user?.name ?? ''
       });
     }
   }, [opened]);

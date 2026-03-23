@@ -46,7 +46,7 @@ const CreateApplicationStatus = ({
 
   const form = useForm({
     initialValues: {
-      status: Object.values(APPLICATION_STATUS).find(status => status.default)?.label || '',
+      status: Object.values(APPLICATION_STATUS).find(status => status.default)?.label ?? '',
       date: new Date()
     },
     validate: {

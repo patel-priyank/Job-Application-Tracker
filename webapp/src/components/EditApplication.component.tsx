@@ -39,10 +39,10 @@ const EditApplication = ({
     if (opened) {
       form.reset();
       form.setValues({
-        companyName: application?.companyName || '',
-        jobTitle: application?.jobTitle || '',
-        emailUsed: application?.emailUsed || '',
-        trackingLink: application?.trackingLink || ''
+        companyName: application?.companyName ?? '',
+        jobTitle: application?.jobTitle ?? '',
+        emailUsed: application?.emailUsed ?? '',
+        trackingLink: application?.trackingLink ?? ''
       });
     }
   }, [opened]);
@@ -187,7 +187,7 @@ const EditApplication = ({
             placeholder={user?.email}
             key={form.key('emailUsed')}
             {...form.getInputProps('emailUsed')}
-            data={getSortedSuggestedEmails(user?.suggestedEmails || [], user?.email || '')}
+            data={getSortedSuggestedEmails(user?.suggestedEmails ?? [], user?.email ?? '')}
             comboboxProps={{ shadow: 'xl', offset: 0 }}
           />
 
