@@ -1,6 +1,6 @@
 interface OTPEntry {
   otp: string;
-  name: string;
+  name?: string;
   expiresAt: number;
 }
 
@@ -9,7 +9,7 @@ const timeout = 15 * 60 * 1000; // 15 minutes
 class OTPCache {
   private cache: Map<string, OTPEntry> = new Map();
 
-  set(email: string, otp: string, name: string): void {
+  set(email: string, otp: string, name?: string): void {
     const expiresAt = Date.now() + timeout;
 
     this.cache.set(email.toLowerCase(), { otp, name, expiresAt });

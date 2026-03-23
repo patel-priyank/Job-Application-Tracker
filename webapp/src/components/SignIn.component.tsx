@@ -1,13 +1,25 @@
 import { useEffect, useState } from 'react';
 
-import { Button, Group, Modal, PasswordInput, Stack, TextInput } from '@mantine/core';
+import {
+  Button,
+  Group,
+  Input,
+  Modal,
+  PinInput,
+  RingProgress,
+  Stack,
+  Text,
+  TextInput,
+  UnstyledButton,
+  useModalsStack
+} from '@mantine/core';
 
 import { useForm } from '@mantine/form';
 
 import { useApplicationContext } from '../hooks/useApplicationContext';
 import { useAuthContext } from '../hooks/useAuthContext';
 
-import { APPLICATION_STATUS, EMAIL_REGEX } from '../utils/constants';
+import { APPLICATION_STATUS, EMAIL_REGEX, RESEND_COUNTDOWN } from '../utils/constants';
 import { fetchApplications, showNotification } from '../utils/functions';
 
 const SignIn = ({ opened, onClose }: { opened: boolean; onClose: () => void }) => {
@@ -15,17 +27,36 @@ const SignIn = ({ opened, onClose }: { opened: boolean; onClose: () => void }) =
   const { dispatch: authDispatch } = useAuthContext();
 
   const [loading, setLoading] = useState(false);
+  const [userEmail, setUserEmail] = useState('');
+  const [canResend, setCanResend] = useState(false);
+  const [resendCountdown, setResendCountdown] = useState(RESEND_COUNTDOWN);
+  const [sending, setSending] = useState(false);
 
   useEffect(() => {
     if (opened) {
       form.reset();
+      verificationForm.reset();
+      setUserEmail('');
+      setCanResend(false);
+      setResendCountdown(RESEND_COUNTDOWN);
     }
   }, [opened]);
 
+  useEffect(() => {
+    if (!canResend && resendCountdown > 0) {
+      const timer = setTimeout(() => {
+        setResendCountdown(prev => prev - 1);
+      }, 1000);
+
+      return () => clearTimeout(timer);
+    } else if (resendCountdown === 0) {
+      setCanResend(true);
+    }
+  }, [canResend, resendCountdown]);
+
   const form = useForm({
     initialValues: {
-      email: '',
-      password: ''
+      email: ''
     },
     validate: {
       email: value => {
@@ -38,10 +69,18 @@ const SignIn = ({ opened, onClose }: { opened: boolean; onClose: () => void }) =
         }
 
         return null;
-      },
-      password: value => {
-        if (value.length === 0) {
-          return 'Password is required.';
+      }
+    }
+  });
+
+  const verificationForm = useForm({
+    initialValues: {
+      verificationCode: ''
+    },
+    validate: {
+      verificationCode: value => {
+        if (value.length !== 6) {
+          return 'Verification code must be 6 digits.';
         }
 
         return null;
@@ -49,15 +88,90 @@ const SignIn = ({ opened, onClose }: { opened: boolean; onClose: () => void }) =
     }
   });
 
-  const handleSubmit = async (values: typeof form.values) => {
-    setLoading(true);
+  const handleClose = () => {
+    modalStack.closeAll();
+    onClose();
+  };
 
-    const response = await fetch('/api/users/signin', {
+  const handleSendOTP = async (values: typeof form.values) => {
+    if (userEmail !== values.email) {
+      setLoading(true);
+
+      const response = await fetch('/api/users/signin/send-otp', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(values)
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        showNotification('Something went wrong', data.error, true);
+
+        setLoading(false);
+
+        return;
+      }
+
+      setCanResend(false);
+
+      setResendCountdown(RESEND_COUNTDOWN);
+
+      setLoading(false);
+    }
+
+    setUserEmail(values.email);
+
+    verificationForm.reset();
+
+    modalStack.open('account-verification');
+  };
+
+  const handleResendOTP = async () => {
+    if (!canResend) {
+      return;
+    }
+
+    setSending(true);
+
+    const response = await fetch('/api/users/signin/send-otp', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(values)
+      body: JSON.stringify(form.values)
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      showNotification('Something went wrong', data.error, true);
+
+      setSending(false);
+
+      return;
+    }
+
+    showNotification('Verification code resent', 'A new verification code has been sent to your email.', false);
+
+    setCanResend(false);
+
+    setResendCountdown(RESEND_COUNTDOWN);
+
+    setSending(false);
+  };
+
+  const handleVerifyOTP = async (values: typeof verificationForm.values) => {
+    setLoading(true);
+
+    const response = await fetch('/api/users/signin/verify-otp', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ email: userEmail, ...values })
     });
 
     const data = await response.json();
@@ -104,42 +218,117 @@ const SignIn = ({ opened, onClose }: { opened: boolean; onClose: () => void }) =
 
     setLoading(false);
 
-    onClose();
+    handleClose();
   };
 
+  const modalStack = useModalsStack(['account-details', 'account-verification']);
+
   return (
-    <Modal opened={opened} onClose={onClose} title="Sign In" overlayProps={{ blur: 2 }} centered>
-      <form onSubmit={form.onSubmit(values => handleSubmit(values))}>
-        <Stack gap="sm">
-          <TextInput
-            data-autofocus
-            label="Email"
-            withAsterisk
-            placeholder="john.doe@example.com"
-            key={form.key('email')}
-            {...form.getInputProps('email')}
-          />
+    <Modal.Stack>
+      <Modal
+        {...modalStack.register('account-details')}
+        opened={opened}
+        onClose={handleClose}
+        title="Sign In"
+        overlayProps={{ blur: 2 }}
+        centered
+      >
+        <form onSubmit={form.onSubmit(values => handleSendOTP(values))}>
+          <Text c="dimmed" mb="md">
+            Enter your email to sign in. We will send a verification code to your email to confirm it's you.
+          </Text>
 
-          <PasswordInput
-            label="Password"
-            withAsterisk
-            placeholder="SecureP@ssw0rd"
-            key={form.key('password')}
-            {...form.getInputProps('password')}
-          />
+          <Stack gap="sm">
+            <TextInput
+              data-autofocus
+              label="Email"
+              withAsterisk
+              placeholder="john.doe@example.com"
+              key={form.key('email')}
+              {...form.getInputProps('email')}
+            />
 
-          <Group mt="sm">
-            <Button type="submit" loading={loading}>
-              Sign in
-            </Button>
+            <Group mt="sm">
+              <Button type="submit" loading={loading}>
+                Send code
+              </Button>
 
-            <Button variant="outline" onClick={onClose}>
-              Cancel
-            </Button>
-          </Group>
-        </Stack>
-      </form>
-    </Modal>
+              <Button variant="outline" onClick={handleClose}>
+                Cancel
+              </Button>
+            </Group>
+          </Stack>
+        </form>
+      </Modal>
+
+      <Modal
+        {...modalStack.register('account-verification')}
+        onClose={handleClose}
+        title="Sign In"
+        overlayProps={{ blur: 2 }}
+        centered
+      >
+        <form onSubmit={verificationForm.onSubmit(values => handleVerifyOTP(values))}>
+          <Text c="dimmed" mb="md">
+            We've sent a verification code to{' '}
+            <Text span fw="500">
+              {userEmail}
+            </Text>
+            . Enter it below to sign in.
+          </Text>
+
+          <Text c="dimmed" mb="md">
+            Need to edit your email?{' '}
+            <UnstyledButton c="blue" fw="500" onClick={() => modalStack.close('account-verification')}>
+              Go back
+            </UnstyledButton>
+          </Text>
+
+          <Stack gap="sm">
+            <Input.Wrapper label="Verification code" withAsterisk error={verificationForm.errors.verificationCode}>
+              <PinInput
+                gap={4}
+                type="number"
+                length={6}
+                value={verificationForm.values.verificationCode}
+                onChange={value => verificationForm.setFieldValue('verificationCode', value)}
+                error={!!verificationForm.errors.verificationCode}
+              />
+            </Input.Wrapper>
+
+            <Group>
+              <Button variant="light" onClick={handleResendOTP} loading={sending} disabled={!canResend || loading}>
+                Resend code
+              </Button>
+
+              {!canResend && (
+                <RingProgress
+                  sections={[{ value: (resendCountdown / RESEND_COUNTDOWN) * 100, color: 'blue' }]}
+                  size={36}
+                  thickness={2}
+                  transitionDuration={250}
+                  label={
+                    <Text size="xs" ta="center" className="monospace">
+                      {resendCountdown}
+                    </Text>
+                  }
+                />
+              )}
+            </Group>
+
+            <Group mt="sm">
+              <Button type="submit" loading={loading}>
+                Sign in
+              </Button>
+
+              <Button variant="outline" onClick={handleClose}>
+                Cancel
+              </Button>
+            </Group>
+          </Stack>
+        </form>
+      </Modal>
+    </Modal.Stack>
   );
 };
 

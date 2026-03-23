@@ -11,20 +11,58 @@ import otpCache from '../utils/otpCache';
 import sendEmail from '../utils/sendEmail';
 
 const createToken = (_id: any) => {
-  return jwt.sign({ _id }, process.env.JWT_SECRET || '', { expiresIn: '30d' });
+  return jwt.sign({ _id }, process.env.JWT_SECRET ?? '', { expiresIn: '30d' });
 };
 
-const signin = async (req: Request, res: Response) => {
-  const { email: inputEmail, password } = req.body;
+const signinSendOTP = async (req: Request, res: Response) => {
+  const { email: inputEmail } = req.body;
 
   const email = inputEmail?.toLowerCase();
 
   try {
-    if (!email || !password) {
-      return res.status(400).json({ error: 'Email and password are required.' });
+    if (!email) {
+      return res.status(400).json({ error: 'Email is required.' });
     }
 
-    const user = await User.signin(email, password);
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+    otpCache.set(email, otp);
+
+    const subject = 'Your verification code';
+
+    const text = `Your verification code for Job Application Tracker is: ${otp}\n\nThis code will expire in 15 minutes.\n\nIf you didn't request this code, ignore this email.`;
+
+    await sendEmail(email, subject, text);
+
+    res.status(200).json({ message: 'Verification code sent successfully.' });
+  } catch (err: unknown) {
+    return res.status(500).json({ error: 'Unknown error.' });
+  }
+};
+
+const signinVerifyOTP = async (req: Request, res: Response) => {
+  const { email: inputEmail, verificationCode } = req.body;
+
+  const email = inputEmail?.toLowerCase();
+
+  try {
+    if (!email || !verificationCode) {
+      return res.status(400).json({ error: 'Email and verification code are required.' });
+    }
+
+    const otpEntry = otpCache.get(email);
+
+    if (!otpEntry || otpEntry.otp !== verificationCode) {
+      return res.status(400).json({ error: 'Verification code is invalid or has expired.' });
+    }
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(400).json({ error: 'Unable to sign in with the provided details.' });
+    }
+
+    otpCache.delete(email);
 
     const token = createToken(user._id);
 
@@ -96,10 +134,15 @@ const signupVerifyOTP = async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'Verification code is invalid or has expired.' });
     }
 
-    const name = otpEntry.name;
+    const existingUser = await User.findOne({ email });
 
-    // TODO: remove password functionality
-    const user = await User.signup(name, email, '123@Abcd');
+    if (existingUser) {
+      return res.status(400).json({ error: 'Unable to create an account with the provided details.' });
+    }
+
+    const name = otpEntry.name ?? '';
+
+    const user = await User.create({ name, email, password: '123@Abcd' });
 
     otpCache.delete(email);
 
@@ -349,7 +392,8 @@ const deleteAccount = async (req: Request, res: Response) => {
 };
 
 export default {
-  signin,
+  signinSendOTP,
+  signinVerifyOTP,
   signupSendOTP,
   signupVerifyOTP,
   renewToken,

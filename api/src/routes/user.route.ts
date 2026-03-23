@@ -5,7 +5,8 @@ import userController from '../controllers/user.controller';
 
 const router = express.Router();
 
-router.post('/signin', userController.signin);
+router.post('/signin/send-otp', userController.signinSendOTP);
+router.post('/signin/verify-otp', userController.signinVerifyOTP);
 router.post('/signup/send-otp', userController.signupSendOTP);
 router.post('/signup/verify-otp', userController.signupVerifyOTP);
 router.post('/renew-token', requireAuth, userController.renewToken);
