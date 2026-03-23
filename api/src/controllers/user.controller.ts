@@ -7,6 +7,9 @@ import validator from 'validator';
 import Application from '../models/application.model';
 import User from '../models/user.model';
 
+import otpCache from '../utils/otpCache';
+import sendEmail from '../utils/sendEmail';
+
 const createToken = (_id: any) => {
   return jwt.sign({ _id }, process.env.JWT_SECRET || '', { expiresIn: '30d' });
 };
@@ -47,21 +50,58 @@ const signin = async (req: Request, res: Response) => {
   }
 };
 
-const signup = async (req: Request, res: Response) => {
-  const { name, email: inputEmail, password, pwConfirmation } = req.body;
+const signupSendOTP = async (req: Request, res: Response) => {
+  const { name, email: inputEmail } = req.body;
 
   const email = inputEmail?.toLowerCase();
 
   try {
-    if (!name || !email || !password || !pwConfirmation) {
-      return res.status(400).json({ error: 'Name, email, password, and confirmation are required.' });
+    if (!name || !email) {
+      return res.status(400).json({ error: 'Name and email are required.' });
     }
 
-    if (password !== pwConfirmation) {
-      return res.status(400).json({ error: 'Password and confirmation do not match.' });
+    if (!validator.isEmail(email)) {
+      return res.status(400).json({ error: 'Invalid email address.' });
     }
 
-    const user = await User.signup(name, email, password);
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+    otpCache.set(email, otp, name);
+
+    const subject = 'Your verification code';
+
+    const text = `Your verification code for Job Application Tracker is: ${otp}\n\nThis code will expire in 15 minutes.\n\nIf you didn't request this code, ignore this email.`;
+
+    await sendEmail(email, subject, text);
+
+    res.status(200).json({ message: 'Verification code sent successfully.' });
+  } catch (err: unknown) {
+    return res.status(500).json({ error: 'Unknown error.' });
+  }
+};
+
+const signupVerifyOTP = async (req: Request, res: Response) => {
+  const { email: inputEmail, verificationCode } = req.body;
+
+  const email = inputEmail?.toLowerCase();
+
+  try {
+    if (!email || !verificationCode) {
+      return res.status(400).json({ error: 'Email and verification code are required.' });
+    }
+
+    const otpEntry = otpCache.get(email);
+
+    if (!otpEntry || otpEntry.otp !== verificationCode) {
+      return res.status(400).json({ error: 'Verification code is invalid or has expired.' });
+    }
+
+    const name = otpEntry.name;
+
+    // TODO: remove password functionality
+    const user = await User.signup(name, email, '123@Abcd');
+
+    otpCache.delete(email);
 
     const token = createToken(user._id);
 
@@ -310,7 +350,8 @@ const deleteAccount = async (req: Request, res: Response) => {
 
 export default {
   signin,
-  signup,
+  signupSendOTP,
+  signupVerifyOTP,
   renewToken,
   getEmailsInUse,
   updateName,
