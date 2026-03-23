@@ -1,12 +1,12 @@
 html.theme-switch::view-transition-group(root) {
   animation-duration: 250ms;
-  animation-timing-function: ease-in-out;
+  animation-timing-function: ease;
 }
 
 html.theme-switch::view-transition-new(root),
 html.theme-switch::view-transition-old(root) {
   animation-duration: 250ms;
-  animation-timing-function: ease-in-out;
+  animation-timing-function: ease;
 }
 
 .glass {
