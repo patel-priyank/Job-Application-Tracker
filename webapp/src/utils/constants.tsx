@@ -51,3 +51,5 @@ export const PASSWORD_REQUIREMENTS = [
   { re: /[0-9]/, label: 'Number' },
   { re: PASSWORD_SPECIAL_CHARS_REGEX, label: 'Special character' }
 ];
+
+export const RESEND_COUNTDOWN = 60; // in seconds

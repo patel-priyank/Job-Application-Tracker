@@ -19,7 +19,7 @@ import { useForm } from '@mantine/form';
 import { useApplicationContext } from '../hooks/useApplicationContext';
 import { useAuthContext } from '../hooks/useAuthContext';
 
-import { APPLICATION_STATUS, EMAIL_REGEX } from '../utils/constants';
+import { APPLICATION_STATUS, EMAIL_REGEX, RESEND_COUNTDOWN } from '../utils/constants';
 import { showNotification } from '../utils/functions';
 
 const SignUp = ({ opened, onClose }: { opened: boolean; onClose: () => void }) => {
@@ -29,7 +29,7 @@ const SignUp = ({ opened, onClose }: { opened: boolean; onClose: () => void }) =
   const [loading, setLoading] = useState(false);
   const [userEmail, setUserEmail] = useState('');
   const [canResend, setCanResend] = useState(false);
-  const [resendCountdown, setResendCountdown] = useState(60);
+  const [resendCountdown, setResendCountdown] = useState(RESEND_COUNTDOWN);
   const [sending, setSending] = useState(false);
 
   useEffect(() => {
@@ -38,7 +38,7 @@ const SignUp = ({ opened, onClose }: { opened: boolean; onClose: () => void }) =
       verificationForm.reset();
       setUserEmail('');
       setCanResend(false);
-      setResendCountdown(60);
+      setResendCountdown(RESEND_COUNTDOWN);
     }
   }, [opened]);
 
@@ -133,7 +133,7 @@ const SignUp = ({ opened, onClose }: { opened: boolean; onClose: () => void }) =
 
       setCanResend(false);
 
-      setResendCountdown(60);
+      setResendCountdown(RESEND_COUNTDOWN);
 
       setLoading(false);
     }
@@ -174,7 +174,7 @@ const SignUp = ({ opened, onClose }: { opened: boolean; onClose: () => void }) =
 
     setCanResend(false);
 
-    setResendCountdown(60);
+    setResendCountdown(RESEND_COUNTDOWN);
 
     setSending(false);
   };
@@ -315,7 +315,7 @@ const SignUp = ({ opened, onClose }: { opened: boolean; onClose: () => void }) =
 
               {!canResend && (
                 <RingProgress
-                  sections={[{ value: (resendCountdown / 60) * 100, color: 'blue' }]}
+                  sections={[{ value: (resendCountdown / RESEND_COUNTDOWN) * 100, color: 'blue' }]}
                   size={36}
                   thickness={2}
                   transitionDuration={250}
