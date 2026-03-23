@@ -326,7 +326,7 @@ const ApplicationDetails = ({
               {status?.status}
             </Text>{' '}
             update on{' '}
-            <Text span style={{ whiteSpace: 'nowrap' }}>
+            <Text span fw="500" style={{ whiteSpace: 'nowrap' }}>
               {formatDate(status?.date ?? '')}
             </Text>
             ? This action cannot be undone.
