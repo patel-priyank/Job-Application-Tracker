@@ -77,13 +77,10 @@ import navLinkClasses from './styles/NavLink.module.css';
 
 const theme = createTheme({
   cursorType: 'pointer',
-  fontFamily:
-    'Geist, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji',
-  fontFamilyMonospace:
-    'Geist Mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace',
+  fontFamily: 'Geist, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji',
+  fontFamilyMonospace: 'Geist Mono, ui-monospace, monospace, Apple Color Emoji, Segoe UI Emoji',
   headings: {
-    fontFamily:
-      'Geist, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji'
+    fontFamily: 'Geist, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji'
   }
 });
 
