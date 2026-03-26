@@ -14,6 +14,77 @@ const createToken = (_id: any) => {
   return jwt.sign({ _id }, process.env.JWT_SECRET ?? '', { expiresIn: '30d' });
 };
 
+const verificationCodeEmailTemplate = (title: string, name: string | undefined, text: string, code: string) => {
+  return `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <style>
+          .container {
+            font-family: system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 1.5rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            color: #111827;
+          }
+          .title {
+            font-size: 1.5rem;
+            margin-top: 0;
+          }
+          p {
+            font-size: 1rem;
+            line-height: 1.5;
+          }
+          .text {
+            color: #374151;
+          }
+          .code-container {
+            background-color: #f3f4f6;
+            padding: 1.25rem;
+            text-align: center;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+          }
+          .code {
+            font-size: 2rem;
+            font-weight: bold;
+            letter-spacing: 0.375rem;
+          }
+          .expiry-text {
+            font-size: 0.875rem;
+            color: #4b5563;
+          }
+          .divider {
+            border: none;
+            border-top: 1px solid #e5e7eb;
+            margin: 1.25rem 0;
+          }
+          .footer-text {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-bottom: 0;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <h2 class="title">${title}</h2>
+          <p>Hello${name ? ` <strong>${name}</strong>` : ''},</p>
+          <p class="text">${text}</p>
+          <div class="code-container">
+            <span class="code">${code}</span>
+          </div>
+          <p class="expiry-text">This code will expire in <strong>15 minutes</strong>.</p>
+          <hr class="divider" />
+          <p class="footer-text">If you didn't request this code, you can safely ignore this email.</p>
+        </div>
+      </body>
+    </html>
+  `;
+};
+
 const signinSendOTP = async (req: Request, res: Response) => {
   const { email: inputEmail } = req.body;
 
@@ -28,11 +99,19 @@ const signinSendOTP = async (req: Request, res: Response) => {
 
     otpCache.set(email, otp);
 
+    const user = await User.findOne({ email });
+
     const subject = 'Your verification code';
 
-    const text = `Your verification code for Job Application Tracker is: ${otp}\n\nThis code will expire in 15 minutes.\n\nIf you didn't request this code, ignore this email.`;
+    const title = 'Sign in to Job Application Tracker';
 
-    await sendEmail(email, subject, text);
+    const message = 'Use this verification code to sign in to your account.';
+
+    const text = `${title}\n\n${message}\n\n${otp}\n\nThis code will expire in 15 minutes.\n\nIf you didn't request this code, you can safely ignore this email.`;
+
+    const html = verificationCodeEmailTemplate(title, user?.name, message, otp);
+
+    await sendEmail(email, subject, text, html);
 
     res.status(200).json({ message: 'Verification code sent successfully.' });
   } catch (err: unknown) {
@@ -108,9 +187,15 @@ const signupSendOTP = async (req: Request, res: Response) => {
 
     const subject = 'Your verification code';
 
-    const text = `Your verification code for Job Application Tracker is: ${otp}\n\nThis code will expire in 15 minutes.\n\nIf you didn't request this code, ignore this email.`;
+    const title = 'Sign up for Job Application Tracker';
 
-    await sendEmail(email, subject, text);
+    const message = 'Use this verification code to complete your sign up.';
+
+    const text = `${title}\n\n${message}\n\n${otp}\n\nThis code will expire in 15 minutes.\n\nIf you didn't request this code, you can safely ignore this email.`;
+
+    const html = verificationCodeEmailTemplate(title, name, message, otp);
+
+    await sendEmail(email, subject, text, html);
 
     res.status(200).json({ message: 'Verification code sent successfully.' });
   } catch (err: unknown) {

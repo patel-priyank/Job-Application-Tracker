@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer';
 
-const sendEmail = async (to: string, subject: string, text: string) => {
+const sendEmail = async (to: string, subject: string, text: string, html?: string) => {
   const service = process.env.EMAIL_SERVICE;
   const user = process.env.EMAIL_USER;
   const pass = process.env.EMAIL_PASS;
@@ -22,7 +22,8 @@ const sendEmail = async (to: string, subject: string, text: string) => {
       from: user,
       to,
       subject,
-      text
+      text,
+      ...(html && { html })
     };
 
     await transporter.sendMail(mailOptions);
