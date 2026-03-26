@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import {
   Button,
@@ -31,6 +31,8 @@ const SignIn = ({ opened, onClose }: { opened: boolean; onClose: () => void }) =
   const [canResend, setCanResend] = useState(false);
   const [resendCountdown, setResendCountdown] = useState(RESEND_COUNTDOWN);
   const [sending, setSending] = useState(false);
+
+  const pinInputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     if (opened) {
@@ -127,6 +129,8 @@ const SignIn = ({ opened, onClose }: { opened: boolean; onClose: () => void }) =
     verificationForm.reset();
 
     modalStack.open('account-verification');
+
+    setTimeout(() => pinInputRef.current?.focus(), 10);
   };
 
   const handleResendOTP = async () => {
@@ -287,6 +291,7 @@ const SignIn = ({ opened, onClose }: { opened: boolean; onClose: () => void }) =
           <Stack gap="sm">
             <Input.Wrapper label="Verification code" withAsterisk error={verificationForm.errors.verificationCode}>
               <PinInput
+                ref={pinInputRef}
                 gap={4}
                 type="number"
                 length={6}

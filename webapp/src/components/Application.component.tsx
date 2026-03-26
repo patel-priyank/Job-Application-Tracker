@@ -125,7 +125,7 @@ const Application = ({
                   <Menu.Dropdown>
                     <Menu.Item
                       leftSection={<IconFileText size={16} stroke={1.5} />}
-                      onClick={() => setTimeout(openApplicationDetails, 0)}
+                      onClick={() => setTimeout(openApplicationDetails, 10)}
                     >
                       View details
                     </Menu.Item>
@@ -134,7 +134,7 @@ const Application = ({
 
                     <Menu.Item
                       leftSection={<IconStatusChange size={16} stroke={1.5} />}
-                      onClick={() => setTimeout(openCreateApplicationStatus, 0)}
+                      onClick={() => setTimeout(openCreateApplicationStatus, 10)}
                     >
                       Update status
                     </Menu.Item>
@@ -143,7 +143,7 @@ const Application = ({
 
                     <Menu.Item
                       leftSection={<IconPencil size={16} stroke={1.5} />}
-                      onClick={() => setTimeout(openEditApplication, 0)}
+                      onClick={() => setTimeout(openEditApplication, 10)}
                     >
                       Edit application
                     </Menu.Item>
@@ -151,7 +151,7 @@ const Application = ({
                     <Menu.Item
                       leftSection={<IconTrash size={16} stroke={1.5} />}
                       color="red"
-                      onClick={() => setTimeout(openDeleteApplication, 0)}
+                      onClick={() => setTimeout(openDeleteApplication, 10)}
                     >
                       Delete application
                     </Menu.Item>
