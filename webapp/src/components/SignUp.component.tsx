@@ -115,7 +115,7 @@ const SignUp = ({ opened, onClose }: { opened: boolean; onClose: () => void }) =
     if (userEmail !== values.email) {
       setLoading(true);
 
-      const response = await fetch('/api/users/signup/send-otp', {
+      const response = await fetch('/api/users/signup/request', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -156,7 +156,7 @@ const SignUp = ({ opened, onClose }: { opened: boolean; onClose: () => void }) =
 
     setSending(true);
 
-    const response = await fetch('/api/users/signup/send-otp', {
+    const response = await fetch('/api/users/signup/request', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -186,7 +186,7 @@ const SignUp = ({ opened, onClose }: { opened: boolean; onClose: () => void }) =
   const handleVerifyOTP = async (values: typeof verificationForm.values) => {
     setLoading(true);
 
-    const response = await fetch('/api/users/signup/verify-otp', {
+    const response = await fetch('/api/users/signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

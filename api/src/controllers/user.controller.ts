@@ -119,7 +119,7 @@ const signinSendOTP = async (req: Request, res: Response) => {
   }
 };
 
-const signinVerifyOTP = async (req: Request, res: Response) => {
+const signin = async (req: Request, res: Response) => {
   const { email: inputEmail, verificationCode } = req.body;
 
   const email = inputEmail?.toLowerCase();
@@ -203,7 +203,7 @@ const signupSendOTP = async (req: Request, res: Response) => {
   }
 };
 
-const signupVerifyOTP = async (req: Request, res: Response) => {
+const signup = async (req: Request, res: Response) => {
   const { email: inputEmail, verificationCode } = req.body;
 
   const email = inputEmail?.toLowerCase();
@@ -478,9 +478,9 @@ const deleteAccount = async (req: Request, res: Response) => {
 
 export default {
   signinSendOTP,
-  signinVerifyOTP,
+  signin,
   signupSendOTP,
-  signupVerifyOTP,
+  signup,
   renewToken,
   getEmailsInUse,
   updateName,

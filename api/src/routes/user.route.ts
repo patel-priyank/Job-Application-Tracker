@@ -5,10 +5,10 @@ import userController from '../controllers/user.controller';
 
 const router = express.Router();
 
-router.post('/signin/send-otp', userController.signinSendOTP);
-router.post('/signin/verify-otp', userController.signinVerifyOTP);
-router.post('/signup/send-otp', userController.signupSendOTP);
-router.post('/signup/verify-otp', userController.signupVerifyOTP);
+router.post('/signin/request', userController.signinSendOTP);
+router.post('/signin', userController.signin);
+router.post('/signup/request', userController.signupSendOTP);
+router.post('/signup', userController.signup);
 router.post('/renew-token', requireAuth, userController.renewToken);
 router.get('/emails-in-use', requireAuth, userController.getEmailsInUse);
 router.patch('/account/name', requireAuth, userController.updateName);
