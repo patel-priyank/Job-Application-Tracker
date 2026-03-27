@@ -1,147 +1,261 @@
-### Universal ###
-# Common files that should be ignored in all projects
+# OS ARTEFACTS
 
-# Logs
-*.log
-# Temporary files
-*.tmp
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux
 *~
 
-*.bak
-# Environment files (containing secrets, API keys, credentials)
-.env
-*.env
 
-# Local configuration that shouldn't be shared
-*.local
+# IDE / EDITOR FILES
 
-### Express ###
-# express specific files
+# JetBrains (WebStorm, IntelliJ, etc.)
+.idea/
+*.iml
 
-node_modules/
-logs/
-*.log
+# VS Code
+.vscode/
+.vscode-test
 
-### Node ###
-# Node.js dependency directory, logs, and environment files
+# Vim / Neovim
+*.swp
+*.swo
 
-# Dependencies
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Edit history
+.history/
+
+
+# SECRETS & CREDENTIALS
+
+.env*
+!.env.example
+!.env.template
+
+# Private keys, certificates, keystores
+*.pem
+*.key
+*.crt
+*.cer
+*.p12
+*.pfx
+*.jks
+id_rsa
+id_rsa.pub
+id_ed25519
+id_ed25519.pub
+id_ecdsa
+id_ecdsa.pub
+
+# Package manager auth tokens
+.npmrc
+.yarnrc
+
+# Dotenv Vault
+.env.vault
+
+# Cloud provider credentials
+.aws/
+.gcp/
+
+# Secret directories
+secrets/
+credentials/
+private/
+
+
+# DEPENDENCIES
+
 node_modules/
 jspm_packages/
 bower_components/
 web_modules/
 
-# Logs
-logs
-*.log
-*.launch
-connect.lock/
 
-libpeerconnection.log
-.history/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+# PACKAGE MANAGER LOCK FILES & CACHES
 
-lerna-debug.log*
-.pnpm-debug.log*
-# Diagnostic reports
-report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
-# Runtime data
-
-pids
-*.pid
-*.seed
-*.pid.lock
-# Environment
-
-.env.development.local
-.env.test.local
-.env.production.local
-.env.local
-# Package management
-
-.npm
 package-lock.json
 yarn.lock
+
+.npm
 .yarn-integrity
 .yarn/cache
-
 .yarn/unplugged
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
-# Coverage & Test
+.pnpm-debug.log*
+
+
+# LOGS
+
+logs/
+*.log
+*.launch
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+libpeerconnection.log
+
+
+# RUNTIME & DIAGNOSTIC DATA
+
+pids/
+*.pid
+*.pid.lock
+*.seed
+connect.lock
+.node_repl_history
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+
+# BUILD OUTPUTS
+
+dist/
+build/
+out/
+.output
+.next/
+.nuxt/
+.svelte-kit/
+.vuepress/dist
+.docusaurus/
+storybook-static/
+
+
+# TEST & COVERAGE
 
 coverage/
 lib-cov
 *.lcov
-.nyc_output
-# Build output
+.nyc_output/
 
-dist/
-build/
-.next/
-out/
-.nuxt
 
-.output
-# Cache & Temporary
+# CACHE & TEMPORARY FILES
+
 .cache/
-.temp/
-.grunt
-
+.temp
+.grunt/
 .lock-wscript
 .fusebox/
-.dynamodb/
-.tern-port
-.vscode-test
-
-.node_repl_history
 .webpack/
-# TypeScript
-*.tsbuildinfo
-# Optional REPL history
-
-.node_repl_history
-# Additional caches
+.parcel-cache/
 .eslintcache
 .stylelintcache
-.parcel-cache
-
 .rpt2_cache/
 .rts2_cache_cjs/
 .rts2_cache_es/
 .rts2_cache_umd/
-# Misc
+.turbo/
+.nx/cache
 
-*.tgz
+
+# TYPESCRIPT
+
+*.tsbuildinfo
+
+
+# CLOUD / SERVERLESS / IaC
+
 .serverless/
-.vuepress/dist
-.temp
-.docusaurus
+.vercel/
+.netlify/
+.dynamodb/
+.terraform/
+*.tfstate
+*.tfstate.backup
+*.tfvars
 
-.svelte-kit
 
-### React ###
-# React build directory and environment files
+# DATABASE & DATA FILES
 
-build/
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+*.sqlite
+*.sqlite3
+*.db
 
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.DS_*
+
+# AI AGENTS & CODING TOOLS
+
+# Generic
+.agent/
+.agents/
+
+# Claude (Anthropic)
+.claude/
+
+# Cursor
+.cursor/
+
+# GitHub Copilot
+.copilot/
+.github/copilot-instructions.md
+
+# Continue
+.continue/
+
+# Aider
+.aider*
+
+# Windsurf / Codeium
+.windsurf/
+.codeium/
+
+# Supermaven
+.supermaven/
+
+# Tabnine
+.tabnine/
+
+# Amazon CodeWhisperer / Q Developer
+.aws/codewhisperer/
+.amazonq/
+
+# Sourcegraph Cody
+.cody/
+
+# Devin / SWE-agent
+.devin/
+.swe-agent/
+
+# Sweep (AI PR bot)
+sweep.yaml
+
+# Replit AI
+.replit
+replit.nix
+
+# Bolt / StackBlitz AI
+.bolt/
+
+# v0 (Vercel)
+.v0/
+
+
+# MISCELLANEOUS
+
+*.tmp
+*.bak
+*.tgz
 **/*.backup.*
-
 **/*.back.*
-*.sublime*
-psd
-thumb
-sketch
 
-coverage/
+# Design source files
+*.psd
+*.sketch
+*.ai
+
+# Local config overrides
+*.local
