@@ -105,8 +105,12 @@ const DeleteApplication = ({
   return (
     <Modal opened={opened} onClose={onClose} title="Delete Application" overlayProps={{ blur: 2 }} centered>
       <Stack gap="sm">
-        <Text size="sm">
-          Are you sure you want to delete this application for {application.companyName}? This action cannot be undone.
+        <Text>
+          Are you sure you want to delete this application for{' '}
+          <Text span fw="500">
+            {application.companyName}
+          </Text>
+          ? This action cannot be undone.
         </Text>
 
         <Group mt="sm">

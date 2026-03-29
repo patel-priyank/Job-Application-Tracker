@@ -450,7 +450,7 @@ const AppContent = () => {
 
         <Modal opened={signedOutOpened} onClose={closeSignedOut} title="Signed Out" overlayProps={{ blur: 2 }} centered>
           <Stack gap="sm">
-            <Text size="sm">{signedOutMessage}</Text>
+            <Text>{signedOutMessage}</Text>
 
             <Group mt="sm">
               <Button data-autofocus variant="outline" onClick={closeSignedOut}>

@@ -320,7 +320,7 @@ const ApplicationDetails = ({
         centered
       >
         <Stack gap="sm">
-          <Text size="sm">
+          <Text>
             Are you sure you want to delete the{' '}
             <Text span c={Object.values(APPLICATION_STATUS).find(s => s.label === status?.status)?.color} fw="500">
               {status?.status}
