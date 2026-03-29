@@ -1,10 +1,13 @@
 import { Request, Response } from 'express';
 
-import bcrypt from 'bcryptjs';
 import mongoose from 'mongoose';
 
 import Application from '../models/application.model';
 import User from '../models/user.model';
+
+import otpCache from '../utils/otpCache';
+import sendEmail from '../utils/sendEmail';
+import verificationCodeEmailTemplate from '../utils/emailTemplate';
 
 const getApplications = async (req: Request, res: Response) => {
   const { status, emailUsed, sort, order, pageSize, page, query } = req.query as {
@@ -201,21 +204,61 @@ const deleteApplication = async (req: Request, res: Response) => {
   }
 };
 
-const deleteApplications = async (req: Request, res: Response) => {
-  const { password } = req.body;
+const deleteApplicationsSendOTP = async (req: Request, res: Response) => {
+  try {
+    const user = await User.findById(req.user?._id);
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found.' });
+    }
+
+    const email = user.email;
+
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+    otpCache.set(email, otp);
+
+    const subject = 'Your verification code';
+
+    const title = 'Delete All Applications';
+
+    const message = 'Use this verification code to confirm permanent deletion of all your job applications.';
+
+    const text = `${title}\n\n${message}\n\n${otp}\n\nThis code will expire in 15 minutes.\n\nIf you didn't request this code, you can safely ignore this email.`;
+
+    const html = verificationCodeEmailTemplate(title, user.name, message, otp);
+
+    await sendEmail(email, subject, text, html);
+
+    res.status(200).json({ message: 'Verification code sent successfully.' });
+  } catch (err: unknown) {
+    return res.status(500).json({ error: 'Unknown error.' });
+  }
+};
+
+const deleteApplicationsVerifyOTP = async (req: Request, res: Response) => {
+  const { verificationCode } = req.body;
 
   try {
-    if (!password) {
-      return res.status(400).json({ error: 'Password is required.' });
+    if (!verificationCode) {
+      return res.status(400).json({ error: 'Verification code is required.' });
     }
 
-    const user = await User.findById(req.user?._id).select('password');
+    const user = await User.findById(req.user?._id);
 
-    const pwMatch = await bcrypt.compare(password, user.password);
-
-    if (!pwMatch) {
-      return res.status(400).json({ error: 'Password could not be verified.' });
+    if (!user) {
+      return res.status(404).json({ error: 'User not found.' });
     }
+
+    const email = user.email;
+
+    const otpEntry = otpCache.get(email);
+
+    if (!otpEntry || otpEntry.otp !== verificationCode) {
+      return res.status(400).json({ error: 'Verification code is invalid or has expired.' });
+    }
+
+    otpCache.delete(email);
 
     const applications = await Application.find({ user: req.user?._id });
 
@@ -367,7 +410,8 @@ export default {
   createApplication,
   updateApplication,
   deleteApplication,
-  deleteApplications,
+  deleteApplicationsSendOTP,
+  deleteApplicationsVerifyOTP,
   createApplicationStatus,
   updateApplicationStatus,
   deleteApplicationStatus
