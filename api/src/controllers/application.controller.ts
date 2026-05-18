@@ -220,7 +220,7 @@ const deleteApplicationsSendOTP = async (req: Request, res: Response) => {
 
     const subject = 'Your verification code';
 
-    const title = 'Delete All Applications';
+    const title = 'Delete all applications';
 
     const message = 'Use this verification code to confirm permanent deletion of all your job applications.';
 
@@ -236,7 +236,7 @@ const deleteApplicationsSendOTP = async (req: Request, res: Response) => {
   }
 };
 
-const deleteApplicationsVerifyOTP = async (req: Request, res: Response) => {
+const deleteApplications = async (req: Request, res: Response) => {
   const { verificationCode } = req.body;
 
   try {
@@ -411,7 +411,7 @@ export default {
   updateApplication,
   deleteApplication,
   deleteApplicationsSendOTP,
-  deleteApplicationsVerifyOTP,
+  deleteApplications,
   createApplicationStatus,
   updateApplicationStatus,
   deleteApplicationStatus

@@ -96,7 +96,7 @@ const DeleteApplications = ({ opened, onClose }: { opened: boolean; onClose: () 
 
     verificationForm.reset();
 
-    modalStack.open('delete-applications-confirmation');
+    modalStack.open('delete-applications-verification');
 
     setTimeout(() => pinInputRef.current?.focus(), 10);
   };
@@ -135,7 +135,7 @@ const DeleteApplications = ({ opened, onClose }: { opened: boolean; onClose: () 
     setSending(false);
   };
 
-  const handleDelete = async (values: typeof verificationForm.values) => {
+  const handleVerifyOTP = async (values: typeof verificationForm.values) => {
     if (!user) {
       return;
     }
@@ -182,7 +182,7 @@ const DeleteApplications = ({ opened, onClose }: { opened: boolean; onClose: () 
     handleClose();
   };
 
-  const modalStack = useModalsStack(['delete-applications', 'delete-applications-confirmation']);
+  const modalStack = useModalsStack(['delete-applications', 'delete-applications-verification']);
 
   return (
     <Modal.Stack>
@@ -217,17 +217,20 @@ const DeleteApplications = ({ opened, onClose }: { opened: boolean; onClose: () 
       </Modal>
 
       <Modal
-        {...modalStack.register('delete-applications-confirmation')}
+        {...modalStack.register('delete-applications-verification')}
         onClose={handleClose}
         title="Delete Applications"
         overlayProps={{ blur: 2 }}
         centered
       >
-        <form onSubmit={verificationForm.onSubmit(values => handleDelete(values))}>
+        <form onSubmit={verificationForm.onSubmit(values => handleVerifyOTP(values))}>
           <Stack gap="sm">
-            <Text size="sm">
-              We've sent a verification code to your email. Enter it below to confirm permanent deletion of your job
-              applications.
+            <Text>
+              We've sent a verification code to{' '}
+              <Text span fw="500">
+                {user?.email}
+              </Text>
+              . Enter it below to confirm permanent deletion of your job applications.
             </Text>
 
             <Alert variant="light" color="red" icon={<IconAlertTriangle />}>

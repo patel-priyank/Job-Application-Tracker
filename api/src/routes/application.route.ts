@@ -10,7 +10,7 @@ router.post('/', requireAuth, applicationController.createApplication);
 router.patch('/:id', requireAuth, applicationController.updateApplication);
 router.delete('/:id', requireAuth, applicationController.deleteApplication);
 router.post('/delete/request', requireAuth, applicationController.deleteApplicationsSendOTP);
-router.delete('/', requireAuth, applicationController.deleteApplicationsVerifyOTP);
+router.delete('/', requireAuth, applicationController.deleteApplications);
 router.post('/:id/status', requireAuth, applicationController.createApplicationStatus);
 router.patch('/:id/status/:statusId', requireAuth, applicationController.updateApplicationStatus);
 router.delete('/:id/status/:statusId', requireAuth, applicationController.deleteApplicationStatus);
