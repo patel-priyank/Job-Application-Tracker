@@ -194,7 +194,7 @@ const DeleteApplications = ({ opened, onClose }: { opened: boolean; onClose: () 
         overlayProps={{ blur: 2 }}
         centered
       >
-        <Text c="dimmed" mb="md">
+        <Text mb="md">
           This action will permanently delete all your job applications and their associated history. We will send a
           verification code to your email to confirm it's you.
         </Text>

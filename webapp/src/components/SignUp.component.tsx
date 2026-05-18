@@ -241,7 +241,7 @@ const SignUp = ({ opened, onClose }: { opened: boolean; onClose: () => void }) =
         centered
       >
         <form onSubmit={form.onSubmit(values => handleSendOTP(values))}>
-          <Text c="dimmed" mb="md">
+          <Text mb="md">
             Enter your name and email to create an account. We will send a verification code to your email to verify
             your identity.
           </Text>
@@ -285,7 +285,7 @@ const SignUp = ({ opened, onClose }: { opened: boolean; onClose: () => void }) =
         centered
       >
         <form onSubmit={verificationForm.onSubmit(values => handleVerifyOTP(values))}>
-          <Text c="dimmed" mb="md">
+          <Text mb="md">
             We've sent a verification code to{' '}
             <Text span fw="500">
               {userEmail}
@@ -293,7 +293,7 @@ const SignUp = ({ opened, onClose }: { opened: boolean; onClose: () => void }) =
             . Enter it below to complete your sign up.
           </Text>
 
-          <Text c="dimmed" mb="md">
+          <Text mb="md">
             Need to edit your name or email?{' '}
             <UnstyledButton c="blue" fw="500" onClick={() => modalStack.close('account-verification')}>
               Go back

@@ -238,7 +238,7 @@ const SignIn = ({ opened, onClose }: { opened: boolean; onClose: () => void }) =
         centered
       >
         <form onSubmit={form.onSubmit(values => handleSendOTP(values))}>
-          <Text c="dimmed" mb="md">
+          <Text mb="md">
             Enter your email to sign in. We will send a verification code to your email to confirm it's you.
           </Text>
 
@@ -273,7 +273,7 @@ const SignIn = ({ opened, onClose }: { opened: boolean; onClose: () => void }) =
         centered
       >
         <form onSubmit={verificationForm.onSubmit(values => handleVerifyOTP(values))}>
-          <Text c="dimmed" mb="md">
+          <Text mb="md">
             We've sent a verification code to{' '}
             <Text span fw="500">
               {userEmail}
@@ -281,7 +281,7 @@ const SignIn = ({ opened, onClose }: { opened: boolean; onClose: () => void }) =
             . Enter it below to sign in.
           </Text>
 
-          <Text c="dimmed" mb="md">
+          <Text mb="md">
             Need to edit your email?{' '}
             <UnstyledButton c="blue" fw="500" onClick={() => modalStack.close('account-verification')}>
               Go back

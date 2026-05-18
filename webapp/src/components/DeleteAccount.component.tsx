@@ -104,9 +104,7 @@ const DeleteAccount = ({ opened, onClose }: { opened: boolean; onClose: () => vo
         centered
       >
         <Stack gap="sm">
-          <Text size="sm">
-            This action will permanently delete your account and all data related to your job applications.
-          </Text>
+          <Text>This action will permanently delete your account and all data related to your job applications.</Text>
 
           <Alert variant="light" color="red" icon={<IconAlertTriangle />}>
             This action cannot be undone.
@@ -133,7 +131,7 @@ const DeleteAccount = ({ opened, onClose }: { opened: boolean; onClose: () => vo
       >
         <form onSubmit={form.onSubmit(values => handleDelete(values))}>
           <Stack gap="sm">
-            <Text size="sm">
+            <Text>
               This action cannot be undone. Enter your password to confirm permanent deletion of your account.
             </Text>
 
