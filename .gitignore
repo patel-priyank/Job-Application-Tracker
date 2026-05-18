@@ -1,261 +1,41 @@
-# OS ARTEFACTS
-
-# macOS
+# OS
 .DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-
-# Windows
 Thumbs.db
-ehthumbs.db
 Desktop.ini
 
-# Linux
-*~
-
-
-# IDE / EDITOR FILES
-
-# JetBrains (WebStorm, IntelliJ, etc.)
-.idea/
-*.iml
-
-# VS Code
+# Editor
 .vscode/
-.vscode-test
+.idea/
 
-# Vim / Neovim
-*.swp
-*.swo
+# Dependencies
+node_modules/
 
-# Sublime Text
-*.sublime-project
-*.sublime-workspace
-
-# Edit history
-.history/
-
-
-# SECRETS & CREDENTIALS
-
-.env*
+# Environment & Secrets
+.env
+.env.*
 !.env.example
 !.env.template
 
-# Private keys, certificates, keystores
-*.pem
-*.key
-*.crt
-*.cer
-*.p12
-*.pfx
-*.jks
-id_rsa
-id_rsa.pub
-id_ed25519
-id_ed25519.pub
-id_ecdsa
-id_ecdsa.pub
-
-# Package manager auth tokens
-.npmrc
-.yarnrc
-
-# Dotenv Vault
-.env.vault
-
-# Cloud provider credentials
-.aws/
-.gcp/
-
-# Secret directories
-secrets/
-credentials/
-private/
-
-
-# DEPENDENCIES
-
-node_modules/
-jspm_packages/
-bower_components/
-web_modules/
-
-
-# PACKAGE MANAGER LOCK FILES & CACHES
-
-package-lock.json
-yarn.lock
-
-.npm
-.yarn-integrity
-.yarn/cache
-.yarn/unplugged
-.yarn/build-state.yml
-.yarn/install-state.gz
-.pnp.*
-.pnpm-debug.log*
-
-
-# LOGS
-
-logs/
-*.log
-*.launch
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-lerna-debug.log*
-libpeerconnection.log
-
-
-# RUNTIME & DIAGNOSTIC DATA
-
-pids/
-*.pid
-*.pid.lock
-*.seed
-connect.lock
-.node_repl_history
-report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
-
-
-# BUILD OUTPUTS
-
+# Build Output
 dist/
 build/
 out/
-.output
-.next/
-.nuxt/
-.svelte-kit/
-.vuepress/dist
-.docusaurus/
-storybook-static/
 
+# Logs
+logs/
+*.log
 
-# TEST & COVERAGE
-
-coverage/
-lib-cov
-*.lcov
-.nyc_output/
-
-
-# CACHE & TEMPORARY FILES
-
+# Cache
 .cache/
-.temp
-.grunt/
-.lock-wscript
-.fusebox/
-.webpack/
-.parcel-cache/
-.eslintcache
-.stylelintcache
-.rpt2_cache/
-.rts2_cache_cjs/
-.rts2_cache_es/
-.rts2_cache_umd/
+.vite/
 .turbo/
-.nx/cache
+.eslintcache
 
+# Deployment
+.vercel/
 
-# TYPESCRIPT
-
+# TypeScript
 *.tsbuildinfo
 
-
-# CLOUD / SERVERLESS / IaC
-
-.serverless/
-.vercel/
-.netlify/
-.dynamodb/
-.terraform/
-*.tfstate
-*.tfstate.backup
-*.tfvars
-
-
-# DATABASE & DATA FILES
-
-*.sqlite
-*.sqlite3
-*.db
-
-
-# AI AGENTS & CODING TOOLS
-
-# Generic
-.agent/
-.agents/
-
-# Claude (Anthropic)
-.claude/
-
-# Cursor
-.cursor/
-
-# GitHub Copilot
-.copilot/
-.github/copilot-instructions.md
-
-# Continue
-.continue/
-
-# Aider
-.aider*
-
-# Windsurf / Codeium
-.windsurf/
-.codeium/
-
-# Supermaven
-.supermaven/
-
-# Tabnine
-.tabnine/
-
-# Amazon CodeWhisperer / Q Developer
-.aws/codewhisperer/
-.amazonq/
-
-# Sourcegraph Cody
-.cody/
-
-# Devin / SWE-agent
-.devin/
-.swe-agent/
-
-# Sweep (AI PR bot)
-sweep.yaml
-
-# Replit AI
-.replit
-replit.nix
-
-# Bolt / StackBlitz AI
-.bolt/
-
-# v0 (Vercel)
-.v0/
-
-
-# MISCELLANEOUS
-
-*.tmp
-*.bak
-*.tgz
-**/*.backup.*
-**/*.back.*
-
-# Design source files
-*.psd
-*.sketch
-*.ai
-
-# Local config overrides
-*.local
+# Package manager
+.npm
